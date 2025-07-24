@@ -38,19 +38,25 @@ export const EFFORTS: { [k in Effort]: string } = {
   [Effort.EXTREME]: 'Extreme'
 };
 
-export class Quest {
+export class SubQuest {
   id: string;
   title: string;
-  type: QuestType;
   priority: Priority;
   effort: Effort;
+  done: boolean;
 
-  constructor(id: string, title: string, type: QuestType, priority: Priority, effort: Effort) {
+  constructor(
+    id: string,
+    title: string,
+    priority: Priority,
+    effort: Effort,
+    done: boolean = false
+  ) {
     this.id = id;
     this.title = title;
-    this.type = type;
     this.priority = priority;
     this.effort = effort;
+    this.done = done;
   }
 
   get reward_coefficient(): number {
@@ -84,5 +90,19 @@ export class Quest {
     }
 
     return priorityCoefficient * effortCoefficient;
+  }
+}
+
+export class Quest {
+  id: string;
+  title: string;
+  type: QuestType;
+  subquests: SubQuest[];
+
+  constructor(id: string, title: string, type: QuestType, subquests: SubQuest[]) {
+    this.id = id;
+    this.title = title;
+    this.type = type;
+    this.subquests = subquests;
   }
 }
