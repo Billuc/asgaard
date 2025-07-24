@@ -71,7 +71,7 @@ self.addEventListener('fetch', (fetchEvent) => {
 
       // If we are offline, response can be a value that is not a Response
       if (!(response instanceof Response)) {
-        throw new Error('Network request failed');
+        throw new Error('Network request failed for ' + event.request.url);
       }
 
       if (response.status === 200) {
