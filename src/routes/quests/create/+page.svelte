@@ -47,6 +47,6 @@
 			</select>
 		</div>
 
-		<button type="submit">Create Quest</button>
+		<button type="submit" class="btn">Create Quest</button>
 	</form>
 </div>

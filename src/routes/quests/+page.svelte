@@ -25,4 +25,6 @@
 	<QuestContainer type={QuestType.SIDE} quests={data.quests}></QuestContainer>
 	<QuestContainer type={QuestType.DAILY} quests={data.quests}></QuestContainer>
 	<QuestContainer type={QuestType.WEEKLY} quests={data.quests}></QuestContainer>
+
+	<a href="/quests/create" class="btn"> Create New Quest </a>
 </div>

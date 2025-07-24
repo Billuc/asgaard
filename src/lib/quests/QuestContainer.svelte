@@ -5,7 +5,7 @@
 		[QuestType.MAIN]: 'text-primary',
 		[QuestType.SIDE]: 'text-secondary',
 		[QuestType.DAILY]: 'text-accent',
-		[QuestType.WEEKLY]: 'text-neutral'
+		[QuestType.WEEKLY]: 'text-base-content'
 	};
 	const LEFT_CURL = '︵‿୨';
 	const RIGHT_CURL = '୧‿︵';
