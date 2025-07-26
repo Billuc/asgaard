@@ -17,7 +17,7 @@
 </script>
 
 <div>
-	<p class={'font-bold ' + color}>{LEFT_CURL} {QUEST_TYPES[type]}s {RIGHT_CURL}</p>
+	<p class={'font-bold ' + color}>{LEFT_CURL} {QUEST_TYPES[type].label}s {RIGHT_CURL}</p>
 
 	<div
 		class="relative h-20 overflow-clip before:absolute before:top-0 before:left-0 before:h-full before:w-full before:bg-gradient-to-b before:from-transparent before:via-transparent before:to-base-100 before:content-['']"
