@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { type Quest, QUEST_TYPES, QuestType } from './quest';
 
 	const COLORS: { [k in QuestType]: string } = {
@@ -20,10 +21,27 @@
 	<p class={'font-bold ' + color}>{LEFT_CURL} {QUEST_TYPES[type].label}s {RIGHT_CURL}</p>
 
 	<div
-		class="relative h-20 overflow-clip before:absolute before:top-0 before:left-0 before:h-full before:w-full before:bg-gradient-to-b before:from-transparent before:via-transparent before:to-base-100 before:content-['']"
+		class={[
+			'relative',
+			'h-20',
+			'overflow-clip',
+			'before:absolute',
+			'before:top-0',
+			'before:left-0',
+			'before:h-full',
+			'before:w-full',
+			'before:bg-gradient-to-b',
+			'before:from-transparent',
+			'before:via-transparent',
+			'before:to-base-100',
+			"before:content-['']",
+			'before:pointer-events-none'
+		]}
 	>
 		{#each questsOfType as quest (quest.id)}
-			<p>{quest.title}</p>
+			<a href={`/quests/quest?id=${quest.id}`}>
+				{quest.title}
+			</a>
 		{/each}
 	</div>
 </div>

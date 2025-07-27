@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { generateId } from '$lib/id_generator';
-	import EffortSelect from '$lib/quests/EffortSelect.svelte';
-	import PrioritySelect from '$lib/quests/PrioritySelect.svelte';
 	import { Effort, Priority, Quest, QuestType, type SubQuest } from '$lib/quests/quest';
 	import QuestTypeButtons from '$lib/quests/QuestTypeButtons.svelte';
 	import { questStorage } from '$lib/quests/storage';
+	import SubquestTable from '$lib/quests/SubquestTable.svelte';
 
 	let title = $state('');
 	let type = $state(QuestType.MAIN);
@@ -77,40 +76,7 @@
 			</div>
 		{/if}
 		{#if step == 2}
-			<table class="table table-zebra table-sm">
-				<thead>
-					<tr>
-						<th class="w-1/2">Name</th>
-						<th class="w-1/4">Priority</th>
-						<th class="w-1/4">Effort</th>
-					</tr>
-				</thead>
-				<tbody class="text-center">
-					{#each subquests as subq, i (subq.id)}
-						<tr>
-							<td
-								><input
-									value={subq.title}
-									onchange={(ev) => subquests.splice(i, 1, { ...subq, title: ev.target.value })}
-									class="input"
-								/></td
-							>
-							<td>
-								<PrioritySelect
-									priority={subq.priority}
-									setPriority={(p) => subquests.splice(i, 1, { ...subq, priority: p })}
-								></PrioritySelect>
-							</td>
-							<td>
-								<EffortSelect
-									effort={subq.effort}
-									setEffort={(e) => subquests.splice(i, 1, { ...subq, effort: e })}
-								></EffortSelect>
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+			<SubquestTable {subquests} updateAtIndex={(sq, i) => subquests.splice(i, 1, sq)} />
 			<button class="btn" onclick={newSubquest}>Create subquest</button>
 
 			<button class="btn mt-4" onclick={onsubmit}>Create Quest</button>

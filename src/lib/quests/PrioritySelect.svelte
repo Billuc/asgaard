@@ -12,8 +12,8 @@
 
 <select
 	value={priority}
-	onchange={(ev) => setPriority(ev.target.value)}
-	class={'select ' + selectColorClass}
+	onchange={(ev) => setPriority((ev.target! as HTMLSelectElement).value as Priority)}
+	class={['select', 'select-sm', selectColorClass]}
 >
 	{#each Object.entries(PRIORITIES) as prio (prio[0])}
 		<option value={prio[0]} class={prio[1].colorClass}>{prio[1].text}</option>
