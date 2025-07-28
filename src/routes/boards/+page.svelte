@@ -14,5 +14,5 @@
 		</tbody>
 	</table>
 
-	<a href="/boards/create">Create a new board</a>
+	<a href="/boards/create" class="btn">Create a new board</a>
 </div>
