@@ -12,5 +12,8 @@
 	<a href="/quests" class="btn">Return to quests</a>
 	<input class="input input-xl input-ghost" value={data.quest.title} />
 
-	<SubquestTable subquests={data.quest.subquests} updateAtIndex={(sq, i) => {}} />
+	{#if data.quest.subquests.length > 0}
+		<h3>Subquests</h3>
+		<SubquestTable subquests={data.quest.subquests} updateAtIndex={(sq, i) => {}} />
+	{/if}
 </div>

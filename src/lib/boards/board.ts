@@ -1,15 +1,7 @@
-import type { Quest } from '$lib/quests/quest';
-
-export class Board {
+export interface Board {
   id: string;
   title: string;
   items: BoardItem[];
-
-  constructor(id: string, title: string, items: BoardItem[] = []) {
-    this.id = id;
-    this.title = title;
-    this.items = items;
-  }
 }
 
 export enum BoardType {
@@ -21,8 +13,27 @@ export enum BoardType {
 export interface BoardItem {
   id: string;
   title: string;
-  type: BoardType;
-  quest?: Quest; // Optional, only for QUEST type
-  list?: string[]; // Optional, only for LIST type
-  note?: string; // Optional, only for NOTE type
+  data: BoardItemData;
+}
+
+export type BoardItemData = ListData | QuestData | NoteData;
+
+export interface ListData {
+  type: BoardType.LIST;
+  list: ListItem[];
+}
+
+export interface ListItem {
+  done: boolean;
+  label: string;
+}
+
+export interface QuestData {
+  type: BoardType.QUEST;
+  questId: string;
+}
+
+export interface NoteData {
+  type: BoardType.NOTE;
+  note: string;
 }

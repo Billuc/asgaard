@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { generateId } from '$lib/id_generator';
-	import { Effort, Priority, Quest, QuestType, type SubQuest } from '$lib/quests/quest';
+	import { Effort, Priority, type Quest, QuestType, type SubQuest } from '$lib/quests/quest';
 	import QuestTypeButtons from '$lib/quests/QuestTypeButtons.svelte';
 	import { questStorage } from '$lib/quests/storage';
 	import SubquestTable from '$lib/quests/SubquestTable.svelte';
@@ -46,18 +46,21 @@
 <div>
 	<h1>Quests</h1>
 	<p>Create a new quest!</p>
+	<a href="/quests" class="btn">Return to quests</a>
 
-	<ul class="steps mx-auto w-2/3">
-		{#each STEPS as stepTitle, i (i)}
-			<button
-				class={'step before:transition-colors before:duration-300' +
-					(i <= step ? ' step-primary' : '')}
-				onclick={() => (step = Math.min(step, i))}
-			>
-				{stepTitle}
-			</button>
-		{/each}
-	</ul>
+	<div class="mx-auto w-2/3">
+		<ul class="steps w-full">
+			{#each STEPS as stepTitle, i (i)}
+				<button
+					class={'step before:transition-colors before:duration-300' +
+						(i <= step ? ' step-primary' : '')}
+					onclick={() => (step = Math.min(step, i))}
+				>
+					{stepTitle}
+				</button>
+			{/each}
+		</ul>
+	</div>
 
 	<div class="flex flex-col items-center p-8">
 		{#if step == 0}
@@ -76,7 +79,11 @@
 			</div>
 		{/if}
 		{#if step == 2}
-			<SubquestTable {subquests} updateAtIndex={(sq, i) => subquests.splice(i, 1, sq)} />
+			<SubquestTable
+				{subquests}
+				updateAtIndex={(sq, i) => subquests.splice(i, 1, sq)}
+				deleteAtIndex={(i) => subquests.splice(i, 1)}
+			/>
 			<button class="btn" onclick={newSubquest}>Create subquest</button>
 
 			<button class="btn mt-4" onclick={onsubmit}>Create Quest</button>

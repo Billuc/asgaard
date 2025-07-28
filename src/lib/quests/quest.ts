@@ -79,16 +79,9 @@ export function rewardCoefficient(subquest: SubQuest): number {
 	return priorityCoefficient * effortCoefficient;
 }
 
-export class Quest {
+export interface Quest {
 	id: string;
 	title: string;
 	type: QuestType;
 	subquests: SubQuest[];
-
-	constructor(id: string, title: string, type: QuestType, subquests: SubQuest[]) {
-		this.id = id;
-		this.title = title;
-		this.type = type;
-		this.subquests = subquests;
-	}
 }

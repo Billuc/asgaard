@@ -6,12 +6,13 @@
 	interface Props {
 		subquests: SubQuest[];
 		updateAtIndex: (sq: SubQuest, index: number) => void;
+		deleteAtIndex: (index: number) => void;
 	}
 
-	let { subquests, updateAtIndex }: Props = $props();
+	let { subquests, updateAtIndex, deleteAtIndex }: Props = $props();
 </script>
 
-<table class="table table-zebra table-sm">
+<table class="table table-zebra table-xs md:table-sm">
 	<thead>
 		<tr>
 			<th class="w-1/12">Done</th>
@@ -47,7 +48,9 @@
 						setEffort={(e) => updateAtIndex({ ...subq, effort: e }, i)}
 					></EffortSelect>
 				</td>
-				<td></td>
+				<td>
+					<button class="btn btn-sm btn-error" onclick={() => deleteAtIndex(i)}>Delete</button>
+				</td>
 			</tr>
 		{/each}
 	</tbody>
