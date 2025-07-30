@@ -6,6 +6,7 @@
 	import { cloneDeep } from '$lib/clone';
 	import BoardListView from '$lib/boards/BoardListView.svelte';
 	import BoardNoteView from '$lib/boards/BoardNoteView.svelte';
+	import BoardQuestView from '$lib/boards/BoardQuestView.svelte';
 
 	let { data }: PageProps = $props();
 	let board = $state(data.board);
@@ -54,9 +55,12 @@
 		{#if item.data.type === BoardItemType.NOTE}
 			<BoardNoteView data={item.data} updateData={(d) => (item.data = d)}></BoardNoteView>
 		{/if}
+		{#if item.data.type === BoardItemType.QUEST}
+			<BoardQuestView data={item.data} updateData={(d) => (item.data = d)}></BoardQuestView>
+		{/if}
 	{/each}
 
-	<div class="btn" onclick={() => newItem(BoardItemType.LIST)}>New list</div>
-	<div class="btn" onclick={() => newItem(BoardItemType.NOTE)}>New note</div>
-	<div class="btn" onclick={() => newItem(BoardItemType.QUEST)}>New quest</div>
+	<button class="btn" onclick={() => newItem(BoardItemType.LIST)}>New list</button>
+	<button class="btn" onclick={() => newItem(BoardItemType.NOTE)}>New note</button>
+	<button class="btn" onclick={() => newItem(BoardItemType.QUEST)}>New quest</button>
 </div>

@@ -1,18 +1,60 @@
-# sv
+# Asgaard
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Embark on a quest to Asgard ! Create your quests, earn rewards when completing them and get closer to Asgard !  
+But Asgaard isn't just a gamified task manager, it can also be used to keep notes and list and even has an integrated pomodoro !  
+With Asgaard, you have everything you need to be productive ;)
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
+- [ ] Quests
+  - [x] Create
+  - [x] View
+  - [ ] Edit
+  - [ ] Delete
+  - [ ] Complete
+  - [ ] Subquests
+- [ ] Boards
+  - [x] Create
+  - [x] View
+  - [ ] Edit
+  - [ ] Delete
+  - [ ] Mark favorite
+  - [ ] Order blocks
+  - [ ] Share
+  - [ ] Import
+  - [ ] Lists
+    - [x] Done
+    - [x] Create
+    - [x] Edit
+    - [ ] Delete
+    - [ ] Order
+    - [ ] Clear done
+    - [ ] Hide done
+  - [ ] Notes
+    - [x] Create
+    - [x] Edit
+    - [ ] Delete
+    - [ ] Markdown support
+    - [ ] WYSIWYG toolbar
+  - [ ] Quests block
+    - [x] Select existing quest
+    - [ ] Create new quest
+    - [ ] View
+    - [ ] Create block
+    - [ ] Edit quest
+- [ ] Pomodoro
+  - [ ] Timer configuration
+  - [ ] Start
+  - [ ] Pause
+  - [ ] Stop
+  - [ ] Music
+  - [ ] Quest selection
+  - [ ] Quest display
+- [ ] Style
+- [ ] Reward system
+- [ ] Stats system
+- [ ] Sync
+- [ ] Themes
 
 ## Developing
 
