@@ -38,6 +38,7 @@
 	},
 	"dependencies": {
 		"idb-keyval": "^6.2.2",
-		"nanoid": "^5.1.5"
+		"nanoid": "^5.1.5",
+		"tiny-markdown-editor": "^0.2.2"
 	}
 }

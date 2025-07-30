@@ -4,6 +4,8 @@
 	import { generateId } from '$lib/id_generator';
 	import type { PageProps } from './$types';
 	import { cloneDeep } from '$lib/clone';
+	import BoardListView from '$lib/boards/BoardListView.svelte';
+	import BoardNoteView from '$lib/boards/BoardNoteView.svelte';
 
 	let { data }: PageProps = $props();
 	let board = $state(data.board);
@@ -20,7 +22,11 @@
 
 		switch (itemType) {
 			case BoardItemType.LIST:
-				itemData = { type: BoardItemType.LIST, list: [{ done: false, label: 'New item' }] };
+				itemData = {
+					type: BoardItemType.LIST,
+					title: 'New list',
+					list: [{ done: false, label: 'New item' }]
+				};
 				break;
 			case BoardItemType.NOTE:
 				itemData = { type: BoardItemType.NOTE, note: 'New note' };
@@ -32,7 +38,7 @@
 
 		board = {
 			...board,
-			items: [...board.items, { id: generateId('item'), title: 'New ' + itemType, data: itemData }]
+			items: [...board.items, { id: generateId('item'), data: itemData }]
 		};
 	}
 </script>
@@ -42,7 +48,12 @@
 	<input class="input input-xl input-ghost" value={board.title} />
 
 	{#each board.items as item (item.id)}
-		<div>{item.title}</div>
+		{#if item.data.type === BoardItemType.LIST}
+			<BoardListView data={item.data} updateData={(d) => (item.data = d)}></BoardListView>
+		{/if}
+		{#if item.data.type === BoardItemType.NOTE}
+			<BoardNoteView data={item.data} updateData={(d) => (item.data = d)}></BoardNoteView>
+		{/if}
 	{/each}
 
 	<div class="btn" onclick={() => newItem(BoardItemType.LIST)}>New list</div>

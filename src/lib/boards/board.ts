@@ -12,7 +12,6 @@ export enum BoardType {
 
 export interface BoardItem {
   id: string;
-  title: string;
   data: BoardItemData;
 }
 
@@ -20,6 +19,7 @@ export type BoardItemData = ListData | QuestData | NoteData;
 
 export interface ListData {
   type: BoardType.LIST;
+  title: string;
   list: ListItem[];
 }
 
