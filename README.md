@@ -26,8 +26,6 @@ With Asgaard, you have everything you need to be productive ;)
   - [x] Delete
   - [ ] Mark favorite
   - [x] Order blocks
-  - [ ] Share
-  - [ ] Import
   - [ ] Lists
     - [x] Done
     - [x] Create
@@ -63,6 +61,8 @@ With Asgaard, you have everything you need to be productive ;)
 - [ ] Reward system
 - [ ] Stats system
 - [ ] Sync
+  - [ ] Share
+  - [ ] Import
 - [ ] Themes
 
 ## Developing
