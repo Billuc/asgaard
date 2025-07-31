@@ -10,7 +10,7 @@ With Asgaard, you have everything you need to be productive ;)
   - [x] Create
   - [x] View
   - [x] Edit
-  - [ ] Delete
+  - [x] Delete
   - [ ] Complete
   - [ ] Subquests
     - [x] Create

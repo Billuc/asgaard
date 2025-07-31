@@ -5,6 +5,7 @@
 	import { cloneDeep, debounce } from 'lodash-es';
 	import type { PageProps } from './$types';
 	import { generateId } from '$lib/id_generator';
+	import { goto } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 
@@ -33,6 +34,11 @@
 
 		await updateQuest({ ...quest, subquests });
 	}
+
+	async function deleteQuest() {
+		await questStorage.delete(quest.id);
+		goto('/quests', { state: { message: 'Quest deleted successfully' }, invalidateAll: true });
+	}
 </script>
 
 <div>
@@ -49,6 +55,9 @@
 			oninput={(ev) => debouncedUpdateQuest({ ...quest, description: ev.target.value })}
 			value={quest.description}
 		></textarea>
+	</div>
+	<div>
+		<button class="btn" onclick={deleteQuest}>Delete quest</button>
 	</div>
 
 	{#if quest.subquests.length > 0}
