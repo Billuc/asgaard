@@ -35,7 +35,7 @@ With Asgaard, you have everything you need to be productive ;)
     - [x] Edit
     - [x] Delete
     - [x] Markdown support
-    - [ ] WYSIWYG toolbar
+    - [x] WYSIWYG toolbar
   - [ ] Quests block
     - [x] Select existing quest
     - [ ] Create new quest
