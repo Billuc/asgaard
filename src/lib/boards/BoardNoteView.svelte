@@ -21,8 +21,4 @@
 	});
 </script>
 
-<div class="card bg-base-300">
-	<div class="card-body">
-		<div bind:this={editorEl}></div>
-	</div>
-</div>
+<div bind:this={editorEl}></div>

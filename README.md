@@ -16,10 +16,10 @@ With Asgaard, you have everything you need to be productive ;)
 - [ ] Boards
   - [x] Create
   - [x] View
-  - [ ] Edit
-  - [ ] Delete
+  - [x] Edit
+  - [x] Delete
   - [ ] Mark favorite
-  - [ ] Order blocks
+  - [x] Order blocks
   - [ ] Share
   - [ ] Import
   - [ ] Lists
@@ -33,8 +33,8 @@ With Asgaard, you have everything you need to be productive ;)
   - [ ] Notes
     - [x] Create
     - [x] Edit
-    - [ ] Delete
-    - [ ] Markdown support
+    - [x] Delete
+    - [x] Markdown support
     - [ ] WYSIWYG toolbar
   - [ ] Quests block
     - [x] Select existing quest
@@ -42,6 +42,7 @@ With Asgaard, you have everything you need to be productive ;)
     - [ ] View
     - [ ] Create block
     - [ ] Edit quest
+    - [x] Delete block
 - [ ] Pomodoro
   - [ ] Timer configuration
   - [ ] Start
