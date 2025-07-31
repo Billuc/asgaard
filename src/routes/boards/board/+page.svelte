@@ -1,27 +1,31 @@
 <script lang="ts">
-	import { BoardType as BoardItemType, type BoardItemData } from '$lib/boards/board';
+	import { BoardType as BoardItemType, type Board, type BoardItemData } from '$lib/boards/board';
 	import { boardStorage } from '$lib/boards/storage';
 	import { generateId } from '$lib/id_generator';
 	import type { PageProps } from './$types';
-	import { cloneDeep } from '$lib/clone';
 	import BoardListView from '$lib/boards/BoardListView.svelte';
 	import BoardNoteView from '$lib/boards/BoardNoteView.svelte';
 	import BoardQuestView from '$lib/boards/BoardQuestView.svelte';
 	import { goto } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
+	import { debounce, cloneDeep } from 'lodash-es';
+	import { updateAt } from '$lib/arrayUtils';
 
 	let { data }: PageProps = $props();
 	let board = $state(data.board);
 
-	$effect(() => {
-		let clonedBoard = cloneDeep(board);
-		if (clonedBoard == data.board && clonedBoard.items == data.board.items) return; // Nothing changed (supposedly)
+	const updateBoard = async (newBoard: Board) => {
+		await boardStorage.upsert(cloneDeep(newBoard));
+		let updatedBoard = await boardStorage.get(newBoard.id);
+		if (updatedBoard) board = updatedBoard;
 
-		boardStorage.upsert(clonedBoard);
-	});
+		console.debug('Board updated:', $state.snapshot(board));
+	};
 
-	function newItem(itemType: BoardItemType) {
+	const debouncedUpdateBoard = debounce(updateBoard, 250);
+
+	async function newItem(itemType: BoardItemType) {
 		let itemData: BoardItemData;
 
 		switch (itemType) {
@@ -40,10 +44,10 @@
 				break;
 		}
 
-		board = {
+		await updateBoard({
 			...board,
 			items: [...board.items, { id: generateId('item'), data: itemData }]
-		};
+		});
 	}
 
 	async function deleteBoard() {
@@ -51,35 +55,49 @@
 		goto('/boards', { state: { message: 'Board deleted successfully' }, invalidateAll: true });
 	}
 
-	function deleteBlock(itemId: string) {
-		board = {
+	async function deleteBlock(itemId: string) {
+		await updateBoard({
 			...board,
 			items: board.items.filter((item) => item.id !== itemId)
-		};
+		});
 	}
 
-	function moveBlockUp(itemId: string) {
+	async function moveBlockUp(itemId: string) {
 		const index = board.items.findIndex((item) => item.id === itemId);
 		if (index > 0) {
 			const newItems = [...board.items];
 			[newItems[index - 1], newItems[index]] = [newItems[index], newItems[index - 1]];
-			board = { ...board, items: newItems };
+			updateBoard({ ...board, items: newItems });
 		}
 	}
 
-	function moveBlockDown(itemId: string) {
+	async function moveBlockDown(itemId: string) {
 		const index = board.items.findIndex((item) => item.id === itemId);
 		if (index < board.items.length - 1) {
 			const newItems = [...board.items];
 			[newItems[index + 1], newItems[index]] = [newItems[index], newItems[index + 1]];
-			board = { ...board, items: newItems };
+			updateBoard({ ...board, items: newItems });
+		}
+	}
+
+	async function updateItem(itemId: string, newData: BoardItemData) {
+		const itemIndex = board.items.findIndex((item) => item.id === itemId);
+		if (itemIndex !== -1) {
+			await updateBoard({
+				...board,
+				items: updateAt(board.items, itemIndex, { ...board.items[itemIndex], data: newData })
+			});
 		}
 	}
 </script>
 
 <div>
 	<a href="/boards" class="btn">Return to boards</a>
-	<input class="input input-xl input-ghost" value={board.title} />
+	<input
+		class="input input-xl input-ghost"
+		value={board.title}
+		oninput={(ev) => debouncedUpdateBoard({ ...board, title: ev.target.value })}
+	/>
 
 	<div>
 		<button class="btn" onclick={deleteBoard}>Delete board</button>
@@ -95,13 +113,16 @@
 				</div>
 				<div class="card-body">
 					{#if item.data.type === BoardItemType.LIST}
-						<BoardListView data={item.data} updateData={(d) => (item.data = d)}></BoardListView>
+						<BoardListView data={item.data} updateData={(d) => updateItem(item.id, d)}
+						></BoardListView>
 					{/if}
 					{#if item.data.type === BoardItemType.NOTE}
-						<BoardNoteView data={item.data} updateData={(d) => (item.data = d)}></BoardNoteView>
+						<BoardNoteView data={item.data} updateData={(d) => updateItem(item.id, d)}
+						></BoardNoteView>
 					{/if}
 					{#if item.data.type === BoardItemType.QUEST}
-						<BoardQuestView data={item.data} updateData={(d) => (item.data = d)}></BoardQuestView>
+						<BoardQuestView data={item.data} updateData={(d) => updateItem(item.id, d)}
+						></BoardQuestView>
 					{/if}
 				</div>
 			</div>

@@ -82,6 +82,8 @@ export function rewardCoefficient(subquest: SubQuest): number {
 export interface Quest {
 	id: string;
 	title: string;
+	description: string;
+	completed: boolean;
 	type: QuestType;
 	subquests: SubQuest[];
 }

@@ -9,10 +9,16 @@ With Asgaard, you have everything you need to be productive ;)
 - [ ] Quests
   - [x] Create
   - [x] View
-  - [ ] Edit
+  - [x] Edit
   - [ ] Delete
   - [ ] Complete
   - [ ] Subquests
+    - [x] Create
+    - [x] Edit
+    - [x] View
+    - [x] Delete
+    - [x] Order
+    - [ ] styling
 - [ ] Boards
   - [x] Create
   - [x] View
@@ -36,6 +42,7 @@ With Asgaard, you have everything you need to be productive ;)
     - [x] Delete
     - [x] Markdown support
     - [x] WYSIWYG toolbar
+    - [ ] styling
   - [ ] Quests block
     - [x] Select existing quest
     - [ ] Create new quest
