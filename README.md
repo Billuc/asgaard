@@ -32,10 +32,11 @@ With Asgaard, you have everything you need to be productive ;)
     - [x] Done
     - [x] Create
     - [x] Edit
-    - [ ] Delete
-    - [ ] Order
-    - [ ] Clear done
-    - [ ] Hide done
+    - [x] Delete
+    - [x] Order
+    - [x] Clear done
+    - [x] Hide done
+    - [ ] styling
   - [ ] Notes
     - [x] Create
     - [x] Edit

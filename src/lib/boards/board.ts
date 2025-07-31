@@ -20,6 +20,7 @@ export type BoardItemData = ListData | QuestData | NoteData;
 export interface ListData {
   type: BoardType.LIST;
   title: string;
+  hideDone: boolean;
   list: ListItem[];
 }
 
