@@ -44,6 +44,6 @@
 </script>
 
 <div class="group">
-	<div bind:this={toolbarEl}></div>
+	<div bind:this={toolbarEl} class="mb-2"></div>
 	<div bind:this={editorEl}></div>
 </div>

@@ -33,6 +33,7 @@
 				itemData = {
 					type: BoardItemType.LIST,
 					title: 'New list',
+					hideDone: false,
 					list: [{ done: false, label: 'New item' }]
 				};
 				break;
@@ -99,17 +100,32 @@
 		oninput={(ev) => debouncedUpdateBoard({ ...board, title: ev.target.value })}
 	/>
 
-	<div>
-		<button class="btn" onclick={deleteBoard}>Delete board</button>
+	<div class="mb-4 flex flex-row justify-center gap-2">
+		<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
+		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.LIST)}>
+			New list
+		</button>
+		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.NOTE)}>
+			New note
+		</button>
+		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.QUEST)}>
+			New quest
+		</button>
 	</div>
 
 	<div>
 		{#each board.items as item (item.id)}
-			<div class="card mb-4 bg-zinc-700" animate:flip={{ duration: 300 }} transition:fly>
-				<div class="card-actions">
-					<button class="btn" onclick={() => deleteBlock(item.id)}>Delete block</button>
-					<button class="btn" onclick={() => moveBlockUp(item.id)}>Move up</button>
-					<button class="btn" onclick={() => moveBlockDown(item.id)}>Move down</button>
+			<div
+				class="card relative mb-4 bg-zinc-700 card-sm"
+				animate:flip={{ duration: 300 }}
+				transition:fly
+			>
+				<div class="absolute -top-2 right-4">
+					<button class="btn btn-sm" onclick={() => moveBlockUp(item.id)}>Up</button>
+					<button class="btn btn-sm" onclick={() => moveBlockDown(item.id)}>Down</button>
+					<button class="btn btn-sm btn-error" onclick={() => deleteBlock(item.id)}>
+						Delete block
+					</button>
 				</div>
 				<div class="card-body">
 					{#if item.data.type === BoardItemType.LIST}
@@ -127,11 +143,5 @@
 				</div>
 			</div>
 		{/each}
-	</div>
-
-	<div>
-		<button class="btn" onclick={() => newItem(BoardItemType.LIST)}>New list</button>
-		<button class="btn" onclick={() => newItem(BoardItemType.NOTE)}>New note</button>
-		<button class="btn" onclick={() => newItem(BoardItemType.QUEST)}>New quest</button>
 	</div>
 </div>

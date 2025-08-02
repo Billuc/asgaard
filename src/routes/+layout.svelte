@@ -16,6 +16,8 @@
 	});
 </script>
 
-{@render children()}
+<div class="mx-auto w-full px-4 md:w-2/3 lg:w-1/2">
+	{@render children()}
+</div>
 
 <ToastContainer></ToastContainer>
