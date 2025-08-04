@@ -35,13 +35,13 @@ With Asgaard, you have everything you need to be productive ;)
     - [x] Clear done
     - [x] Hide done
     - [ ] styling
-  - [ ] Notes
+  - [x] Notes
     - [x] Create
     - [x] Edit
     - [x] Delete
     - [x] Markdown support
     - [x] WYSIWYG toolbar
-    - [ ] styling
+    - [x] styling
   - [ ] Quests block
     - [x] Select existing quest
     - [ ] Create new quest
