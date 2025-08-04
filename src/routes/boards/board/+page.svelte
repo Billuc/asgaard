@@ -3,17 +3,16 @@
 	import { boardStorage } from '$lib/boards/storage';
 	import { generateId } from '$lib/id_generator';
 	import type { PageProps } from './$types';
-	import BoardListView from '$lib/boards/BoardListView.svelte';
-	import BoardNoteView from '$lib/boards/BoardNoteView.svelte';
-	import BoardQuestView from '$lib/boards/BoardQuestView.svelte';
 	import { goto } from '$app/navigation';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { debounce, cloneDeep } from 'lodash-es';
 	import { updateAt } from '$lib/arrayUtils';
+	import BoardItem from '$lib/boards/BoardItem.svelte';
 
 	let { data }: PageProps = $props();
 	let board = $state(data.board);
+	let manageMode = $state(false);
 
 	const updateBoard = async (newBoard: Board) => {
 		await boardStorage.upsert(cloneDeep(newBoard));
@@ -101,6 +100,9 @@
 	/>
 
 	<div class="mb-4 flex flex-row justify-center gap-2">
+		<button class="btn btn-outline btn-sm btn-warning" onclick={() => (manageMode = !manageMode)}>
+			Manage
+		</button>
 		<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
 		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.LIST)}>
 			New list
@@ -115,32 +117,15 @@
 
 	<div>
 		{#each board.items as item (item.id)}
-			<div
-				class="card relative mb-4 bg-zinc-700 card-sm"
-				animate:flip={{ duration: 300 }}
-				transition:fly
-			>
-				<div class="absolute -top-2 right-4">
-					<button class="btn btn-sm" onclick={() => moveBlockUp(item.id)}>Up</button>
-					<button class="btn btn-sm" onclick={() => moveBlockDown(item.id)}>Down</button>
-					<button class="btn btn-sm btn-error" onclick={() => deleteBlock(item.id)}>
-						Delete block
-					</button>
-				</div>
-				<div class="card-body">
-					{#if item.data.type === BoardItemType.LIST}
-						<BoardListView data={item.data} updateData={(d) => updateItem(item.id, d)}
-						></BoardListView>
-					{/if}
-					{#if item.data.type === BoardItemType.NOTE}
-						<BoardNoteView data={item.data} updateData={(d) => updateItem(item.id, d)}
-						></BoardNoteView>
-					{/if}
-					{#if item.data.type === BoardItemType.QUEST}
-						<BoardQuestView data={item.data} updateData={(d) => updateItem(item.id, d)}
-						></BoardQuestView>
-					{/if}
-				</div>
+			<div animate:flip={{ duration: 300 }} transition:fly>
+				<BoardItem
+					data={item.data}
+					moveBlockUp={() => moveBlockUp(item.id)}
+					moveBlockDown={() => moveBlockDown(item.id)}
+					deleteBlock={() => deleteBlock(item.id)}
+					updateData={(d) => updateItem(item.id, d)}
+					{manageMode}
+				></BoardItem>
 			</div>
 		{/each}
 	</div>

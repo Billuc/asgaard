@@ -26,7 +26,7 @@ With Asgaard, you have everything you need to be productive ;)
   - [x] Delete
   - [ ] Mark favorite
   - [x] Order blocks
-  - [ ] Lists
+  - [x] Lists
     - [x] Done
     - [x] Create
     - [x] Edit
@@ -34,7 +34,7 @@ With Asgaard, you have everything you need to be productive ;)
     - [x] Order
     - [x] Clear done
     - [x] Hide done
-    - [ ] styling
+    - [x] styling
   - [x] Notes
     - [x] Create
     - [x] Edit

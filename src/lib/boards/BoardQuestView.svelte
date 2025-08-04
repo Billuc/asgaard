@@ -4,6 +4,7 @@
 	import QuestSelect from '$lib/quests/QuestSelect.svelte';
 
 	interface Props {
+		manageMode: boolean;
 		data: QuestData;
 		updateData: (data: QuestData) => void;
 	}
