@@ -3,73 +3,110 @@
 	import { flip } from 'svelte/animate';
 	import EffortSelect from './EffortSelect.svelte';
 	import PrioritySelect from './PrioritySelect.svelte';
-	import type { SubQuest } from './quest';
+	import { Effort, Priority, type SubQuest } from './quest';
 	import { fly } from 'svelte/transition';
+	import { generateId } from '$lib/id_generator';
 
 	interface Props {
 		subquests: SubQuest[];
 		updateSubquests?: (subquests: SubQuest[]) => void;
+		manageMode: boolean;
 	}
 
-	let { subquests, updateSubquests = () => {} }: Props = $props();
+	let { manageMode, subquests, updateSubquests = () => {} }: Props = $props();
+
+	let newSubqName = $state('');
+
+	function newSubquest() {
+		const newSubq = {
+			id: generateId('subquest'),
+			title: newSubqName,
+			priority: Priority.MEDIUM,
+			effort: Effort.MEDIUM,
+			done: false
+		};
+
+		updateSubquests([...subquests, newSubq]);
+	}
 </script>
 
-<table class="table table-zebra table-xs md:table-sm">
-	<thead>
-		<tr>
-			<th class="w-1/12">Done</th>
-			<th class="w-5/12">Name</th>
-			<th class="w-2/12">Priority</th>
-			<th class="w-2/12">Effort</th>
-			<th class="w-2/12">Actions</th>
-		</tr>
-	</thead>
-	<tbody class="text-center">
-		{#each subquests as subq, i (subq.id)}
-			<tr animate:flip={{ duration: 300 }} transition:fly>
-				<td>
-					<input
-						type="checkbox"
-						checked={subq.done}
-						class="checkbox"
-						onchange={() => updateSubquests(updateAt(subquests, i, { ...subq, done: !subq.done }))}
-					/>
-				</td>
-				<td>
-					<input
-						value={subq.title}
-						onchange={(ev) =>
-							updateSubquests(
-								updateAt(subquests, i, { ...subq, title: (ev.target! as HTMLInputElement).value })
-							)}
-						class="input input-sm"
-					/>
-				</td>
-				<td>
-					<PrioritySelect
-						priority={subq.priority}
-						setPriority={(p) => updateSubquests(updateAt(subquests, i, { ...subq, priority: p }))}
-					></PrioritySelect>
-				</td>
-				<td>
-					<EffortSelect
-						effort={subq.effort}
-						setEffort={(e) => updateSubquests(updateAt(subquests, i, { ...subq, effort: e }))}
-					></EffortSelect>
-				</td>
-				<td>
-					<button
-						class="btn btn-sm btn-error"
-						onclick={() => updateSubquests(removeAt(subquests, i))}>Delete</button
-					>
-					<button class="btn" onclick={() => updateSubquests(swap(subquests, i, i - 1))}>
-						Move Up
-					</button>
-					<button class="btn" onclick={() => updateSubquests(swap(subquests, i, i + 1))}>
-						Move Down
-					</button>
-				</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
+<div class={['w-full', 'px-2', 'my-2']}>
+	{#each subquests as subq, i (subq.id)}
+		<div
+			class={[
+				'flex',
+				'flex-row',
+				'gap-1',
+				'items-center',
+				'before:content-["❧"]',
+				'before:text-success',
+				'before:mr-2'
+			]}
+			animate:flip={{ duration: 300 }}
+			transition:fly
+		>
+			<input
+				type="checkbox"
+				checked={subq.done}
+				class="checkbox"
+				onchange={() => updateSubquests(updateAt(subquests, i, { ...subq, done: !subq.done }))}
+			/>
+			<input
+				value={subq.title}
+				oninput={(ev) =>
+					updateSubquests(
+						updateAt(subquests, i, { ...subq, title: (ev.target! as HTMLInputElement).value })
+					)}
+				class="input input-sm grow"
+			/>
+			{#if !manageMode}
+				<PrioritySelect
+					priority={subq.priority}
+					setPriority={(p) => updateSubquests(updateAt(subquests, i, { ...subq, priority: p }))}
+					class="flex-1/3"
+				></PrioritySelect>
+				<EffortSelect
+					effort={subq.effort}
+					setEffort={(e) => updateSubquests(updateAt(subquests, i, { ...subq, effort: e }))}
+					class="flex-1/4"
+				></EffortSelect>
+			{:else}
+				<button
+					class="btn btn-outline btn-xs"
+					onclick={() => updateSubquests(swap(subquests, i, i - 1))}
+				>
+					Up
+				</button>
+				<button
+					class="btn btn-outline btn-xs"
+					onclick={() => updateSubquests(swap(subquests, i, i + 1))}
+				>
+					Down
+				</button>
+				<button
+					class="btn btn-outline btn-xs btn-error"
+					onclick={() => updateSubquests(removeAt(subquests, i))}
+				>
+					Delete
+				</button>
+			{/if}
+		</div>
+	{/each}
+
+	<div
+		class={[
+			'flex',
+			'flex-row',
+			'gap-1',
+			'items-center',
+			'before:content-["❧"]',
+			'before:text-base-content/30',
+			'before:mr-2'
+		]}
+	>
+		<button class="btn btn-square btn-xs btn-info" onclick={newSubquest}>+</button>
+		<input class="input input-sm grow" bind:value={newSubqName} />
+		<div class="flex-1/3"></div>
+		<div class="flex-1/3"></div>
+	</div>
+</div>

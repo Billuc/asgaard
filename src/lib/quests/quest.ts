@@ -5,11 +5,43 @@ export enum QuestType {
 	WEEKLY = 'weekly'
 }
 
-export const QUEST_TYPES: { [k in QuestType]: { label: string; colorClass: string } } = {
-	[QuestType.MAIN]: { label: 'Main Quest', colorClass: 'text-primary' },
-	[QuestType.SIDE]: { label: 'Side Quest', colorClass: 'text-secondary' },
-	[QuestType.DAILY]: { label: 'Daily Quest', colorClass: 'text-accent' },
-	[QuestType.WEEKLY]: { label: 'Weekly Quest', colorClass: 'text-base-content' }
+export const QUEST_TYPES: {
+	[k in QuestType]: {
+		label: string;
+		colorClass: string;
+		borderClass: string;
+		beforeClass: string;
+		afterClass: string;
+	};
+} = {
+	[QuestType.MAIN]: {
+		label: 'Main Quest',
+		colorClass: 'text-primary',
+		borderClass: 'border-primary',
+		beforeClass: 'before:text-primary',
+		afterClass: 'after:text-primary'
+	},
+	[QuestType.SIDE]: {
+		label: 'Side Quest',
+		colorClass: 'text-secondary',
+		borderClass: 'border-secondary',
+		beforeClass: 'before:text-secondary',
+		afterClass: 'after:text-secondary'
+	},
+	[QuestType.DAILY]: {
+		label: 'Daily Quest',
+		colorClass: 'text-accent',
+		borderClass: 'border-accent',
+		beforeClass: 'before:text-accent',
+		afterClass: 'after:text-accent'
+	},
+	[QuestType.WEEKLY]: {
+		label: 'Weekly Quest',
+		colorClass: 'text-base-content',
+		borderClass: 'border-base-content',
+		beforeClass: 'before:text-base-content',
+		afterClass: 'after:text-base-content'
+	}
 };
 
 export enum Priority {
