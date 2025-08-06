@@ -4,11 +4,17 @@ export interface Board {
 	items: BoardItem[];
 }
 
-export enum BoardType {
+export enum BoardItemType {
 	LIST = 'list',
 	NOTE = 'note',
 	QUEST = 'quest'
 }
+
+export const BOARD_ITEM_TYPES: { [key in BoardItemType]: string } = {
+	[BoardItemType.LIST]: 'List',
+	[BoardItemType.NOTE]: 'Note',
+	[BoardItemType.QUEST]: 'Quest'
+};
 
 export interface BoardItem {
 	id: string;
@@ -18,7 +24,7 @@ export interface BoardItem {
 export type BoardItemData = ListData | QuestData | NoteData;
 
 export interface ListData {
-	type: BoardType.LIST;
+	type: BoardItemType.LIST;
 	title: string;
 	hideDone: boolean;
 	list: ListItem[];
@@ -31,11 +37,11 @@ export interface ListItem {
 }
 
 export interface QuestData {
-	type: BoardType.QUEST;
+	type: BoardItemType.QUEST;
 	questId: string;
 }
 
 export interface NoteData {
-	type: BoardType.NOTE;
+	type: BoardItemType.NOTE;
 	note: string;
 }

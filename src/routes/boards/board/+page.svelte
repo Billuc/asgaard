@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BoardType as BoardItemType, type Board, type BoardItemData } from '$lib/boards/board';
+	import { BoardItemType, type Board, type BoardItemData } from '$lib/boards/board';
 	import { boardStorage } from '$lib/boards/storage';
 	import { generateId } from '$lib/id_generator';
 	import type { PageProps } from './$types';
@@ -9,6 +9,7 @@
 	import { debounce, cloneDeep } from 'lodash-es';
 	import { updateAt } from '$lib/arrayUtils';
 	import BoardItem from '$lib/boards/BoardItem.svelte';
+	import NewBoardItem from '$lib/boards/NewBoardItem.svelte';
 
 	let { data }: PageProps = $props();
 	let board = $state(data.board);
@@ -104,15 +105,7 @@
 			Manage
 		</button>
 		<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
-		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.LIST)}>
-			New list
-		</button>
-		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.NOTE)}>
-			New note
-		</button>
-		<button class="btn btn-outline btn-sm btn-info" onclick={() => newItem(BoardItemType.QUEST)}>
-			New quest
-		</button>
+		<NewBoardItem createItem={newItem} />
 	</div>
 
 	<div>

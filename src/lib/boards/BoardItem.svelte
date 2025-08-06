@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition';
 	import type { BoardItemData } from './board';
-	import { BoardType } from './board';
+	import { BoardItemType } from './board';
 	import BoardListView from './BoardListView.svelte';
 	import BoardNoteView from './BoardNoteView.svelte';
 	import BoardQuestView from './BoardQuestView.svelte';
@@ -34,13 +34,13 @@
 		</div>
 	{/if}
 	<div class="card-body">
-		{#if data.type === BoardType.LIST}
+		{#if data.type === BoardItemType.LIST}
 			<BoardListView {data} {updateData} {manageMode}></BoardListView>
 		{/if}
-		{#if data.type === BoardType.NOTE}
+		{#if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
 		{/if}
-		{#if data.type === BoardType.QUEST}
+		{#if data.type === BoardItemType.QUEST}
 			<BoardQuestView {data} {updateData} {manageMode}></BoardQuestView>
 		{/if}
 	</div>
