@@ -1,48 +1,103 @@
 <script lang="ts">
 	import { type Quest, QUEST_TYPES, QuestType } from './quest';
+	import { flip } from 'svelte/animate';
 
-	const COLORS: { [k in QuestType]: string } = {
-		[QuestType.MAIN]: 'text-primary',
-		[QuestType.SIDE]: 'text-secondary',
-		[QuestType.DAILY]: 'text-accent',
-		[QuestType.WEEKLY]: 'text-base-content'
-	};
 	const LEFT_CURL = '︵‿୨';
 	const RIGHT_CURL = '୧‿︵';
 
 	let { type, quests }: { type: QuestType; quests: Quest[] } = $props();
-	let color = $derived(COLORS[type]);
+	let questTypeData = $derived(QUEST_TYPES[type]);
+	let offset = $state(0);
 
-	let questsOfType = $derived(quests.filter((q) => q.type === type));
+	let questsOfType = $derived.by(() => {
+		let filteredQuests = quests.filter((q) => q.type === type);
+		const nbToRotate = offset % filteredQuests.length;
+		const headQuests = filteredQuests.splice(0, nbToRotate);
+		filteredQuests.push(...headQuests);
+		return filteredQuests;
+	});
 </script>
 
-<div>
-	<p class={'font-bold ' + color}>{LEFT_CURL} {QUEST_TYPES[type].label}s {RIGHT_CURL}</p>
+<div class="w-full">
+	<p class={['font-bold', 'text-center', questTypeData.colorClass]}>
+		{LEFT_CURL}
+		{questTypeData.label}s {RIGHT_CURL}
+	</p>
 
-	<div class="relative">
-		<div
-			class={[
-				'h-28',
-				'overflow-y-auto',
-				'py-4',
-				'before:absolute',
-				'before:top-0',
-				'before:left-0',
-				'before:h-full',
-				'before:w-full',
-				'before:bg-gradient-to-b',
-				'before:from-base-100',
-				'before:via-transparent',
-				'before:to-base-100',
-				"before:content-['']",
-				'before:pointer-events-none'
-			]}
-		>
-			{#each questsOfType as quest (quest.id)}
-				<a href={`/quests/quest?id=${quest.id}`} class="block">
-					{quest.title}
-				</a>
-			{/each}
-		</div>
+	<div
+		class="relative my-8 flex w-fit max-w-full flex-row flex-nowrap items-center overflow-hidden"
+	>
+		{#each questsOfType as quest (quest.id)}
+			<a
+				href={`/quests/quest?id=${quest.id}`}
+				class={[
+					'inline-block',
+					questTypeData.borderClass,
+					'border-8',
+					'border-double',
+					'p-2',
+					'rounded-box',
+					'w-48',
+					'min-w-48',
+					'h-64',
+					'text-center',
+					'truncate',
+					'z-10',
+					'quest-sheet',
+					'bg-base-100'
+				]}
+				animate:flip={{ duration: 300 }}
+			>
+				&#x2619; <span class="font-semibold">{quest.title}</span>
+				&#x2767;
+				<br />
+				<br />
+				<br />
+				<br />
+				<span class="text-sm text-base-content/80">...</span>
+			</a>
+		{/each}
+
+		{#if questsOfType.length > 1}
+			<button
+				class={[
+					'btn',
+					'z-10',
+					'absolute',
+					'top-1/2',
+					'right-0',
+					'btn-circle',
+					'btn-soft',
+					'border-2',
+					questTypeData.borderClass
+				]}
+				onclick={() => offset++}
+			>
+				&gt;
+			</button>
+		{/if}
 	</div>
 </div>
+
+<style>
+	.quest-sheet:nth-child(2) {
+		scale: 0.95;
+		opacity: 0.85;
+		z-index: 3;
+		margin-left: -1rem;
+	}
+
+	.quest-sheet:nth-child(3) {
+		scale: 0.9;
+		opacity: 0.7;
+		z-index: 2;
+		margin-left: -1.5rem;
+	}
+
+	.quest-sheet:nth-child(n + 4) {
+		scale: 0.85;
+		opacity: 0.5;
+		z-index: 1;
+		margin-left: -2rem;
+	}
+</style>
