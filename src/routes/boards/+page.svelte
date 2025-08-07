@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Board } from '$lib/boards/board';
 	import BoardRow from '$lib/boards/BoardRow.svelte';
+	import NewBoard from '$lib/boards/NewBoard.svelte';
 	import { BoardStorage } from '$lib/boards/storage';
 
 	async function getBoards(): Promise<Board[]> {
@@ -11,6 +12,10 @@
 <div>
 	<a href="/" class="btn">Back to Home</a>
 	<h1 class="mt-2 mb-8 text-center text-2xl font-black">Boards</h1>
+
+	<div class="my-4 text-center">
+		<NewBoard />
+	</div>
 
 	<div class="list my-4 rounded-box shadow-md">
 		{#await getBoards()}
@@ -29,6 +34,4 @@
 			{/each}
 		{/await}
 	</div>
-
-	<a href="/boards/create" class="btn">Create a new board</a>
 </div>
