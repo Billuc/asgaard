@@ -2,6 +2,7 @@ export interface Board {
 	id: string;
 	title: string;
 	items: BoardItem[];
+	favorite: boolean;
 }
 
 export enum BoardItemType {

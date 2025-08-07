@@ -29,7 +29,7 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
   };
 }
 
-export async function deleteBlock(board: Board, itemId: string): Board {
+export function deleteBlock(board: Board, itemId: string): Board {
   return {
     ...board,
     items: board.items.filter((item) => item.id !== itemId)

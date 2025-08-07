@@ -14,7 +14,7 @@
 	<ul tabindex="0" class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm">
 		{#each Object.entries(BOARD_ITEM_TYPES) as [type, data] (type)}
 			<li>
-				<a onclick={() => createItem(type as BoardItemType)}>New {data}</a>
+				<button onclick={() => createItem(type as BoardItemType)}>New {data}</button>
 			</li>
 		{/each}
 	</ul>
