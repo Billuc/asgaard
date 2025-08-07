@@ -2,6 +2,7 @@
 	import { cloneDeep } from 'lodash-es';
 	import type { Board } from './board';
 	import { BoardStorage } from './storage';
+	import { asHref, Routes } from '$lib/routes/routes';
 
 	interface Props {
 		board: Board;
@@ -20,7 +21,7 @@
 </script>
 
 <div class="list-row bg-base-300 hover:bg-base-200">
-	<a href={`/boards/board?id=${board.id}`}>
+	<a href={asHref(Routes.Board, { id: board.id })}>
 		<div class="avatar avatar-placeholder">
 			<div class="w-6 rounded-md bg-base-content">
 				<span class="text-lg text-base-100">{board.title.charAt(0).toUpperCase()}</span>

@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import { addToast } from '$lib/common/toast.svelte';
 	import ToastContainer from '$lib/common/ToastContainer.svelte';
+	import NavBar from '$lib/routes/NavBar.svelte';
 	import '../app.css';
 
 	let { children } = $props();
@@ -16,7 +17,14 @@
 	});
 </script>
 
-<div class="mx-auto w-full px-4 md:w-2/3 lg:w-1/2">
+<svelte:head>
+	<meta name="viewport" content="viewport-fit=cover" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</svelte:head>
+
+<NavBar></NavBar>
+
+<div class="mx-auto mt-4 mb-20 w-full px-4 md:mb-4 md:w-2/3 lg:w-1/2">
 	{@render children()}
 </div>
 
