@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { Board } from '$lib/boards/board';
-	import { boardStorage } from '$lib/boards/storage';
+	import { BoardStorage } from '$lib/boards/storage';
 	import { generateId } from '$lib/id_generator';
 
 	let title = $state('');
+	const boardStorage = BoardStorage.getInstance();
 
 	async function onsubmit() {
 		let board: Board = {
@@ -30,7 +31,7 @@
 	<a href="/boards" class="btn">Return to boards</a>
 
 	<div class="flex flex-col items-start gap-y-2">
-		<label for="title" class="label"> Title of your board</label>
+		<label for="title" class="label">Title of your board</label>
 		<input type="text" id="title" bind:value={title} required class="input ml-2" />
 		<button type="submit" class="btn self-end" onclick={() => onsubmit()}>Create board</button>
 	</div>
