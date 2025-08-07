@@ -2,9 +2,9 @@
 	import { asHref, NAV_LINKS, ROUTES } from './routes';
 	import { page } from '$app/state';
 
-	let linkForRoute = $derived.by(() => {
-		return Object.values(ROUTES).find((route) => route.path === page.url.pathname)?.link;
-	});
+	const linkForRoute = Object.values(ROUTES).find(
+		(route) => route.path === page.url.pathname
+	)?.link;
 </script>
 
 <div class="dock z-50 flex bg-base-200 md:hidden">

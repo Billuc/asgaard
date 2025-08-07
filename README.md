@@ -12,19 +12,19 @@ With Asgaard, you have everything you need to be productive ;)
   - [x] Edit
   - [x] Delete
   - [ ] Complete
-  - [ ] Subquests
+  - [x] Subquests
     - [x] Create
     - [x] Edit
     - [x] View
     - [x] Delete
     - [x] Order
-    - [ ] styling
+    - [x] styling
 - [ ] Boards
   - [x] Create
   - [x] View
   - [x] Edit
   - [x] Delete
-  - [ ] Mark favorite
+  - [x] Mark favorite
   - [x] Order blocks
   - [x] Lists
     - [x] Done

@@ -1,10 +1,12 @@
 <script lang="ts">
 	import NewQuest from '$lib/quests/NewQuest.svelte';
-	import { QuestType } from '$lib/quests/quest';
+	import { QuestType, type Quest } from '$lib/quests/quest';
 	import QuestContainer from '$lib/quests/QuestContainer.svelte';
-	import type { PageProps } from './$types';
+	import { QuestStorage } from '$lib/quests/storage';
 
-	let { data }: PageProps = $props();
+	async function load(): Promise<Quest[]> {
+		return await QuestStorage.getInstance().getAll();
+	}
 </script>
 
 <div>
@@ -15,8 +17,12 @@
 		<NewQuest />
 	</div>
 
-	<QuestContainer type={QuestType.MAIN} quests={data.quests}></QuestContainer>
-	<QuestContainer type={QuestType.SIDE} quests={data.quests}></QuestContainer>
-	<QuestContainer type={QuestType.DAILY} quests={data.quests}></QuestContainer>
-	<QuestContainer type={QuestType.WEEKLY} quests={data.quests}></QuestContainer>
+	{#await load()}
+		<p class="text-center">Loading quests...</p>
+	{:then quests}
+		<QuestContainer type={QuestType.MAIN} {quests}></QuestContainer>
+		<QuestContainer type={QuestType.SIDE} {quests}></QuestContainer>
+		<QuestContainer type={QuestType.DAILY} {quests}></QuestContainer>
+		<QuestContainer type={QuestType.WEEKLY} {quests}></QuestContainer>
+	{/await}
 </div>
