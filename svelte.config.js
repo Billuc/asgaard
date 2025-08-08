@@ -13,7 +13,8 @@ const config = {
 			// TODO: 404 fallback ?
 		}),
 		paths: {
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
+			relative: false
 		},
 		serviceWorker: {
 			register: !process.argv.includes('dev')
