@@ -2,7 +2,7 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
-import { build, files, version } from '$service-worker';
+import { build, files, prerendered, version } from '$service-worker';
 
 // Inspired by
 // https://svelte.dev/docs/kit/service-workers
@@ -11,7 +11,7 @@ import { build, files, version } from '$service-worker';
 // Unique cache name for this service worker
 const CACHE = `cache-${version}`;
 
-const ASSETS = [...build, ...files];
+const ASSETS = [...build, ...files, ...prerendered];
 
 // Install event: cache all assets
 self.addEventListener('install', (event) => {
