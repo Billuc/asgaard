@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { asHref, NAV_LINKS, ROUTES } from './routes';
+	import { asHref, NAV_LINKS, Routes, ROUTES } from './routes';
 	import { page } from '$app/state';
 
-	const linkForRoute = Object.values(ROUTES).find(
-		(route) => route.path === page.url.pathname
-	)?.link;
+	const linkForRoute = Object.entries(ROUTES).find(
+		(route) => asHref(route[0] as unknown as Routes) === page.url.pathname
+	)?.[1].link;
 </script>
 
 <div class="dock z-50 flex bg-base-200 md:hidden">

@@ -45,7 +45,8 @@ export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLin
 };
 
 export function asHref(route: Routes, params: Record<string, string> = {}): string {
-  let href = base + ROUTES[route].path;
+  // The condition with the base path is to avoid '.' being used as the base sometimes (e.g. in dev)
+  let href = (!base.startsWith('/') ? '' : base) + ROUTES[route].path;
   if (Object.keys(params).length > 0) {
     const query = new URLSearchParams(params).toString();
     href += `?${query}`;
