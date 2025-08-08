@@ -17,7 +17,7 @@ jobs:
         run: |
           npm install
           BASE_PATH=/asgaard npm run build
-          touch dist/.nojekyll
+          touch build/.nojekyll
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
