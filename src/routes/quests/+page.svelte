@@ -9,6 +9,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Asgaard - Quest Board</title>
+</svelte:head>
+
 <div>
 	<a href="/" class="btn">Back to Home</a>
 

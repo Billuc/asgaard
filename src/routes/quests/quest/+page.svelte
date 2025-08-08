@@ -18,6 +18,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Asgaard - Quest</title>
+</svelte:head>
+
 <a href="/quests" class="btn">Return to quests</a>
 
 {#await load()}

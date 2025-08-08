@@ -19,6 +19,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Asgaard - Board</title>
+</svelte:head>
+
 <div>
 	<a href="/boards" class="btn">Return to boards</a>
 	{#await getBoard()}

@@ -23,8 +23,8 @@
 		<ul class="menu menu-horizontal px-1">
 			{#each Object.entries(NAV_LINKS) as [link, data] (link)}
 				<li>
-					<a href={asHref(data.route)} class={{ 'dock-active': linkForRoute === link }}>
-						<span class="dock-label">{data.name}</span>
+					<a href={asHref(data.route)} class={{ 'menu-active': linkForRoute === link }}>
+						<span>{data.name}</span>
 					</a>
 				</li>
 			{/each}

@@ -9,6 +9,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Asgaard - Home</title>
+</svelte:head>
+
 <h1 class="text-center text-2xl font-black">Asgaard</h1>
 
 <p class="text-center">Welcome to Asgaard, the ultimate quest management system!</p>
