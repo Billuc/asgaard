@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { asHref, Routes } from '$lib/routes/routes';
 	import { type Quest, QUEST_TYPES, QuestType } from './quest';
 	import { flip } from 'svelte/animate';
 
@@ -29,7 +30,7 @@
 	>
 		{#each questsOfType as quest (quest.id)}
 			<a
-				href={`/quests/quest?id=${quest.id}`}
+				href={asHref(Routes.Quest, { id: quest.id })}
 				class={[
 					'inline-block',
 					questTypeData.borderClass,

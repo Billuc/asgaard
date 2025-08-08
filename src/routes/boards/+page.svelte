@@ -14,7 +14,6 @@
 </svelte:head>
 
 <div>
-	<a href="/" class="btn">Back to Home</a>
 	<h1 class="mt-2 mb-8 text-center text-2xl font-black">Boards</h1>
 
 	<div class="my-4 text-center">

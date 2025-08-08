@@ -22,8 +22,6 @@
 	<title>Asgaard - Quest</title>
 </svelte:head>
 
-<a href="/quests" class="btn">Return to quests</a>
-
 {#await load()}
 	<p class="text-center">Loading quest...</p>
 {:then quest}

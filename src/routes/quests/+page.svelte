@@ -14,8 +14,6 @@
 </svelte:head>
 
 <div>
-	<a href="/" class="btn">Back to Home</a>
-
 	<h1 class="mb-4 text-center text-3xl font-black">Quest Board</h1>
 	<div class="my-4 text-center">
 		<NewQuest />

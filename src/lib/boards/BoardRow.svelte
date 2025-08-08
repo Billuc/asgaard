@@ -28,7 +28,7 @@
 			</div>
 		</div>
 	</a>
-	<a href={`/boards/board?id=${board.id}`}>
+	<a href={asHref(Routes.Board, { id: board.id })}>
 		{board.title}
 	</a>
 	<div>
