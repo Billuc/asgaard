@@ -9,7 +9,6 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			// TODO
 			// TODO: 404 fallback ?
 		}),
 		paths: {
