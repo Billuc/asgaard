@@ -20,5 +20,8 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "display": "standalone"
+    "display": "standalone",
+    "lang": "en-US",
+    "start_url": "/",
+    "orientation": "portrait-primary"
 }
