@@ -5,6 +5,8 @@
 	import { cloneDeep, debounce } from 'lodash-es';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import ActionsButton from '$lib/common/ActionsButton.svelte';
+	import { slide } from 'svelte/transition';
 
 	interface Props {
 		quest: Quest;
@@ -13,7 +15,7 @@
 	let { quest: initialQuest }: Props = $props();
 
 	let quest = $state(initialQuest);
-	let manageMode = $state(false);
+	let showActions = $state(false);
 	let descTextareaRef: HTMLTextAreaElement;
 	let questTypeData = $derived(QUEST_TYPES[quest.type]);
 
@@ -47,8 +49,6 @@
 		descTextareaRef.rows = Math.min(nbOfLines, 10);
 	});
 </script>
-
-<a href="/quests" class="btn">Return to quests</a>
 
 <div
 	class={[
@@ -88,13 +88,12 @@
 		oninput={(ev) => debouncedUpdateQuest({ ...quest, title: ev.target.value })}
 	/>
 
-	<div>
-		<button class="btn btn-outline btn-sm btn-warning" onclick={() => (manageMode = !manageMode)}>
-			Manage
-		</button>
-		{#if manageMode}
-			<button class="btn btn-outline btn-sm btn-error" onclick={deleteQuest}>Delete quest</button>
-		{/if}
+	<div class="flex flex-row gap-2">
+		<ActionsButton bind:show={showActions}>
+			<div class="flex flex-row gap-2" transition:slide={{ axis: 'x', duration: 250 }}>
+				<button class="btn btn-outline btn-sm btn-error" onclick={deleteQuest}>Delete quest</button>
+			</div>
+		</ActionsButton>
 	</div>
 
 	<span class="mt-2 text-lg font-semibold">&#x2619; Description &#x2767;</span>
@@ -110,7 +109,7 @@
 	<SubquestTable
 		subquests={quest.subquests}
 		updateSubquests={(subquests) => updateQuest({ ...quest, subquests })}
-		{manageMode}
+		{showActions}
 	/>
 
 	<span class="mt-2">&#x2619; Quest Giver &#x2767;</span>

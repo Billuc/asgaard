@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { removeAt, mapAt, swap } from '$lib/arrayUtils';
-	import { fly, scale } from 'svelte/transition';
+	import { fly, scale, slide } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';
 	import { generateId } from '$lib/id_generator';
 
 	interface Props {
-		manageMode: boolean;
+		showActions: boolean;
 		data: ListData;
 		updateData?: (data: ListData) => void;
 	}
 
-	let { manageMode, data, updateData = () => {} }: Props = $props();
+	let { showActions, data, updateData = () => {} }: Props = $props();
 
 	let newItemLabel = $state('');
 
@@ -57,8 +57,8 @@
 				oninput={(ev) => updateList(mapAt(data.list, i, (d) => ({ ...d, label: ev.target.value })))}
 			/>
 
-			{#if manageMode}
-				<div transition:scale>
+			{#if showActions}
+				<div transition:slide={{ axis: 'x' }} class="flex flex-row gap-1">
 					<button class="btn inline btn-xs" onclick={() => updateList(swap(data.list, i, i - 1))}>
 						Up
 					</button>

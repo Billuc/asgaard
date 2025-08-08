@@ -4,17 +4,18 @@
 	import NewBoardItem from './NewBoardItem.svelte';
 	import { BoardStorage } from './storage';
 	import { flip } from 'svelte/animate';
-	import { fly } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import BoardItem from './BoardItem.svelte';
 	import { goto } from '$app/navigation';
 	import { deleteBlock, moveBlockDown, moveBlockUp, newItem, updateItem } from './functions';
+	import ActionsButton from '$lib/common/ActionsButton.svelte';
 
 	interface Props {
 		board: Board;
 	}
 
 	const { board: initialBoard }: Props = $props();
-	let manageMode = $state(false);
+	let showActions = $state(false);
 	let board = $state(initialBoard);
 	const boardStorage = BoardStorage.getInstance();
 
@@ -43,11 +44,12 @@
 </div>
 
 <div class="mb-4 flex flex-row justify-center gap-2">
-	<button class="btn btn-outline btn-sm btn-warning" onclick={() => (manageMode = !manageMode)}>
-		Manage
-	</button>
-	<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
-	<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
+	<ActionsButton bind:show={showActions}>
+		<div class="flex flex-row justify-center gap-2" transition:slide={{ axis: 'x', duration: 250 }}>
+			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
+			<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
+		</div>
+	</ActionsButton>
 </div>
 
 <div>
@@ -59,7 +61,7 @@
 				moveBlockDown={() => updateBoard(moveBlockDown(board, item.id))}
 				deleteBlock={() => updateBoard(deleteBlock(board, item.id))}
 				updateData={(d) => updateBoard(updateItem(board, item.id, d))}
-				{manageMode}
+				{showActions}
 			></BoardItem>
 		</div>
 	{/each}

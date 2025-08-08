@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import type { BoardItemData } from './board';
 	import { BoardItemType } from './board';
 	import BoardListView from './BoardListView.svelte';
@@ -12,22 +12,15 @@
 		moveBlockDown: () => void;
 		deleteBlock: () => void;
 		updateData: (data: BoardItemData) => void;
-		manageMode: boolean;
+		showActions: boolean;
 	}
 
-	let {
-		data,
-		moveBlockUp,
-		moveBlockDown,
-		deleteBlock,
-		manageMode = $bindable(),
-		updateData
-	}: Props = $props();
+	let { data, moveBlockUp, moveBlockDown, deleteBlock, showActions, updateData }: Props = $props();
 </script>
 
 <div class="card relative mb-4 bg-zinc-700 card-sm">
-	{#if manageMode}
-		<div class="absolute -top-2 right-4" transition:scale>
+	{#if showActions}
+		<div class="absolute -top-2 right-4 flex flex-row" transition:slide={{ axis: 'x' }}>
 			<button class="btn btn-sm" onclick={moveBlockUp}>Up</button>
 			<button class="btn btn-sm" onclick={moveBlockDown}>Down</button>
 			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete block</button>
@@ -35,13 +28,13 @@
 	{/if}
 	<div class="card-body">
 		{#if data.type === BoardItemType.LIST}
-			<BoardListView {data} {updateData} {manageMode}></BoardListView>
+			<BoardListView {data} {updateData} {showActions}></BoardListView>
 		{/if}
 		{#if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
 		{/if}
 		{#if data.type === BoardItemType.QUEST}
-			<BoardQuestView {data} {updateData} {manageMode}></BoardQuestView>
+			<BoardQuestView {data} {updateData} manageMode={showActions}></BoardQuestView>
 		{/if}
 	</div>
 </div>
