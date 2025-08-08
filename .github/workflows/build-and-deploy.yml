@@ -16,7 +16,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install
-          BASE_PATH=asgaard npm run build
+          BASE_PATH=/asgaard npm run build
           touch dist/.nojekyll
 
       - name: Deploy 🚀
