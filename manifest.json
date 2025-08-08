@@ -1,0 +1,19 @@
+{
+    "name": "Asgaard",
+    "description": "The ultimate quest management tool to organize your life.",
+    "version": "0.0.0",
+    "manifest_version": 2,
+    "short_name": "asgaard",
+    "display": "standalone",
+    "start_url": "/",
+    "background_color": "#808080",
+    "theme_color": "#ff3f20",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "64x64",
+            "type": "image/ico",
+            "purpose": "any maskable"
+        }
+    ]
+}
