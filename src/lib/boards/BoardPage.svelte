@@ -29,6 +29,8 @@
 	const debouncedUpdateBoard = debounce(updateBoard, 250);
 
 	async function deleteBoard() {
+        if (!confirm(`Here be dragons ! This board will be deleted permanently !`)) return;
+
 		await boardStorage.delete(board.id);
 		goto('/boards', { state: { message: 'Board deleted successfully' } });
 	}

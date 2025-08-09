@@ -40,6 +40,8 @@
 	}
 
 	async function deleteQuest() {
+        if (!confirm(`Here be dragons ! This quest will be deleted permanently !`)) return;
+
 		await questStorage.delete(quest.id);
 		goto('/quests', { state: { message: 'Quest deleted successfully' }, invalidateAll: true });
 	}

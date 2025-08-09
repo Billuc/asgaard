@@ -5,7 +5,7 @@
 	let messageStore = toastStore;
 </script>
 
-<div class="toast-top toast-center toast">
+<div class="toast-top toast-center toast z-50">
 	<div class="stack">
 		{#each messageStore.messages as message (message.id)}
 			<Toast
