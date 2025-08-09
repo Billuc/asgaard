@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { removeAt, mapAt, swap } from '$lib/arrayUtils';
-	import { fly, scale, slide } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';
 	import { generateId } from '$lib/id_generator';
+	import { debounce } from 'lodash-es';
 
 	interface Props {
 		showActions: boolean;
@@ -14,11 +15,30 @@
 	let { showActions, data, updateData = () => {} }: Props = $props();
 
 	let newItemLabel = $state('');
-
 	let itemsToShow = $derived(data.list.filter((i) => !i.done || !data.hideDone));
+
+    function updateTitle(newTitle: string) {
+        updateData({ ...data, title: newTitle })
+    }
+    const debouncedUpdateTitle = debounce(updateTitle, 250);
 
 	function updateList(newList: ListItem[]) {
 		updateData({ ...data, list: newList });
+	}
+
+	function newItem() {
+		if (newItemLabel === '') return;
+
+		const newListItem: ListItem = { done: false, label: newItemLabel, id: generateId('item') };
+		updateList([...data.list, newListItem]);
+		newItemLabel = '';
+	}
+
+	function inputKeyPress(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			newItem();
+		}
 	}
 </script>
 
@@ -26,7 +46,7 @@
 	<input
 		class="input input-sm grow input-ghost text-lg font-bold"
 		value={data.title}
-		onchange={(ev) => updateData({ ...data, title: ev.target.value })}
+		oninput={(ev) => debouncedUpdateTitle(ev.target.value)}
 	/>
 
 	<button class="btn btn-sm" onclick={() => updateList(data.list.filter((item) => !item.done))}>
@@ -75,12 +95,12 @@
 </div>
 
 <label class="input input-sm w-full rounded-md px-1">
-	<button
-		class="btn btn-square font-bold btn-xs btn-info"
-		onclick={() =>
-			updateList([...data.list, { done: false, label: newItemLabel, id: generateId('item') }])}
-	>
-		+
-	</button>
-	<input type="text" class="grow" placeholder="New item" bind:value={newItemLabel} />
+	<button class="btn btn-square font-bold btn-xs btn-info" onclick={() => newItem()}>+</button>
+	<input
+		type="text"
+		class="grow"
+		placeholder="New item"
+		bind:value={newItemLabel}
+		onkeypress={inputKeyPress}
+	/>
 </label>

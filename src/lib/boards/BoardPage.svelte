@@ -26,12 +26,11 @@
 
 		console.debug('Board updated:', $state.snapshot(board));
 	};
-
 	const debouncedUpdateBoard = debounce(updateBoard, 250);
 
 	async function deleteBoard() {
 		await boardStorage.delete(board.id);
-		goto('/boards', { state: { message: 'Board deleted successfully' }, invalidateAll: true });
+		goto('/boards', { state: { message: 'Board deleted successfully' } });
 	}
 </script>
 
