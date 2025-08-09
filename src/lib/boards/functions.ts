@@ -1,7 +1,6 @@
-import { goto } from '$app/navigation';
-import { updateAt } from '$lib/arrayUtils';
+import { swap, updateAt } from '$lib/arrayUtils';
 import { generateId } from '$lib/id_generator';
-import { BoardItemType, type Board, type BoardItemData } from './board';
+import { BoardItemType, type Board, type BoardItemData, type ListData } from './board';
 
 export function newItem(board: Board, itemType: BoardItemType): Board {
   let itemData: BoardItemData;
@@ -71,4 +70,46 @@ export function updateItem(board: Board, itemId: string, newData: BoardItemData)
   }
 
   return board;
+}
+
+export function listItemDown(listData: ListData, itemId: string): ListData {
+    const considerDone = !listData.hideDone;
+    let itemIndex = -1;
+    let nextIndex = -1;
+
+    for (const [i, item] of listData.list.entries()) {
+        if (item.id === itemId && itemIndex === -1) itemIndex = i;
+        if (itemIndex !== -1 && i > itemIndex && (considerDone || !item.done)) {
+            nextIndex = i;
+            break;
+        }
+    }
+
+    if (itemIndex === -1 || nextIndex === -1) return listData;
+
+    return {
+        ...listData,
+        list: swap(listData.list, itemIndex, nextIndex)
+    };
+}
+
+export function listItemUp(listData: ListData, itemId: string): ListData {
+    const considerDone = !listData.hideDone;
+    let itemIndex = -1;
+    let prevIndex = -1;
+
+    for (const [i, item] of listData.list.entries()) {
+        if (item.id === itemId) {
+            itemIndex = i;
+            break;
+        }
+        if (itemIndex === -1 && (considerDone || !item.done)) prevIndex = i;
+    }
+
+    if (itemIndex === -1 || prevIndex === -1) return listData;
+
+    return {
+        ...listData,
+        list: swap(listData.list, itemIndex, prevIndex)
+    };
 }

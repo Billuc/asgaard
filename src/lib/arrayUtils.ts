@@ -27,3 +27,11 @@ export function swap<T>(array: T[], indexA: number, indexB: number): T[] {
   [newArray[indexA], newArray[indexB]] = [newArray[indexB], newArray[indexA]]; // Swap the elements at the specified indices
   return newArray;
 }
+
+export function mapMatching<T>(array: T[], matchFn: (item: T) => boolean, mapFn: (item: T) => T): T[] {
+    return array.map((item) => matchFn(item) ? mapFn(item) : item);
+}
+
+export function removeMatching<T>(array: T[], matchFn: (item: T) => boolean): T[] {
+    return array.filter((item) => !matchFn(item));
+}
