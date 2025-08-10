@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { removeAt, swap, mapMatching, removeMatching } from '$lib/arrayUtils';
+	import { mapMatching, removeMatching } from '$lib/arrayUtils';
 	import { fly, slide } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';

@@ -5,6 +5,7 @@
 	import BoardListView from './BoardListView.svelte';
 	import BoardNoteView from './BoardNoteView.svelte';
 	import BoardQuestView from './BoardQuestView.svelte';
+	import BoardImageView from './BoardImageView.svelte';
 
 	interface Props {
 		data: BoardItemData;
@@ -35,6 +36,9 @@
 		{/if}
 		{#if data.type === BoardItemType.QUEST}
 			<BoardQuestView {data} {updateData} manageMode={showActions}></BoardQuestView>
+		{/if}
+		{#if data.type === BoardItemType.IMAGE}
+			<BoardImageView {data} {updateData}></BoardImageView>
 		{/if}
 	</div>
 </div>

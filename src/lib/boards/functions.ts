@@ -20,6 +20,9 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
     case BoardItemType.QUEST:
       itemData = { type: BoardItemType.QUEST, questId: '' };
       break;
+    case BoardItemType.IMAGE:
+      itemData = { type: BoardItemType.IMAGE, image: null, title: 'New image' };
+      break;
   }
 
   return {
@@ -73,43 +76,43 @@ export function updateItem(board: Board, itemId: string, newData: BoardItemData)
 }
 
 export function listItemDown(listData: ListData, itemId: string): ListData {
-    const considerDone = !listData.hideDone;
-    let itemIndex = -1;
-    let nextIndex = -1;
+  const considerDone = !listData.hideDone;
+  let itemIndex = -1;
+  let nextIndex = -1;
 
-    for (const [i, item] of listData.list.entries()) {
-        if (item.id === itemId && itemIndex === -1) itemIndex = i;
-        if (itemIndex !== -1 && i > itemIndex && (considerDone || !item.done)) {
-            nextIndex = i;
-            break;
-        }
+  for (const [i, item] of listData.list.entries()) {
+    if (item.id === itemId && itemIndex === -1) itemIndex = i;
+    if (itemIndex !== -1 && i > itemIndex && (considerDone || !item.done)) {
+      nextIndex = i;
+      break;
     }
+  }
 
-    if (itemIndex === -1 || nextIndex === -1) return listData;
+  if (itemIndex === -1 || nextIndex === -1) return listData;
 
-    return {
-        ...listData,
-        list: swap(listData.list, itemIndex, nextIndex)
-    };
+  return {
+    ...listData,
+    list: swap(listData.list, itemIndex, nextIndex)
+  };
 }
 
 export function listItemUp(listData: ListData, itemId: string): ListData {
-    const considerDone = !listData.hideDone;
-    let itemIndex = -1;
-    let prevIndex = -1;
+  const considerDone = !listData.hideDone;
+  let itemIndex = -1;
+  let prevIndex = -1;
 
-    for (const [i, item] of listData.list.entries()) {
-        if (item.id === itemId) {
-            itemIndex = i;
-            break;
-        }
-        if (itemIndex === -1 && (considerDone || !item.done)) prevIndex = i;
+  for (const [i, item] of listData.list.entries()) {
+    if (item.id === itemId) {
+      itemIndex = i;
+      break;
     }
+    if (itemIndex === -1 && (considerDone || !item.done)) prevIndex = i;
+  }
 
-    if (itemIndex === -1 || prevIndex === -1) return listData;
+  if (itemIndex === -1 || prevIndex === -1) return listData;
 
-    return {
-        ...listData,
-        list: swap(listData.list, itemIndex, prevIndex)
-    };
+  return {
+    ...listData,
+    list: swap(listData.list, itemIndex, prevIndex)
+  };
 }
