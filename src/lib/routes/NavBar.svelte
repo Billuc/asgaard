@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { asHref, NAV_LINKS, NavLink, Routes, ROUTES } from './routes';
 	import { page } from '$app/state';
+	import ThemeController from '$lib/theme/ThemeController.svelte';
 
 	function isActive(link: NavLink) {
 		const linkForRoute = Object.entries(ROUTES).find(
@@ -16,9 +17,13 @@
 			<span class="dock-label">{data.name}</span>
 		</a>
 	{/each}
+
+	<div class="max-w-fit px-2">
+		<ThemeController />
+	</div>
 </div>
 
-<div class="mb-4 navbar hidden bg-base-200 shadow-sm md:flex">
+<div class="navbar hidden bg-base-200 shadow-sm md:flex">
 	<div class="flex-1">
 		<span class="text-xl font-black">Asgaard</span>
 	</div>
@@ -31,6 +36,10 @@
 					</a>
 				</li>
 			{/each}
+
+			<li>
+				<ThemeController />
+			</li>
 		</ul>
 	</div>
 </div>

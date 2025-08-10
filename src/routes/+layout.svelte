@@ -19,7 +19,7 @@
 
 <NavBar></NavBar>
 
-<div class="mx-auto mt-4 mb-20 w-full px-4 md:mb-4 md:w-2/3 lg:w-1/2">
+<div class="mx-auto w-full px-4 pt-4 pb-20 md:w-2/3 md:pb-4 lg:w-1/2">
 	{@render children()}
 </div>
 
