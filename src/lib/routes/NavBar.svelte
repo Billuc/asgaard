@@ -2,6 +2,7 @@
 	import { asHref, NAV_LINKS, NavLink, Routes, ROUTES } from './routes';
 	import { page } from '$app/state';
 	import ThemeController from '$lib/theme/ThemeController.svelte';
+	import { base } from '$app/paths';
 
 	function isActive(link: NavLink) {
 		const linkForRoute = Object.entries(ROUTES).find(
@@ -12,6 +13,10 @@
 </script>
 
 <div class="dock z-50 flex bg-base-200 md:hidden">
+	<div class="max-w-fit px-2">
+		<img src={base + '/favicon.svg'} width="32" height="32" alt="Asgaard logo" />
+	</div>
+
 	{#each Object.entries(NAV_LINKS) as [link, data] (link)}
 		<a href={asHref(data.route)} class={{ 'dock-active': isActive(link as NavLink) }}>
 			<span class="dock-label">{data.name}</span>
@@ -25,7 +30,14 @@
 
 <div class="navbar hidden bg-base-200 shadow-sm md:flex">
 	<div class="flex-1">
-		<span class="text-xl font-black">Asgaard</span>
+		<img
+			src={base + '/favicon.svg'}
+			width="32"
+			height="32"
+			alt="Asgaard logo"
+			class="mr-2 ml-4 inline"
+		/>
+		<span class="align-middle text-xl font-black">Asgaard</span>
 	</div>
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
