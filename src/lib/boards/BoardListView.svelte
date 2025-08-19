@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mapMatching, removeMatching } from '$lib/arrayUtils';
+	import { mapMatching, moveTo, removeMatching } from '$lib/arrayUtils';
 	import { fly, slide } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';
@@ -7,6 +7,7 @@
 	import { cloneDeep, debounce } from 'lodash-es';
 	import { listItemDown, listItemUp } from './functions';
 	import MyInput from '$lib/common/MyInput.svelte';
+	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 
 	interface Props {
 		showActions: boolean;
@@ -42,6 +43,27 @@
 			newItem();
 		}
 	}
+
+	function dragStart(event: DragEvent, itemIndex: number) {
+		// The data we want to make available when the element is dropped
+		// is the index of the item being dragged and
+		// the index of the basket from which it is leaving.
+		const data = { itemIndex };
+		event.dataTransfer!.setData('text/plain', JSON.stringify(data));
+	}
+
+	function drop(event: DragEvent, dropItemIndex: number) {
+		console.log(event, dropItemIndex);
+		event.preventDefault();
+		const json = event.dataTransfer!.getData('text/plain');
+		const { itemIndex } = JSON.parse(json);
+
+		updateList(moveTo(data.list, itemIndex, dropItemIndex));
+	}
+
+	$effect(() => {
+		enableDragDropTouch();
+	});
 </script>
 
 <div class="card-title">
@@ -62,12 +84,22 @@
 </div>
 
 <div class="flex w-full flex-col">
-	{#each itemsToShow as item (item.id)}
+	{#each itemsToShow as item, i (item.id)}
 		<div
 			class="flex flex-row items-center gap-2 px-1"
 			transition:fly
 			animate:flip={{ duration: 300 }}
+			draggable={true}
+			ondrop={(event) => drop(event, i)}
+			ondragstart={(event) => dragStart(event, i)}
+			ondragover={(ev) => {
+				ev.preventDefault();
+			}}
+			ondragenter={() => false}
+			ondragleave={() => false}
+			role="listitem"
 		>
+			<span class="-mt-1 cursor-grab text-lg leading-4">&equiv;</span>
 			<input
 				type="checkbox"
 				class="checkbox checkbox-primary"

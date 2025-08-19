@@ -28,10 +28,24 @@ export function swap<T>(array: T[], indexA: number, indexB: number): T[] {
   return newArray;
 }
 
-export function mapMatching<T>(array: T[], matchFn: (item: T) => boolean, mapFn: (item: T) => T): T[] {
-    return array.map((item) => matchFn(item) ? mapFn(item) : item);
+export function mapMatching<T>(
+  array: T[],
+  matchFn: (item: T) => boolean,
+  mapFn: (item: T) => T
+): T[] {
+  return array.map((item) => (matchFn(item) ? mapFn(item) : item));
 }
 
 export function removeMatching<T>(array: T[], matchFn: (item: T) => boolean): T[] {
-    return array.filter((item) => !matchFn(item));
+  return array.filter((item) => !matchFn(item));
+}
+
+export function moveTo<T>(array: T[], fromIndex: number, toIndex: number): T[] {
+  if (fromIndex < 0 || fromIndex >= array.length || toIndex < 0 || toIndex >= array.length) {
+    return array; // Return the original array if any index is out of bounds
+  }
+  const newArray = [...array]; // Create a shallow copy of the array
+  const [movedItem] = newArray.splice(fromIndex, 1); // Remove the item from the original position
+  newArray.splice(toIndex, 0, movedItem); // Insert the item at the new position
+  return newArray;
 }
