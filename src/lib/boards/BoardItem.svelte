@@ -32,7 +32,7 @@
 		<div class="absolute -top-4 right-4 flex flex-row gap-1" transition:slide={{ axis: 'x' }}>
 			<button class="btn btn-sm" onclick={moveBlockUp}>Up</button>
 			<button class="btn btn-sm" onclick={moveBlockDown}>Down</button>
-			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete block</button>
+			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete card</button>
 		</div>
 	{/if}
 	<div class="card-body">
