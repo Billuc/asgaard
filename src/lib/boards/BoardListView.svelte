@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { mapMatching, moveTo, removeMatching } from '$lib/arrayUtils';
-	import { fly, slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';
 	import { generateId } from '$lib/id_generator';
 	import { cloneDeep, debounce } from 'lodash-es';
-	import { listItemDown, listItemUp } from './functions';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 
 	interface Props {
-		showActions: boolean;
 		data: ListData;
 		updateData?: (data: ListData) => void;
 	}
 
-	let { showActions, data, updateData = () => {} }: Props = $props();
+	let { data, updateData = () => {} }: Props = $props();
 
 	let newItemLabel = $state('');
 	let itemsToShow = $derived(data.list.filter((i) => !i.done || !data.hideDone));
@@ -127,39 +125,26 @@
 					)}
 			/>
 
-			{#if showActions}
-				<div transition:slide={{ axis: 'x' }} class="flex flex-row gap-1">
-					<button
-						class="btn inline btn-outline btn-xs btn-info"
-						onclick={() => updateList(listItemUp(data, item.id).list)}
-					>
-						Up
-					</button>
-					<button
-						class="btn inline btn-outline btn-xs btn-info"
-						onclick={() => updateList(listItemDown(data, item.id).list)}
-					>
-						Down
-					</button>
-					<button
-						class="btn btn-outline btn-xs btn-error"
-						onclick={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
-					>
-						Delete
-					</button>
-				</div>
-			{/if}
+			<button
+				class="btn btn-outline btn-xs btn-error"
+				onclick={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
+			>
+				Delete
+			</button>
 		</div>
 	{/each}
 </div>
 
-<label class="input input-sm w-full rounded-md px-1">
-	<button class="btn btn-square font-bold btn-xs btn-info" onclick={() => newItem()}>+</button>
-	<input
-		type="text"
-		class="grow"
-		placeholder="New item"
-		bind:value={newItemLabel}
-		onkeypress={inputKeyPress}
-	/>
-</label>
+<div class="flex flex-row items-center gap-1">
+	<span class="w-4"></span>
+	<label class="input input-sm w-full rounded-md px-1">
+		<button class="btn btn-square font-bold btn-xs btn-info" onclick={() => newItem()}>+</button>
+		<input
+			type="text"
+			class="grow"
+			placeholder="New item"
+			bind:value={newItemLabel}
+			onkeypress={inputKeyPress}
+		/>
+	</label>
+</div>

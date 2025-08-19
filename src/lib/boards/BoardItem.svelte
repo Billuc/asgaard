@@ -19,9 +19,17 @@
 	let { data, moveBlockUp, moveBlockDown, deleteBlock, showActions, updateData }: Props = $props();
 </script>
 
-<div class="card relative mb-4 bg-zinc-700 card-sm">
+<div
+	class={[
+		'card  bg-zinc-700 card-sm',
+		'relative',
+		'mb-4',
+		showActions ? 'mt-6' : 'mt-0',
+		'transition-all duration-200'
+	]}
+>
 	{#if showActions}
-		<div class="absolute -top-2 right-4 flex flex-row gap-1" transition:slide={{ axis: 'x' }}>
+		<div class="absolute -top-4 right-4 flex flex-row gap-1" transition:slide={{ axis: 'x' }}>
 			<button class="btn btn-sm" onclick={moveBlockUp}>Up</button>
 			<button class="btn btn-sm" onclick={moveBlockDown}>Down</button>
 			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete block</button>
@@ -29,7 +37,7 @@
 	{/if}
 	<div class="card-body">
 		{#if data.type === BoardItemType.LIST}
-			<BoardListView {data} {updateData} {showActions}></BoardListView>
+			<BoardListView {data} {updateData}></BoardListView>
 		{/if}
 		{#if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
