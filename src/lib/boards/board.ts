@@ -9,14 +9,16 @@ export enum BoardItemType {
 	LIST = 'list',
 	NOTE = 'note',
 	QUEST = 'quest',
-	IMAGE = 'image'
+	IMAGE = 'image',
+	TABLE = 'table'
 }
 
 export const BOARD_ITEM_TYPES: { [key in BoardItemType]: string } = {
 	[BoardItemType.LIST]: 'List',
 	[BoardItemType.NOTE]: 'Note',
 	[BoardItemType.QUEST]: 'Quest',
-	[BoardItemType.IMAGE]: 'Image'
+	[BoardItemType.IMAGE]: 'Image',
+	[BoardItemType.TABLE]: 'Table'
 };
 
 export interface BoardItem {
@@ -24,7 +26,7 @@ export interface BoardItem {
 	data: BoardItemData;
 }
 
-export type BoardItemData = ListData | QuestData | NoteData | ImageData;
+export type BoardItemData = ListData | QuestData | NoteData | ImageData | TableData;
 
 export interface ListData {
 	type: BoardItemType.LIST;
@@ -53,4 +55,15 @@ export interface ImageData {
 	type: BoardItemType.IMAGE;
 	image: Blob | null;
 	title: string;
+}
+
+export interface TableData {
+	type: BoardItemType.TABLE;
+	title: string;
+	rows: TableRow[];
+}
+
+export interface TableRow {
+	id: string; // required for animations
+	cells: string[];
 }

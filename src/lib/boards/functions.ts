@@ -23,6 +23,15 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
     case BoardItemType.IMAGE:
       itemData = { type: BoardItemType.IMAGE, image: null, title: 'New image' };
       break;
+    case BoardItemType.TABLE:
+      itemData = {
+        type: BoardItemType.TABLE,
+        title: 'New table',
+        rows: []
+      };
+      break;
+    default:
+      throw new Error(`Unknown item type: ${itemType}`);
   }
 
   return {

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { mapMatching, moveTo, removeMatching } from '$lib/arrayUtils';
+	import { moveTo, removeMatching, updateMatching } from '$lib/arrayUtils';
 	import { fly } from 'svelte/transition';
 	import type { ListData, ListItem } from './board';
 	import { flip } from 'svelte/animate';
 	import { generateId } from '$lib/id_generator';
 	import { cloneDeep, debounce } from 'lodash-es';
 	import MyInput from '$lib/common/MyInput.svelte';
-	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
+	import BoardListItem from './BoardListItem.svelte';
 
 	interface Props {
 		data: ListData;
@@ -42,26 +42,15 @@
 		}
 	}
 
-	function dragStart(event: DragEvent, itemIndex: number) {
-		// The data we want to make available when the element is dropped
-		// is the index of the item being dragged and
-		// the index of the basket from which it is leaving.
-		const data = { itemIndex };
-		event.dataTransfer!.setData('text/plain', JSON.stringify(data));
-	}
-
-	function drop(event: DragEvent, dropItemIndex: number) {
-		console.log(event, dropItemIndex);
-		event.preventDefault();
-		const json = event.dataTransfer!.getData('text/plain');
-		const { itemIndex } = JSON.parse(json);
+	function onDrop(itemId: string, dropItemId: string) {
+		const itemIndex = data.list.findIndex((i) => i.id === itemId);
+		const dropItemIndex = data.list.findIndex((i) => i.id === dropItemId);
+		if (itemIndex === -1 || dropItemIndex === -1 || itemIndex === dropItemIndex) {
+			return; // Invalid indices, do nothing
+		}
 
 		updateList(moveTo(data.list, itemIndex, dropItemIndex));
 	}
-
-	$effect(() => {
-		enableDragDropTouch();
-	});
 </script>
 
 <div class="card-title">
@@ -82,55 +71,15 @@
 </div>
 
 <div class="flex w-full flex-col">
-	{#each itemsToShow as item, i (item.id)}
-		<div
-			class="flex flex-row items-center gap-2 px-1"
-			transition:fly
-			animate:flip={{ duration: 300 }}
-			draggable={true}
-			ondrop={(event) => drop(event, i)}
-			ondragstart={(event) => dragStart(event, i)}
-			ondragover={(ev) => {
-				ev.preventDefault();
-			}}
-			ondragenter={() => false}
-			ondragleave={() => false}
-			role="listitem"
-		>
-			<span class="-mt-1 cursor-grab text-lg leading-4">&equiv;</span>
-			<input
-				type="checkbox"
-				class="checkbox checkbox-primary"
-				checked={item.done}
-				onchange={() =>
-					updateList(
-						mapMatching(
-							data.list,
-							(d) => d.id === item.id,
-							(d) => ({ ...d, done: !d.done })
-						)
-					)}
+	{#each itemsToShow as item (item.id)}
+		<div transition:fly animate:flip={{ duration: 300 }}>
+			<BoardListItem
+				{item}
+				updateItem={(value) =>
+					updateList(updateMatching(data.list, (d) => d.id === item.id, value))}
+				removeItem={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
+				{onDrop}
 			/>
-
-			<MyInput
-				class="input input-sm grow input-ghost"
-				value={item.label}
-				oninput={(label) =>
-					updateList(
-						mapMatching(
-							data.list,
-							(d) => d.id === item.id,
-							(d) => ({ ...d, label })
-						)
-					)}
-			/>
-
-			<button
-				class="btn btn-outline btn-xs btn-error"
-				onclick={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
-			>
-				Delete
-			</button>
 		</div>
 	{/each}
 </div>

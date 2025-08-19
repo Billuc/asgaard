@@ -6,6 +6,7 @@
 	import BoardNoteView from './BoardNoteView.svelte';
 	import BoardQuestView from './BoardQuestView.svelte';
 	import BoardImageView from './BoardImageView.svelte';
+	import BoardTableView from './BoardTableView.svelte';
 
 	interface Props {
 		data: BoardItemData;
@@ -38,15 +39,16 @@
 	<div class="card-body">
 		{#if data.type === BoardItemType.LIST}
 			<BoardListView {data} {updateData}></BoardListView>
-		{/if}
-		{#if data.type === BoardItemType.NOTE}
+		{:else if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
-		{/if}
-		{#if data.type === BoardItemType.QUEST}
+		{:else if data.type === BoardItemType.QUEST}
 			<BoardQuestView {data} {updateData} manageMode={showActions}></BoardQuestView>
-		{/if}
-		{#if data.type === BoardItemType.IMAGE}
+		{:else if data.type === BoardItemType.IMAGE}
 			<BoardImageView {data} {updateData}></BoardImageView>
+		{:else if data.type === BoardItemType.TABLE}
+			<BoardTableView {data} {updateData}></BoardTableView>
+		{:else}
+			<div class="text-center text-gray-400">Unsupported item: {data}</div>
 		{/if}
 	</div>
 </div>
