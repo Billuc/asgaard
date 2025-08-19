@@ -6,6 +6,7 @@
 	import { generateId } from '$lib/id_generator';
 	import { cloneDeep, debounce } from 'lodash-es';
 	import { listItemDown, listItemUp } from './functions';
+	import MyInput from '$lib/common/MyInput.svelte';
 
 	interface Props {
 		showActions: boolean;
@@ -44,10 +45,10 @@
 </script>
 
 <div class="card-title">
-	<input
+	<MyInput
 		class="input input-sm grow input-ghost text-lg font-bold"
 		value={data.title}
-		oninput={(ev) => debouncedUpdateTitle(ev.target.value)}
+		oninput={(t) => debouncedUpdateTitle(t)}
 	/>
 </div>
 
@@ -81,15 +82,15 @@
 					)}
 			/>
 
-			<input
+			<MyInput
 				class="input input-sm grow input-ghost"
 				value={item.label}
-				oninput={(ev) =>
+				oninput={(label) =>
 					updateList(
 						mapMatching(
 							data.list,
 							(d) => d.id === item.id,
-							(d) => ({ ...d, label: ev.target.value })
+							(d) => ({ ...d, label })
 						)
 					)}
 			/>
@@ -97,19 +98,19 @@
 			{#if showActions}
 				<div transition:slide={{ axis: 'x' }} class="flex flex-row gap-1">
 					<button
-						class="btn inline btn-xs"
+						class="btn inline btn-outline btn-xs btn-info"
 						onclick={() => updateList(listItemUp(data, item.id).list)}
 					>
 						Up
 					</button>
 					<button
-						class="btn inline btn-xs"
+						class="btn inline btn-outline btn-xs btn-info"
 						onclick={() => updateList(listItemDown(data, item.id).list)}
 					>
 						Down
 					</button>
 					<button
-						class="btn btn-xs btn-error"
+						class="btn btn-outline btn-xs btn-error"
 						onclick={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
 					>
 						Delete

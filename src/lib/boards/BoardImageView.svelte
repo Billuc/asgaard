@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { debounce } from 'lodash-es';
 	import { type ImageData } from './board';
+	import MyInput from '$lib/common/MyInput.svelte';
 
 	interface Props {
 		data: ImageData;
@@ -15,18 +16,21 @@
 	}
 	const debouncedUpdateTitle = debounce(updateTitle, 250);
 
-	function updateImage(files: File[]) {
-		if (files.length == 0) return;
+	function updateImage(event: Event) {
+		if (!(event.target instanceof HTMLInputElement)) return;
+		const files = event.target.files;
+
+		if (!files || files.length == 0) return;
 
 		updateData({ ...data, image: files[0] });
 	}
 </script>
 
 <div class="card-title">
-	<input
+	<MyInput
 		class="input input-sm grow input-ghost text-lg font-bold"
 		value={data.title}
-		oninput={(ev) => debouncedUpdateTitle(ev.target.value)}
+		oninput={(t) => debouncedUpdateTitle(t)}
 	/>
 </div>
 
@@ -40,7 +44,7 @@
 	<input
 		type="file"
 		accept="image/*"
-		oninput={(ev) => updateImage(ev.target.files)}
+		oninput={updateImage}
 		class={{ 'file-input': true, hidden: data.image != null }}
 		bind:this={imageInput}
 	/>

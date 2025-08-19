@@ -21,7 +21,7 @@
 
 <div class="card relative mb-4 bg-zinc-700 card-sm">
 	{#if showActions}
-		<div class="absolute -top-2 right-4 flex flex-row" transition:slide={{ axis: 'x' }}>
+		<div class="absolute -top-2 right-4 flex flex-row gap-1" transition:slide={{ axis: 'x' }}>
 			<button class="btn btn-sm" onclick={moveBlockUp}>Up</button>
 			<button class="btn btn-sm" onclick={moveBlockDown}>Down</button>
 			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete block</button>

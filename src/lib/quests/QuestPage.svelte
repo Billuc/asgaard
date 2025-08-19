@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import ActionsButton from '$lib/common/ActionsButton.svelte';
 	import { slide } from 'svelte/transition';
+	import MyInput from '$lib/common/MyInput.svelte';
 
 	interface Props {
 		quest: Quest;
@@ -40,7 +41,7 @@
 	}
 
 	async function deleteQuest() {
-        if (!confirm(`Here be dragons ! This quest will be deleted permanently !`)) return;
+		if (!confirm(`Here be dragons ! This quest will be deleted permanently !`)) return;
 
 		await questStorage.delete(quest.id);
 		goto('/quests', { state: { message: 'Quest deleted successfully' }, invalidateAll: true });
@@ -84,10 +85,10 @@
 	]}
 >
 	<h3 class={[questTypeData.colorClass]}>{questTypeData.label}</h3>
-	<input
+	<MyInput
 		class="input m-2 input-xl input-ghost text-center font-bold"
 		value={quest.title}
-		oninput={(ev) => debouncedUpdateQuest({ ...quest, title: ev.target.value })}
+		oninput={(title) => debouncedUpdateQuest({ ...quest, title })}
 	/>
 
 	<div class="flex flex-row gap-2">

@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import { deleteBlock, moveBlockDown, moveBlockUp, newItem, updateItem } from './functions';
 	import ActionsButton from '$lib/common/ActionsButton.svelte';
+	import MyInput from '$lib/common/MyInput.svelte';
 
 	interface Props {
 		board: Board;
@@ -29,7 +30,7 @@
 	const debouncedUpdateBoard = debounce(updateBoard, 250);
 
 	async function deleteBoard() {
-        if (!confirm(`Here be dragons ! This board will be deleted permanently !`)) return;
+		if (!confirm(`Here be dragons ! This board will be deleted permanently !`)) return;
 
 		await boardStorage.delete(board.id);
 		goto('/boards', { state: { message: 'Board deleted successfully' } });
@@ -37,10 +38,10 @@
 </script>
 
 <div class="text-center">
-	<input
-		class="input input-xl input-ghost text-center font-bold"
+	<MyInput
+		class="input-xl input-ghost text-center font-bold"
 		value={board.title}
-		oninput={(ev) => debouncedUpdateBoard({ ...board, title: ev.target.value })}
+		oninput={(title) => debouncedUpdateBoard({ ...board, title })}
 	/>
 </div>
 
