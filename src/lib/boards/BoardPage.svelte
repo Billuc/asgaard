@@ -59,8 +59,8 @@
 	<ActionsButton bind:show={showActions}>
 		<div class="flex flex-row justify-center gap-2" transition:slide={{ axis: 'x', duration: 250 }}>
 			<button class="btn btn-outline btn-sm btn-info" onclick={exportBoard}>Export board</button>
-			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
 			<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
+			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
 		</div>
 	</ActionsButton>
 </div>

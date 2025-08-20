@@ -53,8 +53,13 @@ export interface NoteData {
 
 export interface ImageData {
 	type: BoardItemType.IMAGE;
-	image: Blob | null;
+	imageIds: string[];
 	title: string;
+}
+
+export interface Image {
+	id: string;
+	data: Blob;
 }
 
 export interface TableData {
