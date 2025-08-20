@@ -35,6 +35,16 @@
 		await boardStorage.delete(board.id);
 		goto('/boards', { state: { message: 'Board deleted successfully' } });
 	}
+
+	function exportBoard() {
+		const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(board));
+		const downloadAnchorNode = document.createElement('a');
+		downloadAnchorNode.setAttribute('href', dataStr);
+		downloadAnchorNode.setAttribute('download', `${board.title}.json`);
+		document.body.appendChild(downloadAnchorNode); // required for firefox
+		downloadAnchorNode.click();
+		downloadAnchorNode.remove();
+	}
 </script>
 
 <div class="text-center">
@@ -48,6 +58,7 @@
 <div class="mb-4 flex flex-row justify-center gap-2">
 	<ActionsButton bind:show={showActions}>
 		<div class="flex flex-row justify-center gap-2" transition:slide={{ axis: 'x', duration: 250 }}>
+			<button class="btn btn-outline btn-sm btn-info" onclick={exportBoard}>Export board</button>
 			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
 			<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
 		</div>

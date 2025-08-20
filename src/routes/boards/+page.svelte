@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Board } from '$lib/boards/board';
 	import BoardRow from '$lib/boards/BoardRow.svelte';
+	import ImportBoard from '$lib/boards/ImportBoard.svelte';
 	import NewBoard from '$lib/boards/NewBoard.svelte';
 	import { BoardStorage } from '$lib/boards/storage';
 
@@ -18,6 +19,7 @@
 
 	<div class="my-4 text-center">
 		<NewBoard />
+		<ImportBoard />
 	</div>
 
 	<div class="list my-4 rounded-box shadow-md">

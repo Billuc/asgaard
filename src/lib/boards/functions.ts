@@ -36,7 +36,7 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
 
   return {
     ...board,
-    items: [...board.items, { id: generateId('item'), data: itemData }]
+    items: [...board.items, { id: generateId('card'), data: itemData }]
   };
 }
 
