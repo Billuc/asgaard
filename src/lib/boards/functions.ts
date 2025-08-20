@@ -21,7 +21,7 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
       itemData = { type: BoardItemType.QUEST, questId: '' };
       break;
     case BoardItemType.IMAGE:
-      itemData = { type: BoardItemType.IMAGE, image: null, title: 'New image' };
+      itemData = { type: BoardItemType.IMAGE, imageIds: [], title: 'New image' };
       break;
     case BoardItemType.TABLE:
       itemData = {
@@ -36,7 +36,7 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
 
   return {
     ...board,
-    items: [...board.items, { id: generateId('card'), data: itemData }]
+    items: [{ id: generateId('card'), data: itemData }, ...board.items]
   };
 }
 
