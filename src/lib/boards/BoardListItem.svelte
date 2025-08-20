@@ -42,7 +42,7 @@
 
 <div
 	class="flex flex-row items-center gap-2 px-1"
-	draggable={true}
+	draggable={dragging}
 	ondrop={(event) => drop(event)}
 	ondragstart={(event) => dragStart(event)}
 	ondragover={(ev) => {

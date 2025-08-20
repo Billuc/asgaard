@@ -49,7 +49,7 @@
 </script>
 
 <tr
-	draggable={true}
+	draggable={dragging}
 	ondrop={(event) => drop(event)}
 	ondragstart={(event) => dragStart(event)}
 	ondragover={(ev) => {
