@@ -38,7 +38,7 @@
 	{/if}
 	<div class="card-body">
 		{#if data.type === BoardItemType.LIST}
-			<BoardListView {data} {updateData}></BoardListView>
+			<BoardListView {data} {updateData} {showActions}></BoardListView>
 		{:else if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
 		{:else if data.type === BoardItemType.QUEST}
@@ -46,7 +46,7 @@
 		{:else if data.type === BoardItemType.IMAGE}
 			<BoardImageView {data} {updateData}></BoardImageView>
 		{:else if data.type === BoardItemType.TABLE}
-			<BoardTableView {data} {updateData}></BoardTableView>
+			<BoardTableView {data} {updateData} {showActions}></BoardTableView>
 		{:else}
 			<div class="text-center text-gray-400">Unsupported item: {data}</div>
 		{/if}

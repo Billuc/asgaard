@@ -11,9 +11,10 @@
 	interface Props {
 		data: ListData;
 		updateData?: (data: ListData) => void;
+		showActions?: boolean;
 	}
 
-	let { data, updateData = () => {} }: Props = $props();
+	let { data, updateData = () => {}, showActions = false }: Props = $props();
 
 	let newItemLabel = $state('');
 	let itemsToShow = $derived(data.list.filter((i) => !i.done || !data.hideDone));
@@ -79,6 +80,7 @@
 					updateList(updateMatching(data.list, (d) => d.id === item.id, value))}
 				removeItem={() => updateList(removeMatching(data.list, (i) => i.id === item.id))}
 				{onDrop}
+				{showActions}
 			/>
 		</div>
 	{/each}

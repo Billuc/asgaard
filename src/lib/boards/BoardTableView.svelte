@@ -6,15 +6,16 @@
 	import { mapAt, removeAt, updateAt, moveTo } from '$lib/arrayUtils';
 	import BoardTableHead from './BoardTableHead.svelte';
 	import { flip } from 'svelte/animate';
-	import { fly } from 'svelte/transition';
+	import { fade, fly, slide } from 'svelte/transition';
 	import BoardTableRow from './BoardTableRow.svelte';
 
 	interface Props {
 		data: TableData;
 		updateData?: (data: TableData) => void;
+		showActions?: boolean;
 	}
 
-	const { data, updateData = () => {} }: Props = $props();
+	const { data, updateData = () => {}, showActions = false }: Props = $props();
 	const headers = $derived(data.rows[0]?.cells || []);
 	const nbColumns = $derived(headers.length);
 	const rows = $derived(data.rows.slice(1));
@@ -92,19 +93,24 @@
 								oninput={(t) => updateCell(0, i, t)}
 							/>
 
-							<button
-								class="btn absolute top-0 right-0 btn-circle h-4 w-4 btn-xs"
-								onclick={() => deleteColumn(i)}
-							>
-								&times;
-							</button>
+							{#if showActions}
+								<button
+									class="btn absolute top-0 right-0 btn-circle h-4 w-4 btn-xs"
+									onclick={() => deleteColumn(i)}
+									transition:fade={{ duration: 200 }}
+								>
+									&times;
+								</button>
+							{/if}
 						</BoardTableHead>
 					{/each}
-					<BoardTableHead class="text-center">
-						<button class="btn btn-block opacity-60 btn-ghost btn-sm" onclick={() => newColumn()}>
-							+ New col
-						</button>
-					</BoardTableHead>
+					{#if showActions}
+						<BoardTableHead class="text-center">
+							<button class="btn btn-block opacity-60 btn-ghost btn-sm" onclick={() => newColumn()}>
+								+ New col
+							</button>
+						</BoardTableHead>
+					{/if}
 				</tr>
 			</thead>
 		{/if}
@@ -118,13 +124,14 @@
 						updateRow={(value) =>
 							updateData({ ...data, rows: updateAt(data.rows, rowIndex + 1, value) })}
 						{onDrop}
+						{showActions}
 					/>
 				</div>
 			{/each}
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan={nbColumns + 2} class="text-center">
+				<td colspan={nbColumns + (showActions ? 2 : 1)} class="text-center">
 					<button class="btn btn-block opacity-60 btn-ghost btn-sm" onclick={() => newRow()}>
 						+ New row
 					</button>

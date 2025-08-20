@@ -12,6 +12,7 @@
 		updateRow?: (item: TableRow) => void;
 		removeRow?: () => void;
 		onDrop?: (itemId: string, dropItemId: string) => void;
+		showActions?: boolean;
 	}
 
 	let {
@@ -19,7 +20,8 @@
 		nbColumns,
 		updateRow = () => {},
 		removeRow = () => {},
-		onDrop = () => {}
+		onDrop = () => {},
+		showActions = false
 	}: Props = $props();
 
 	function dragStart(event: DragEvent) {
@@ -76,7 +78,9 @@
 		</BoardTableCell>
 	{/each}
 
-	<BoardTableCell class="text-center">
-		<button class="btn btn-outline btn-xs btn-error" onclick={removeRow}>Delete</button>
-	</BoardTableCell>
+	{#if showActions}
+		<BoardTableCell class="text-center">
+			<button class="btn btn-outline btn-xs btn-error" onclick={removeRow}>Delete</button>
+		</BoardTableCell>
+	{/if}
 </tr>

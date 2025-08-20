@@ -1,5 +1,6 @@
 <script lang="ts">
 	import MyInput from '$lib/common/MyInput.svelte';
+	import { fade } from 'svelte/transition';
 	import type { ListItem } from './board';
 	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 
@@ -8,9 +9,16 @@
 		updateItem?: (item: ListItem) => void;
 		removeItem?: () => void;
 		onDrop?: (itemId: string, dropItemId: string) => void;
+		showActions?: boolean;
 	}
 
-	let { item, updateItem = () => {}, removeItem = () => {}, onDrop = () => {} }: Props = $props();
+	let {
+		item,
+		updateItem = () => {},
+		removeItem = () => {},
+		onDrop = () => {},
+		showActions = false
+	}: Props = $props();
 
 	let dragging: boolean = $state(false);
 
@@ -64,5 +72,13 @@
 		oninput={(label) => updateItem({ ...item, label })}
 	/>
 
-	<button class="btn btn-outline btn-xs btn-error" onclick={() => removeItem()}>Delete</button>
+	{#if showActions}
+		<button
+			class="btn btn-outline btn-xs btn-error"
+			onclick={() => removeItem()}
+			transition:fade={{ duration: 200 }}
+		>
+			Delete
+		</button>
+	{/if}
 </div>
