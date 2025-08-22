@@ -73,42 +73,7 @@ export const EFFORTS: { [k in Effort]: { text: string; colorClass: string } } = 
 export interface SubQuest {
 	id: string;
 	title: string;
-	priority: Priority;
-	effort: Effort;
 	done: boolean;
-}
-
-export function rewardCoefficient(subquest: SubQuest): number {
-	let priorityCoefficient = 1;
-	switch (subquest.priority) {
-		case Priority.LOW:
-			priorityCoefficient = 0.5;
-			break;
-		case Priority.MEDIUM:
-			priorityCoefficient = 1;
-			break;
-		case Priority.HIGH:
-			priorityCoefficient = 1.5;
-			break;
-	}
-
-	let effortCoefficient = 1;
-	switch (subquest.effort) {
-		case Effort.EASY:
-			effortCoefficient = 0.5;
-			break;
-		case Effort.MEDIUM:
-			effortCoefficient = 1;
-			break;
-		case Effort.HARD:
-			effortCoefficient = 1.5;
-			break;
-		case Effort.EXTREME:
-			effortCoefficient = 2;
-			break;
-	}
-
-	return priorityCoefficient * effortCoefficient;
 }
 
 export interface Quest {

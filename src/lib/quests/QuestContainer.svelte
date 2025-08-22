@@ -2,11 +2,18 @@
 	import { asHref, Routes } from '$lib/routes/routes';
 	import { type Quest, QUEST_TYPES, QuestType } from './quest';
 	import { flip } from 'svelte/animate';
+	import SubquestTable from './SubquestTable.svelte';
 
 	const LEFT_CURL = '︵‿୨';
 	const RIGHT_CURL = '୧‿︵';
 
-	let { type, quests }: { type: QuestType; quests: Quest[] } = $props();
+	interface Props {
+		type: QuestType;
+		quests: Quest[];
+		updateQuest: (quest: Quest) => void;
+	}
+
+	let { type, quests, updateQuest }: Props = $props();
 	let questTypeData = $derived(QUEST_TYPES[type]);
 	let offset = $state(0);
 
@@ -29,34 +36,34 @@
 		class="relative my-8 flex w-fit max-w-full flex-row flex-nowrap items-center overflow-hidden"
 	>
 		{#each questsOfType as quest (quest.id)}
-			<a
-				href={asHref(Routes.Quest, { id: quest.id })}
+			<div
 				class={[
-					'inline-block',
 					questTypeData.borderClass,
-					'border-8',
-					'border-double',
-					'p-2',
+					'border-8 border-double',
+					'py-2',
 					'rounded-box',
-					'w-48',
-					'min-w-48',
-					'h-64',
-					'text-center',
-					'truncate',
+					'h-64 w-48 min-w-48',
+					'truncate text-center',
 					'z-10',
 					'quest-sheet',
-					'bg-base-100'
+					'bg-base-100',
+					'inline-flex flex-col flex-nowrap'
 				]}
 				animate:flip={{ duration: 300 }}
 			>
-				&#x2619; <span class="font-semibold">{quest.title}</span>
-				&#x2767;
-				<br />
-				<br />
-				<br />
-				<br />
-				<span class="text-sm text-base-content/80">...</span>
-			</a>
+				<a href={asHref(Routes.Quest, { id: quest.id })} class="font-semibold">
+					&#x2619;&nbsp;{quest.title}
+					&nbsp;&#x2767;
+				</a>
+
+				<div class="overflow-y-auto">
+					<SubquestTable
+						subquests={quest.subquests}
+						updateSubquests={(sqs) => updateQuest({ ...quest, subquests: sqs })}
+						showActions={false}
+					/>
+				</div>
+			</div>
 		{/each}
 
 		{#if questsOfType.length > 1}
