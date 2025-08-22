@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import type { ListItem } from './board';
 	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
+	import { draggable, draghandle, dropzone } from '$lib/draggable';
 
 	interface Props {
 		item: ListItem;
@@ -20,17 +21,15 @@
 		showActions = false
 	}: Props = $props();
 
-	let dragging: boolean = $state(false);
-
-	function dragStart(event: DragEvent) {
+	function dragStart(event: Event) {
 		// The data we want to make available when the element is dropped
 		const data = { itemId: item.id };
-		event.dataTransfer!.setData('text/plain', JSON.stringify(data));
+		(event as DragEvent).dataTransfer!.setData('text/plain', JSON.stringify(data));
 	}
 
-	function drop(event: DragEvent) {
+	function drop(event: Event) {
 		event.preventDefault();
-		const json = event.dataTransfer!.getData('text/plain');
+		const json = (event as DragEvent).dataTransfer!.getData('text/plain');
 		const { itemId } = JSON.parse(json);
 		onDrop(itemId, item.id);
 	}
@@ -42,23 +41,11 @@
 
 <div
 	class="flex flex-row items-center gap-2 px-1"
-	draggable={dragging}
-	ondrop={(event) => drop(event)}
-	ondragstart={(event) => dragStart(event)}
-	ondragover={(ev) => {
-		ev.preventDefault();
-	}}
-	ondragenter={() => false}
-	ondragleave={() => false}
 	role="listitem"
+	{@attach draggable(dragStart)}
+	{@attach dropzone(drop)}
 >
-	<span
-		class="-mt-1 cursor-grab text-lg leading-4"
-		onpointerdown={() => (dragging = true)}
-		onpointerup={() => (dragging = false)}
-	>
-		&equiv;
-	</span>
+	<span class="-mt-1 cursor-grab text-lg leading-4" {@attach draghandle}>&equiv;</span>
 	<input
 		type="checkbox"
 		class="checkbox checkbox-primary"

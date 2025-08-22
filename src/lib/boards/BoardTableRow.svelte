@@ -3,6 +3,7 @@
 	import BoardTableCell from './BoardTableCell.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
+	import { draggable, draghandle, dropzone } from '$lib/draggable';
 
 	let dragging: boolean = $state(false);
 
@@ -24,15 +25,15 @@
 		showActions = false
 	}: Props = $props();
 
-	function dragStart(event: DragEvent) {
+	function dragStart(event: Event) {
 		// The data we want to make available when the element is dropped
 		const data = { rowId: row.id };
-		event.dataTransfer!.setData('text/plain', JSON.stringify(data));
+		(event as DragEvent).dataTransfer!.setData('text/plain', JSON.stringify(data));
 	}
 
-	function drop(event: DragEvent) {
+	function drop(event: Event) {
 		event.preventDefault();
-		const json = event.dataTransfer!.getData('text/plain');
+		const json = (event as DragEvent).dataTransfer!.getData('text/plain');
 		const { rowId } = JSON.parse(json);
 		onDrop(rowId, row.id);
 	}
@@ -48,24 +49,9 @@
 	});
 </script>
 
-<tr
-	draggable={dragging}
-	ondrop={(event) => drop(event)}
-	ondragstart={(event) => dragStart(event)}
-	ondragover={(ev) => {
-		ev.preventDefault();
-	}}
-	ondragenter={() => false}
-	ondragleave={() => false}
->
+<tr {@attach draggable(dragStart)} {@attach dropzone(drop)}>
 	<BoardTableCell class="text-center">
-		<span
-			class="cursor-grab text-base"
-			onpointerdown={() => (dragging = true)}
-			onpointerup={() => (dragging = false)}
-		>
-			&equiv;
-		</span>
+		<span class="cursor-grab text-base" {@attach draghandle}>&equiv;</span>
 	</BoardTableCell>
 
 	{#each { length: nbColumns }, colIndex}
