@@ -10,6 +10,7 @@
 	import { deleteBlock, moveBlockDown, moveBlockUp, newItem, updateItem } from './functions';
 	import ActionsButton from '$lib/common/ActionsButton.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
+	import { asHref, Routes } from '$lib/routes/routes';
 
 	interface Props {
 		board: Board;
@@ -33,7 +34,7 @@
 		if (!confirm(`Here be dragons ! This board will be deleted permanently !`)) return;
 
 		await boardStorage.delete(board.id);
-		goto('/boards', { state: { message: 'Board deleted successfully' } });
+		goto(asHref(Routes.Boards), { state: { message: 'Board deleted successfully' } });
 	}
 
 	function exportBoard() {

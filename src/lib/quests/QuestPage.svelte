@@ -8,6 +8,7 @@
 	import ActionsButton from '$lib/common/ActionsButton.svelte';
 	import { slide } from 'svelte/transition';
 	import MyInput from '$lib/common/MyInput.svelte';
+	import { asHref, Routes } from '$lib/routes/routes';
 
 	interface Props {
 		quest: Quest;
@@ -44,7 +45,9 @@
 		if (!confirm(`Here be dragons ! This quest will be deleted permanently !`)) return;
 
 		await questStorage.delete(quest.id);
-		goto('/quests', { state: { message: 'Quest deleted successfully' }, invalidateAll: true });
+		goto(asHref(Routes.Quests), {
+			state: { message: 'Quest deleted successfully' }
+		});
 	}
 
 	onMount(() => {
