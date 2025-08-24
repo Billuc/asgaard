@@ -1,8 +1,8 @@
 export enum QuestType {
 	MAIN = 'main',
-	SIDE = 'side',
-	DAILY = 'daily',
-	WEEKLY = 'weekly'
+	SIDE = 'side'
+	// DAILY = 'daily',
+	// WEEKLY = 'weekly'
 }
 
 export const QUEST_TYPES: {
@@ -27,21 +27,21 @@ export const QUEST_TYPES: {
 		borderClass: 'border-secondary',
 		beforeClass: 'before:text-secondary',
 		afterClass: 'after:text-secondary'
-	},
-	[QuestType.DAILY]: {
-		label: 'Daily Quest',
-		colorClass: 'text-accent',
-		borderClass: 'border-accent',
-		beforeClass: 'before:text-accent',
-		afterClass: 'after:text-accent'
-	},
-	[QuestType.WEEKLY]: {
-		label: 'Weekly Quest',
-		colorClass: 'text-base-content',
-		borderClass: 'border-base-content',
-		beforeClass: 'before:text-base-content',
-		afterClass: 'after:text-base-content'
 	}
+	// [QuestType.DAILY]: {
+	// 	label: 'Daily Quest',
+	// 	colorClass: 'text-accent',
+	// 	borderClass: 'border-accent',
+	// 	beforeClass: 'before:text-accent',
+	// 	afterClass: 'after:text-accent'
+	// },
+	// [QuestType.WEEKLY]: {
+	// 	label: 'Weekly Quest',
+	// 	colorClass: 'text-base-content',
+	// 	borderClass: 'border-base-content',
+	// 	beforeClass: 'before:text-base-content',
+	// 	afterClass: 'after:text-base-content'
+	// }
 };
 
 export enum Priority {

@@ -5,6 +5,7 @@
 	import QuestContainer from './QuestContainer.svelte';
 	import { QuestStorage } from './storage';
 	import { updateMatching } from '$lib/arrayUtils';
+	import { generateId } from '$lib/id_generator';
 
 	interface Props {
 		quests: Quest[];
@@ -21,9 +22,31 @@
 
 		console.debug('Quest updated:', updatedQuest);
 	};
+
+	async function createQuest(type: QuestType) {
+		const newQuest: Quest = {
+			id: generateId('quest'),
+			completed: false,
+			description: '',
+			subquests: [],
+			title: 'New Quest',
+			type: type
+		};
+		await QuestStorage.getInstance().upsert(newQuest);
+		quests = [newQuest, ...quests];
+	}
 </script>
 
-<QuestContainer type={QuestType.MAIN} {quests} {updateQuest}></QuestContainer>
-<QuestContainer type={QuestType.SIDE} {quests} {updateQuest}></QuestContainer>
-<QuestContainer type={QuestType.DAILY} {quests} {updateQuest}></QuestContainer>
-<QuestContainer type={QuestType.WEEKLY} {quests} {updateQuest}></QuestContainer>
+<QuestContainer
+	type={QuestType.MAIN}
+	{quests}
+	{updateQuest}
+	createQuest={() => createQuest(QuestType.MAIN)}
+></QuestContainer>
+
+<QuestContainer
+	type={QuestType.SIDE}
+	{quests}
+	{updateQuest}
+	createQuest={() => createQuest(QuestType.SIDE)}
+></QuestContainer>

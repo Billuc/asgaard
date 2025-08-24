@@ -3,6 +3,7 @@
 	import { type Quest, QUEST_TYPES, QuestType } from './quest';
 	import { flip } from 'svelte/animate';
 	import SubquestTable from './SubquestTable.svelte';
+	import MyInput from '$lib/common/MyInput.svelte';
 
 	const LEFT_CURL = '︵‿୨';
 	const RIGHT_CURL = '୧‿︵';
@@ -11,9 +12,10 @@
 		type: QuestType;
 		quests: Quest[];
 		updateQuest: (quest: Quest) => void;
+		createQuest: () => void;
 	}
 
-	let { type, quests, updateQuest }: Props = $props();
+	let { type, quests, updateQuest, createQuest }: Props = $props();
 	let questTypeData = $derived(QUEST_TYPES[type]);
 	let offset = $state(0);
 
@@ -33,8 +35,26 @@
 	</p>
 
 	<div
-		class="relative my-8 flex w-fit max-w-full flex-row flex-nowrap items-center overflow-hidden"
+		class={[
+			'relative',
+			'my-8 pl-8',
+			'h-64 w-full',
+			'flex flex-row flex-nowrap items-center',
+			'overflow-hidden'
+		]}
 	>
+		<div class={['absolute', 'top-1/2 left-0 -translate-y-1/2', 'z-10']}>
+			<button
+				class={['btn btn-circle btn-soft', 'border-2', questTypeData.borderClass]}
+				onclick={() => {
+					createQuest();
+					offset = 0;
+				}}
+			>
+				&#xff0b;
+			</button>
+		</div>
+
 		{#each questsOfType as quest (quest.id)}
 			<div
 				class={[
@@ -51,10 +71,15 @@
 				]}
 				animate:flip={{ duration: 300 }}
 			>
-				<a href={asHref(Routes.Quest, { id: quest.id })} class="font-semibold">
-					&#x2619;&nbsp;{quest.title}
+				<div class="flex w-full items-baseline px-2">
+					&#x2619;&nbsp;
+					<MyInput
+						value={quest.title}
+						oninput={(title) => updateQuest({ ...quest, title })}
+						class={['input input-ghost', 'px-1']}
+					/>
 					&nbsp;&#x2767;
-				</a>
+				</div>
 
 				<div class="overflow-y-auto">
 					<SubquestTable
@@ -63,26 +88,20 @@
 						showActions={false}
 					/>
 				</div>
+
+				<a href={asHref(Routes.Quest, { id: quest.id })} class="link">Details</a>
 			</div>
 		{/each}
 
 		{#if questsOfType.length > 1}
-			<button
-				class={[
-					'btn',
-					'z-10',
-					'absolute',
-					'top-1/2',
-					'right-0',
-					'btn-circle',
-					'btn-soft',
-					'border-2',
-					questTypeData.borderClass
-				]}
-				onclick={() => offset++}
-			>
-				&gt;
-			</button>
+			<div class={['absolute', 'top-1/2 right-0 -translate-y-1/2', 'z-10']}>
+				<button
+					class={['btn btn-circle btn-soft', 'border-2', questTypeData.borderClass]}
+					onclick={() => offset++}
+				>
+					&gt;
+				</button>
+			</div>
 		{/if}
 	</div>
 </div>
