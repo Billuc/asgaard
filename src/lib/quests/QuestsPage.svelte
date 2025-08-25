@@ -37,16 +37,18 @@
 	}
 </script>
 
-<QuestContainer
-	type={QuestType.MAIN}
-	{quests}
-	{updateQuest}
-	createQuest={() => createQuest(QuestType.MAIN)}
-></QuestContainer>
+<div class="rounded-box bg-accent/15 px-2 py-2 shadow-2xl md:px-8 md:py-4">
+	<QuestContainer
+		type={QuestType.MAIN}
+		{quests}
+		{updateQuest}
+		createQuest={() => createQuest(QuestType.MAIN)}
+	></QuestContainer>
 
-<QuestContainer
-	type={QuestType.SIDE}
-	{quests}
-	{updateQuest}
-	createQuest={() => createQuest(QuestType.SIDE)}
-></QuestContainer>
+	<QuestContainer
+		type={QuestType.SIDE}
+		{quests}
+		{updateQuest}
+		createQuest={() => createQuest(QuestType.SIDE)}
+	></QuestContainer>
+</div>

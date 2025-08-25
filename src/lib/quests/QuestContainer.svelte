@@ -34,16 +34,8 @@
 		{questTypeData.label}s {RIGHT_CURL}
 	</p>
 
-	<div
-		class={[
-			'relative',
-			'my-8 pl-8',
-			'h-64 w-full',
-			'flex flex-row flex-nowrap items-center',
-			'overflow-hidden'
-		]}
-	>
-		<div class={['absolute', 'top-1/2 left-0 -translate-y-1/2', 'z-10']}>
+	<div class={['relative', 'my-4 px-8']}>
+		<div class={['absolute', 'top-1/2 left-0 -translate-y-1/2', 'z-20']}>
 			<button
 				class={['btn btn-circle btn-soft', 'border-2', questTypeData.borderClass]}
 				onclick={() => {
@@ -55,46 +47,48 @@
 			</button>
 		</div>
 
-		{#each questsOfType as quest (quest.id)}
-			<div
-				class={[
-					questTypeData.borderClass,
-					'border-8 border-double',
-					'py-2',
-					'rounded-box',
-					'h-64 w-48 min-w-48',
-					'truncate text-center',
-					'z-10',
-					'quest-sheet',
-					'bg-base-100',
-					'inline-flex flex-col flex-nowrap'
-				]}
-				animate:flip={{ duration: 300 }}
-			>
-				<div class="flex w-full items-baseline px-2">
-					&#x2619;&nbsp;
-					<MyInput
-						value={quest.title}
-						oninput={(title) => updateQuest({ ...quest, title })}
-						class={['input input-ghost', 'px-1']}
-					/>
-					&nbsp;&#x2767;
-				</div>
+		<div class={['h-64 w-full', 'flex flex-row flex-nowrap items-center', 'overflow-hidden']}>
+			{#each questsOfType as quest (quest.id)}
+				<div
+					class={[
+						questTypeData.borderClass,
+						'border-8 border-double',
+						'py-2',
+						'rounded-box',
+						'h-64 w-48 min-w-48',
+						'truncate text-center',
+						'z-10',
+						'quest-sheet',
+						'bg-base-100',
+						'inline-flex flex-col flex-nowrap'
+					]}
+					animate:flip={{ duration: 500 }}
+				>
+					<div class="flex w-full items-baseline px-2">
+						&#x2619;&nbsp;
+						<MyInput
+							value={quest.title}
+							oninput={(title) => updateQuest({ ...quest, title })}
+							class={['input input-ghost', 'px-1']}
+						/>
+						&nbsp;&#x2767;
+					</div>
 
-				<div class="overflow-y-auto">
-					<SubquestTable
-						subquests={quest.subquests}
-						updateSubquests={(sqs) => updateQuest({ ...quest, subquests: sqs })}
-						showActions={false}
-					/>
-				</div>
+					<div class="overflow-y-auto">
+						<SubquestTable
+							subquests={quest.subquests}
+							updateSubquests={(sqs) => updateQuest({ ...quest, subquests: sqs })}
+							showActions={false}
+						/>
+					</div>
 
-				<a href={asHref(Routes.Quest, { id: quest.id })} class="link">Details</a>
-			</div>
-		{/each}
+					<a href={asHref(Routes.Quest, { id: quest.id })} class="link">Details</a>
+				</div>
+			{/each}
+		</div>
 
 		{#if questsOfType.length > 1}
-			<div class={['absolute', 'top-1/2 right-0 -translate-y-1/2', 'z-10']}>
+			<div class={['absolute', 'top-1/2 right-0 -translate-y-1/2', 'z-20']}>
 				<button
 					class={['btn btn-circle btn-soft', 'border-2', questTypeData.borderClass]}
 					onclick={() => offset++}
