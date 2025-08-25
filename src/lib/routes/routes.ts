@@ -5,19 +5,22 @@ export enum Routes {
   Quests,
   Quest,
   Boards,
-  Board
+  Board,
+  Workspace
 }
 
 export enum NavLink {
   Home = 'home',
   Quests = 'quests',
-  Boards = 'boards'
+  Boards = 'boards',
+  Workspace = 'workspace'
 }
 
 export const NAV_LINKS: { [k in NavLink]: { name: string; route: Routes } } = {
   [NavLink.Home]: { name: 'Home', route: Routes.Home },
   [NavLink.Quests]: { name: 'Quests', route: Routes.Quests },
-  [NavLink.Boards]: { name: 'Boards', route: Routes.Boards }
+  [NavLink.Boards]: { name: 'Boards', route: Routes.Boards },
+  [NavLink.Workspace]: { name: 'Workspace', route: Routes.Workspace }
 };
 
 export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLink } } = {
@@ -41,6 +44,11 @@ export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLin
     name: 'Board',
     path: '/boards/board',
     link: NavLink.Boards
+  },
+  [Routes.Workspace]: {
+    name: 'Workspace',
+    path: '/workspace',
+    link: NavLink.Workspace
   }
 };
 

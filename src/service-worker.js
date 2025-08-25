@@ -67,7 +67,7 @@ self.addEventListener('fetch', (fetchEvent) => {
 
     // We couldn't find the resource in the cache, try fetching it from network
     try {
-      const response = fetch(event.request);
+      const response = await fetch(event.request);
 
       // If we are offline, response can be a value that is not a Response
       if (!(response instanceof Response)) {

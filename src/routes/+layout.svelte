@@ -24,7 +24,7 @@
 
 <NavBar></NavBar>
 
-<div class="mx-auto w-full px-4 pt-4 pb-20 md:w-2/3 md:pb-4 lg:w-1/2">
+<div class="w-full pb-16 md:pb-0">
 	{@render children()}
 </div>
 
