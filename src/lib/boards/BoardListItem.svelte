@@ -2,7 +2,6 @@
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { fade } from 'svelte/transition';
 	import type { ListItem } from './board';
-	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 	import { draggable, draghandle, dropzone } from '$lib/draggable';
 
 	interface Props {
@@ -33,10 +32,6 @@
 		const { itemId } = JSON.parse(json);
 		onDrop(itemId, item.id);
 	}
-
-	$effect(() => {
-		enableDragDropTouch();
-	});
 </script>
 
 <div

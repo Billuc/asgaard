@@ -5,6 +5,7 @@
 	import ToastContainer from '$lib/common/ToastContainer.svelte';
 	import NavBar from '$lib/routes/NavBar.svelte';
 	import '../app.css';
+	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 
 	let { children } = $props();
 
@@ -14,6 +15,10 @@
 		if (pageState.message && pageState.message !== '') {
 			addToast(pageState.message);
 		}
+	});
+
+	$effect(() => {
+		enableDragDropTouch();
 	});
 </script>
 

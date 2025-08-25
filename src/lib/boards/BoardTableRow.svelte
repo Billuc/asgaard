@@ -2,10 +2,7 @@
 	import type { TableRow } from './board';
 	import BoardTableCell from './BoardTableCell.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
-	import { enableDragDropTouch } from '@dragdroptouch/drag-drop-touch';
 	import { draggable, draghandle, dropzone } from '$lib/draggable';
-
-	let dragging: boolean = $state(false);
 
 	interface Props {
 		row: TableRow;
@@ -43,10 +40,6 @@
 		newCells[colIndex] = t;
 		updateRow({ ...row, cells: newCells });
 	}
-
-	$effect(() => {
-		enableDragDropTouch();
-	});
 </script>
 
 <tr {@attach draggable(dragStart)} {@attach dropzone(drop)}>
