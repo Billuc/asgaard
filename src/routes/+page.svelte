@@ -37,7 +37,7 @@
 	<title>Asgaard - Home</title>
 </svelte:head>
 
-<div class="container mx-auto">
+<div class="container mx-auto px-8 pt-4">
 	<h1 class="text-center text-2xl font-black">Asgaard</h1>
 
 	<p class="text-center">Welcome to Asgaard, the ultimate quest management system!</p>
