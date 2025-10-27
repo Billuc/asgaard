@@ -76,18 +76,8 @@
 	/>
 </div>
 
-<div class={[images.length === 1 ? 'columns-1' : 'columns-2 md:columns-3', 'gap-4']}>
-	{#each images as image (image.id)}
-		<div class="relative">
-			<button onclick={() => openImageDialog(image)} class="cursor-pointer">
-				<img src={image.url} alt={data.title} class="w-auto rounded-sm" />
-			</button>
-		</div>
-	{/each}
-</div>
-
 <div class="card-actions">
-	<button onclick={() => imageInput.click()} class="btn mx-auto btn-sm">+ Add image(s)</button>
+	<button onclick={() => imageInput.click()} class="btn btn-xs">+ Add image(s)</button>
 	<input
 		type="file"
 		accept="image/*"
@@ -96,6 +86,21 @@
 		bind:this={imageInput}
 		multiple
 	/>
+</div>
+
+<div
+	class={[
+		'flex flex-row flex-nowrap',
+		images.length === 1 ? 'justify-center' : 'justify-start',
+		'h-36',
+		'overflow-x-scroll'
+	]}
+>
+	{#each images as image (image.id)}
+		<button onclick={() => openImageDialog(image)} class="contents cursor-pointer">
+			<img src={image.url} alt={data.title} class="h-full w-auto rounded-sm object-cover" />
+		</button>
+	{/each}
 </div>
 
 <dialog bind:this={imageDialog} class="modal">

@@ -62,7 +62,7 @@
 	/>
 </div>
 
-<div>
+<div class="card-actions">
 	<button class="btn btn-xs" onclick={() => updateList(data.list.filter((item) => !item.done))}>
 		Clear done
 	</button>

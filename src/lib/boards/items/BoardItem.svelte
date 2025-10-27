@@ -26,7 +26,7 @@
 <div
 	class={[
 		style.flatItems ? '' : 'card bg-zinc-700 card-sm',
-		style.flatItems ? '' : 'mb-4',
+		style.flatItems ? 'mb-6' : 'mb-4',
 		'relative',
 		showActions ? 'mt-6' : 'mt-0',
 		'transition-all duration-200'
@@ -39,7 +39,7 @@
 			<button class="btn btn-sm btn-error" onclick={deleteBlock}>Delete card</button>
 		</div>
 	{/if}
-	<div class="card-body">
+	<div class={['card-body', style.flatItems ? 'p-0' : '']}>
 		{#if data.type === BoardItemType.LIST}
 			<BoardListView {data} {updateData} {showActions}></BoardListView>
 		{:else if data.type === BoardItemType.NOTE}
