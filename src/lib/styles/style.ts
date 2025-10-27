@@ -15,6 +15,6 @@ export enum BorderStyle {
 export const DEFAULT_STYLE: Style = {
   id: '',
   name: '[Asgaard] Default',
-  flatItems: true,
+  flatItems: false,
   borderStyle: BorderStyle.None
 };
