@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { NoteData } from './board';
+	import type { NoteData } from '$lib/boards/board';
 	import * as TinyMDE from 'tiny-markdown-editor';
 	import './note-editor.css';
 

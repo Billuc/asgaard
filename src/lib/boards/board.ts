@@ -3,6 +3,7 @@ export interface Board {
 	title: string;
 	items: BoardItem[];
 	favorite: boolean;
+	styleId: string;
 }
 
 export enum BoardItemType {

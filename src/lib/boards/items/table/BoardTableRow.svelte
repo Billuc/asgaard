@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TableRow } from './board';
+	import type { TableRow } from '$lib/boards/board';
 	import BoardTableCell from './BoardTableCell.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { draggable, draghandle, dropzone } from '$lib/draggable';

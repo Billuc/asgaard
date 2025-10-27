@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { QuestData } from './board';
+	import type { QuestData } from '$lib/boards/board';
 	import { QuestStorage } from '$lib/quests/storage';
 	import QuestSelect from '$lib/quests/QuestSelect.svelte';
 	import type { Quest } from '$lib/quests/quest';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { moveTo, removeMatching, updateMatching } from '$lib/arrayUtils';
 	import { fly } from 'svelte/transition';
-	import type { ListData, ListItem } from './board';
+	import type { ListData, ListItem } from '$lib/boards/board';
 	import { flip } from 'svelte/animate';
 	import { generateId } from '$lib/id_generator';
 	import { cloneDeep, debounce } from 'lodash-es';

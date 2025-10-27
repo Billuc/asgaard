@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { debounce } from 'lodash-es';
-	import { type Image, type ImageData } from './board';
+	import { type Image, type ImageData } from '$lib/boards/board';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { generateId } from '$lib/id_generator';
-	import { ImageStorage } from './storage';
+	import { ImageStorage } from '$lib/boards/storage';
 
 	interface Props {
 		data: ImageData;

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { TableData } from './board';
+	import type { TableData } from '$lib/boards/board';
 	import { debounce } from 'lodash-es';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { generateId } from '$lib/id_generator';
 	import { mapAt, removeAt, updateAt, moveTo } from '$lib/arrayUtils';
 	import BoardTableHead from './BoardTableHead.svelte';
 	import { flip } from 'svelte/animate';
-	import { fade, fly, slide } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import BoardTableRow from './BoardTableRow.svelte';
 
 	interface Props {

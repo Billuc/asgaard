@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import type { BoardItemData } from './board';
-	import { BoardItemType } from './board';
-	import BoardListView from './BoardListView.svelte';
-	import BoardNoteView from './BoardNoteView.svelte';
-	import BoardQuestView from './BoardQuestView.svelte';
-	import BoardImageView from './BoardImageView.svelte';
-	import BoardTableView from './BoardTableView.svelte';
+	import type { BoardItemData } from '../board';
+	import { BoardItemType } from '../board';
+	import BoardListView from './list/BoardListView.svelte';
+	import BoardNoteView from './note/BoardNoteView.svelte';
+	import BoardQuestView from './quest/BoardQuestView.svelte';
+	import BoardImageView from './image/BoardImageView.svelte';
+	import BoardTableView from './table/BoardTableView.svelte';
+	import type { Style } from '$lib/styles/style';
 
 	interface Props {
 		data: BoardItemData;
+		style: Style;
 		moveBlockUp: () => void;
 		moveBlockDown: () => void;
 		deleteBlock: () => void;
@@ -17,14 +19,15 @@
 		showActions: boolean;
 	}
 
-	let { data, moveBlockUp, moveBlockDown, deleteBlock, showActions, updateData }: Props = $props();
+	let { data, style, moveBlockUp, moveBlockDown, deleteBlock, showActions, updateData }: Props =
+		$props();
 </script>
 
 <div
 	class={[
-		'card  bg-zinc-700 card-sm',
+		style.flatItems ? '' : 'card bg-zinc-700 card-sm',
+		style.flatItems ? '' : 'mb-4',
 		'relative',
-		'mb-4',
 		showActions ? 'mt-6' : 'mt-0',
 		'transition-all duration-200'
 	]}

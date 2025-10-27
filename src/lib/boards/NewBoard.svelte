@@ -10,7 +10,8 @@
 			id: generateId('board'),
 			title: 'New Board',
 			items: [],
-			favorite: false
+			favorite: false,
+			styleId: ''
 		};
 		await BoardStorage.getInstance().upsert(newBoard);
 		goto(asHref(Routes.Board, { id: newBoard.id }), { state: { message: 'New board created!' } });

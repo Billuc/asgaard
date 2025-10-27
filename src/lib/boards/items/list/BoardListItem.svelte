@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { fade } from 'svelte/transition';
-	import type { ListItem } from './board';
+	import type { ListItem } from '$lib/boards/board';
 	import { draggable, draghandle, dropzone } from '$lib/draggable';
 
 	interface Props {
