@@ -6,21 +6,24 @@ export enum Routes {
   Quest,
   Boards,
   Board,
-  Workspace
+  Workspace,
+  Settings
 }
 
 export enum NavLink {
   Home = 'home',
-  Quests = 'quests',
+  // Quests = 'quests',
   Boards = 'boards',
-  Workspace = 'workspace'
+  Workspace = 'workspace',
+  Settings = 'settings'
 }
 
 export const NAV_LINKS: { [k in NavLink]: { name: string; route: Routes } } = {
   [NavLink.Home]: { name: 'Home', route: Routes.Home },
-  [NavLink.Quests]: { name: 'Quests', route: Routes.Quests },
+  // [NavLink.Quests]: { name: 'Quests', route: Routes.Quests },
   [NavLink.Boards]: { name: 'Boards', route: Routes.Boards },
-  [NavLink.Workspace]: { name: 'Workspace', route: Routes.Workspace }
+  [NavLink.Workspace]: { name: 'Workspace', route: Routes.Workspace },
+  [NavLink.Settings]: { name: 'Settings', route: Routes.Settings }
 };
 
 export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLink } } = {
@@ -28,12 +31,14 @@ export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLin
   [Routes.Quests]: {
     name: 'Quests',
     path: '/quests',
-    link: NavLink.Quests
+    link: NavLink.Home
+    // link: NavLink.Quests
   },
   [Routes.Quest]: {
     name: 'Quest',
     path: '/quests/quest',
-    link: NavLink.Quests
+    link: NavLink.Home
+    // link: NavLink.Quests
   },
   [Routes.Boards]: {
     name: 'Boards',
@@ -49,6 +54,11 @@ export const ROUTES: { [k in Routes]: { name: string; path: string; link: NavLin
     name: 'Workspace',
     path: '/workspace',
     link: NavLink.Workspace
+  },
+  [Routes.Settings]: {
+    name: 'Settings',
+    path: '/settings',
+    link: NavLink.Settings
   }
 };
 

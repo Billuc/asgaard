@@ -63,6 +63,19 @@
 	}
 </script>
 
+<div class="mb-4 flex flex-row flex-wrap justify-center gap-2">
+	<ActionsButton bind:show={showActions}>
+		<div
+			class="flex flex-row flex-wrap justify-center gap-2"
+			transition:slide={{ axis: 'x', duration: 250 }}
+		>
+			<button class="btn btn-outline btn-sm btn-info" onclick={exportBoard}>Export board</button>
+			<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
+			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
+		</div>
+	</ActionsButton>
+</div>
+
 <BoardBorder boardStyle={style}>
 	<div class="text-center">
 		<MyInput
@@ -70,19 +83,6 @@
 			value={board.title}
 			oninput={(title) => debouncedUpdateBoard({ ...board, title })}
 		/>
-	</div>
-
-	<div class="mb-4 flex flex-row flex-wrap justify-center gap-2">
-		<ActionsButton bind:show={showActions}>
-			<div
-				class="flex flex-row flex-wrap justify-center gap-2"
-				transition:slide={{ axis: 'x', duration: 250 }}
-			>
-				<button class="btn btn-outline btn-sm btn-info" onclick={exportBoard}>Export board</button>
-				<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
-				<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
-			</div>
-		</ActionsButton>
 	</div>
 
 	<div>
