@@ -25,7 +25,7 @@
 			{ id: '1', name: 'Bob', age: 22, hasSiblings: false },
 			{ id: '2', name: 'Alice', age: 5, hasSiblings: true }
 		]}
-		columns={{ name: 'NAMEZ', age: "AAAGE", hasSiblings: "Siblings ?", id: "#" }}
+		columns={{ name: 'NAMEZ', age: "AAAGE" }}
 		updateItem={(i, v) => { console.log(v)}}
 	/>
 </div>
