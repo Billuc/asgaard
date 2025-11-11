@@ -1,22 +1,57 @@
 <script lang="ts" generics="Item extends { id: string, [k: string]: any }">
 	import { type Snippet } from 'svelte';
-	import { debounce, cloneDeep, slice } from 'lodash-es';
+	import { debounce, cloneDeep } from 'lodash-es';
 	import { flip } from 'svelte/animate';
 
-	interface Props {
-		items: Item[];
-		columns: { [k in keyof Item]?: string };
-		inputs?: { [k in keyof Item]?: Snippet<[string, Item[k]?, ((value: Item[k]) => void)?]> };
-		updateItem?: (id: string, value: Item) => void;
-		nbColumns?: 3 | 4 | 5;
+	interface Column<k extends keyof Item> {
+		label: string;
+		input?: Snippet<[string, Item[k]?, ((value: Item[k]) => void)?]>;
+		disabled?: boolean;
 	}
 
-	const { items, columns, inputs = {}, updateItem = () => {}, nbColumns = 3 }: Props = $props();
+	interface ItemData {
+		item: Item;
+		disabled?: boolean;
+	}
+
+	interface Props {
+		items: ItemData[];
+		columns: { [k in keyof Item]?: Column<k> };
+		updateItem?: (id: string, value: Item) => void;
+		nbColumns?: 2 | 3 | 4 | 5;
+	}
+
+	const { items, columns, updateItem = () => {}, nbColumns = 3 }: Props = $props();
 	let scrollIndex = $state(0);
 	const columnsToShow = $derived(Object.keys(columns).slice(scrollIndex, scrollIndex + nbColumns));
 
+	const classes = $derived.by(() => {
+		switch (columnsToShow.length) {
+			case 2:
+				return {
+					grid: 'grid-cols-2'
+				};
+			case 3:
+				return {
+					grid: 'grid-cols-3'
+				};
+			case 4:
+				return {
+					grid: 'grid-cols-4'
+				};
+			case 5:
+				return {
+					grid: 'grid-cols-5'
+				};
+			default:
+				return {
+					grid: 'grid-cols-1'
+				};
+		}
+	});
+
 	function doUpdate(id: string, key: keyof Item, value: any) {
-		const oldItem = items.find((i) => i.id === id);
+		const oldItem = items.find((i) => i.item.id === id)?.item;
 
 		if (!oldItem) {
 			console.warn(`Could not find item with id ${id}`);
@@ -43,41 +78,74 @@
 	});
 </script>
 
-<div class="relative">
-	<table class={['edit-table', 'table table-zebra', 'table-xs md:table-sm lg:table-md']}>
-		<thead>
-			<tr>
-				{#each columnsToShow as c (c)}
-					<th
-						class="w-1/3 md:w-1/4 lg:w-1/5"
-						style={`max-width: ${(100 / columnsToShow.length).toString()}%`}
-						animate:flip={{ duration: 200 }}
-					>
-						{columns[c]}
-					</th>
-				{/each}
-			</tr>
-		</thead>
-		<tbody>
-			{#each items as item (item.id)}
-				<tr>
-					{#each columnsToShow as c (c)}
-						<td
-							animate:flip={{ duration: 200 }}
-							class="w-1/3 md:w-1/4 lg:w-1/5"
-							style={`max-width: ${(100 / columnsToShow.length).toString()}%`}
-						>
-							{@render tableinput(item, c)}
-						</td>
-					{/each}
-				</tr>
+{#snippet tableinput(item: ItemData, c: keyof Item)}
+	{#if columns[c]?.input}
+		{@render columns[c]!.input(item.item.id, item.item[c], (v) =>
+			debouncedUpdates.get(c)?.(item.item.id, v)
+		)}
+	{:else if typeof item.item[c] === 'string'}
+		<div
+			contenteditable={item.disabled !== true && columns[c]?.disabled !== true}
+			class="my-input string-input"
+			oninput={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLDivElement).innerText)}
+		>
+			{item.item[c]}
+		</div>
+	{:else if typeof item.item[c] === 'number'}
+		<input
+			type="number"
+			value={item.item[c]}
+			class={['my-input', 'input input-ghost', 'input-xs md:input-sm lg:input-md']}
+			oninput={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, Number((e.target! as HTMLInputElement).value))}
+			disabled={item.disabled === true || columns[c]?.disabled === true}
+		/>
+	{:else if typeof item.item[c] === 'boolean'}
+		<input
+			type="checkbox"
+			checked={item.item[c]}
+			class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
+			onchange={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLInputElement).checked)}
+			disabled={item.disabled === true || columns[c]?.disabled === true}
+		/>
+	{/if}
+{/snippet}
+
+<div class="relative px-2">
+	<div class={['edit-table', 'grid', classes.grid]}>
+		<div
+			class={[
+				'grid grid-cols-subgrid',
+				'col-span-full',
+				'even:bg-base-300/30',
+				'border-b border-b-base-content/10'
+			]}
+		>
+			{#each columnsToShow as c (c)}
+				<div
+					animate:flip={{ duration: 300 }}
+					class={['px-2 py-1', 'text-sm md:text-base', 'font-bold text-base-content/60']}
+				>
+					{columns[c]?.label}
+				</div>
 			{/each}
-		</tbody>
-	</table>
+		</div>
+		{#each items as item (item.item.id)}
+			<div class={['grid grid-cols-subgrid', 'col-span-full', 'even:bg-base-300/50']}>
+				{#each columnsToShow as c (c)}
+					<div animate:flip={{ duration: 300 }} class="self-center px-2 py-1">
+						{@render tableinput(item, c)}
+					</div>
+				{/each}
+			</div>
+		{/each}
+	</div>
 
 	{#if Object.keys(columns).length > scrollIndex + nbColumns}
 		<button
-			class="btn absolute top-1/2 -right-2 btn-circle font-bold btn-sm"
+			class="btn absolute top-1/2 -right-2 btn-circle font-bold btn-outline btn-sm btn-info"
 			onclick={() => scrollIndex++}
 		>
 			&gt;
@@ -85,7 +153,7 @@
 	{/if}
 	{#if scrollIndex > 0}
 		<button
-			class="btn absolute top-1/2 -left-2 btn-circle font-bold btn-sm"
+			class="btn absolute top-1/2 -left-2 btn-circle font-bold btn-outline btn-sm btn-info"
 			onclick={() => scrollIndex--}
 		>
 			&lt;
@@ -93,45 +161,16 @@
 	{/if}
 </div>
 
-{#snippet tableinput(item: Item, c: keyof Item)}
-	{#if c in inputs}
-		{@render inputs[c]!(item.id, item[c], (v) => debouncedUpdates.get(c)?.(item.id, v))}
-	{:else if typeof item[c] === 'string'}
-		<div
-			contenteditable
-			class="my-input w-full max-w-full overflow-x-auto"
-			oninput={(e) => debouncedUpdates.get(c)!(item.id, (e.target! as HTMLDivElement).innerText)}
-		>
-			{item[c]}
-		</div>
-	{:else if typeof item[c] === 'number'}
-		<input
-			type="number"
-			value={item[c]}
-			class={['my-input', 'input input-ghost', 'input-xs md:input-sm lg:input-md']}
-			oninput={(e) =>
-				debouncedUpdates.get(c)!(item.id, Number((e.target! as HTMLInputElement).value))}
-		/>
-	{:else if typeof item[c] === 'boolean'}
-		<input
-			type="checkbox"
-			checked={item[c]}
-			class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
-			onchange={(e) => debouncedUpdates.get(c)!(item.id, (e.target! as HTMLInputElement).checked)}
-		/>
-	{/if}
-{/snippet}
-
 <style>
 	@reference "../../app.css";
 
-	table.edit-table tbody tr td {
-		@apply p-1;
-	}
-
-	.edit-table div[contenteditable] {
+	.edit-table .string-input {
 		@apply w-full rounded-field border-none px-2 py-1;
 		@apply text-xs md:text-sm lg:text-base;
+	}
+
+	.edit-table .string-input[contenteditable='false'] {
+		@apply opacity-40;
 	}
 
 	.my-input {
