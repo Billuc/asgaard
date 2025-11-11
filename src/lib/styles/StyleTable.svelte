@@ -4,7 +4,6 @@
 	import BoardItem from '$lib/boards/items/BoardItem.svelte';
 	import Dialog from '$lib/common/Dialog.svelte';
 	import EditTable from '$lib/common/EditTable.svelte';
-	import MyInput from '$lib/common/MyInput.svelte';
 	import BorderStyleSelect from './BorderStyleSelect.svelte';
 	import { BorderStyle, type Style, ASGAARD_STYLES } from './style';
 
@@ -12,7 +11,7 @@
 		styles: Style[];
 		createStyle: (style: Style) => void;
 		updateStyle: (style: Style) => void;
-		deleteStyle: (style: Style) => void;
+		deleteStyle: (id: string) => void;
 	}
 
 	const { styles, createStyle, updateStyle, deleteStyle }: Props = $props();
@@ -53,12 +52,6 @@
 		styleToPreview = styles.find((s) => s.id === id) ?? null;
 	};
 
-	const ondelete = (id: string) => {
-		const toDelete = styles.find((s) => s.id === id);
-		if (!toDelete) return;
-		deleteStyle(toDelete);
-	};
-
 	const onupdate = (item: Style) => {
 		if (item.id === '') {
 			newStyle = item;
@@ -84,7 +77,7 @@
 	{#if id === ''}
 		<button class="btn btn-xs" onclick={() => createStyle(newStyle)}>Create</button>
 	{:else if !ASGAARD_STYLES.find((s) => s.id === id)}
-		<button class="btn btn-sm" onclick={() => ondelete(id)}>Delete</button>
+		<button class="btn btn-sm" onclick={() => deleteStyle(id)}>Delete</button>
 	{/if}
 {/snippet}
 

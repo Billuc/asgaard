@@ -19,9 +19,9 @@ self.addEventListener('install', (event) => {
   console.log('Assets to cache:', ASSETS);
 
   event.waitUntil(
-    caches.open(CACHE).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE)
+    .then((cache) => cache.addAll(ASSETS))
+    .catch((err) => console.error(err))
   );
 });
 

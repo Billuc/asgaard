@@ -97,7 +97,10 @@
 			{/each}
 		</div>
 		{#each items as item (item.item.id)}
-			<div class={['grid grid-cols-subgrid', 'col-span-full', 'even:bg-base-300/50']}>
+			<div
+				class={['grid grid-cols-subgrid', 'col-span-full', 'even:bg-base-300/50']}
+				animate:flip={{ duration: 300 }}
+			>
 				{#each columnsToShow as c (c)}
 					<div animate:flip={{ duration: 300 }} class="self-center px-2 py-1">
 						{@render tableinput(item, c)}
