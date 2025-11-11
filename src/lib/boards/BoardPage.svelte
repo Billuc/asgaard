@@ -14,6 +14,7 @@
 	import BoardBorder from './BoardBorder.svelte';
 	import { DEFAULT_STYLE } from '$lib/styles/style';
 	import { StyleStorage } from '$lib/styles/storage';
+	import StyleSelect from '$lib/styles/StyleSelect.svelte';
 
 	interface Props {
 		board: Board;
@@ -64,6 +65,11 @@
 </script>
 
 <div class="mb-4 flex flex-row flex-wrap justify-center gap-2">
+	<label class="join">
+		<span class="label join-item border border-base-content/20 px-2 text-sm">Style</span>
+		<StyleSelect {style} setStyle={(s) => (style = s)} class="join-item" />
+	</label>
+
 	<ActionsButton bind:show={showActions}>
 		<div
 			class="flex flex-row flex-wrap justify-center gap-2"
