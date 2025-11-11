@@ -2,8 +2,8 @@
 	import { BoardItemType } from '$lib/boards/board';
 	import BoardBorder from '$lib/boards/BoardBorder.svelte';
 	import BoardItem from '$lib/boards/items/BoardItem.svelte';
-	import BoardListView from '$lib/boards/items/list/BoardListView.svelte';
 	import Dialog from '$lib/common/Dialog.svelte';
+	import EditTable from '$lib/common/EditTable.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import BorderStyleSelect from './BorderStyleSelect.svelte';
 	import { BorderStyle, type Style, ASGAARD_STYLES } from './style';
@@ -26,78 +26,67 @@
 	let styleToPreview = $state<Style | null>(null);
 	let showDialog = $derived(styleToPreview !== null);
 
-	const preview = (style: Style) => {
-		styleToPreview = style;
+	let styleItems = $derived([
+		...ASGAARD_STYLES.map((s) => ({ disabled: true, item: s })),
+		...styles.map((s) => ({ disabled: false, item: s })),
+		{ disabled: false, item: newStyle }
+	]);
+	const columns = {
+		name: { label: 'Name' },
+		flatItems: { label: 'Flat Items' },
+		borderStyle: { label: 'Border', input: inputBorder },
+		actions: { label: 'Actions', input: actions }
+	};
+
+	const preview = (id: string) => {
+		if (id === '') {
+			styleToPreview = newStyle;
+			return;
+		}
+
+		const asgaardStyle = ASGAARD_STYLES.find((s) => s.id === id);
+		if (asgaardStyle) {
+			styleToPreview = asgaardStyle;
+			return;
+		}
+
+		styleToPreview = styles.find((s) => s.id === id) ?? null;
+	};
+
+	const ondelete = (id: string) => {
+		const toDelete = styles.find((s) => s.id === id);
+		if (!toDelete) return;
+		deleteStyle(toDelete);
+	};
+
+	const onupdate = (item: Style) => {
+		if (item.id === '') {
+			newStyle = item;
+			return;
+		}
+
+		updateStyle(item);
 	};
 </script>
 
-<div class="overflow-x-auto">
-	<table class="table table-xs">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Flat Items</th>
-				<th>Border</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each ASGAARD_STYLES as style (style.id)}
-				<tr>
-					<td>
-						<MyInput class="input-xs" value={style.name} disabled />
-					</td>
-					<td>
-						<input
-							type="checkbox"
-							class="checkbox checkbox-sm"
-							checked={style.flatItems}
-							disabled
-						/>
-					</td>
-					<td>
-						<BorderStyleSelect
-							borderStyle={style.borderStyle}
-							setBorderStyle={() => {}}
-							class="select-xs"
-						/>
-					</td>
-					<td>
-						<button class="btn btn-xs" onclick={() => preview(style)}>Preview</button>
-					</td>
-				</tr>
-			{/each}
-			{#each styles as style (style.id)}
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>
-						<button class="btn">Preview</button>
-					</td>
-				</tr>
-			{/each}
+<EditTable items={styleItems} {columns} {onupdate} />
 
-			<tr>
-				<td>
-					<MyInput class="input-xs" value={newStyle.name} oninput={(v) => (newStyle.name = v)} />
-				</td>
-				<td>
-					<input type="checkbox" class="checkbox checkbox-sm" bind:checked={newStyle.flatItems} />
-				</td>
-				<td>
-					<BorderStyleSelect
-						borderStyle={newStyle.borderStyle}
-						setBorderStyle={(bs) => (newStyle.borderStyle = bs)}
-					/>
-				</td>
-				<td>
-					<button class="btn btn-xs" onclick={() => createStyle(newStyle)}>Create</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+{#snippet inputBorder(id: string, value?: BorderStyle, update?: (value: BorderStyle) => void)}
+	<BorderStyleSelect
+		borderStyle={value ?? BorderStyle.None}
+		setBorderStyle={(bs) => update?.(bs)}
+	/>
+{/snippet}
+
+{#snippet actions(id: string)}
+	<button class="btn btn-xs" onclick={() => preview(id)}>Preview</button>
+
+	{#if id === ''}
+		<button class="btn btn-xs" onclick={() => createStyle(newStyle)}>Create</button>
+	{:else if !ASGAARD_STYLES.find((s) => s.id === id)}
+		<button class="btn btn-sm" onclick={() => ondelete(id)}>Delete</button>
+	{/if}
+{/snippet}
 
 <Dialog open={showDialog} onhide={() => (styleToPreview = null)}>
 	<div class="mx-2 my-4">

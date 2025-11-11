@@ -8,6 +8,7 @@
 	}
 
 	let { borderStyle, setBorderStyle, class: additionalClasses = [] }: Props = $props();
+	let selected = $state(borderStyle.toString());
 
 	const onSelect = async (ev: Event) => {
 		const value = (ev.target! as HTMLSelectElement).value;
@@ -15,7 +16,7 @@
 	};
 </script>
 
-<select value={borderStyle} onchange={onSelect} class={['select', 'select-sm', additionalClasses]}>
+<select bind:value={selected} onchange={onSelect} class={['select', 'select-sm', additionalClasses]}>
 	{#each Object.entries(BORDER_STYLES) as style (style[0])}
 		<option value={style[0]} class={style[1].className}>{style[1].label}</option>
 	{/each}

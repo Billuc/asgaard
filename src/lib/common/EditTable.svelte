@@ -3,9 +3,9 @@
 	import { debounce, cloneDeep } from 'lodash-es';
 	import { flip } from 'svelte/animate';
 
-	interface Column<k extends keyof Item> {
+	interface Column {
 		label: string;
-		input?: Snippet<[string, Item[k]?, ((value: Item[k]) => void)?]>;
+		input?: Snippet<[string, any?, ((value: any) => void)?]>;
 		disabled?: boolean;
 	}
 
@@ -16,12 +16,12 @@
 
 	interface Props {
 		items: ItemData[];
-		columns: { [k in keyof Item]?: Column<k> };
-		updateItem?: (id: string, value: Item) => void;
+		columns: { [k: string]: Column };
+		onupdate?: (value: Item) => void;
 		nbColumns?: 2 | 3 | 4 | 5;
 	}
 
-	const { items, columns, updateItem = () => {}, nbColumns = 3 }: Props = $props();
+	const { items, columns, onupdate = () => {}, nbColumns = 3 }: Props = $props();
 	let scrollIndex = $state(0);
 	const columnsToShow = $derived(Object.keys(columns).slice(scrollIndex, scrollIndex + nbColumns));
 
@@ -51,17 +51,16 @@
 	});
 
 	function doUpdate(id: string, key: keyof Item, value: any) {
-		const oldItem = items.find((i) => i.item.id === id)?.item;
+		const indexToUpdate = items.findIndex((i) => i.item.id === id);
 
-		if (!oldItem) {
+		if (indexToUpdate === -1) {
 			console.warn(`Could not find item with id ${id}`);
 			return;
 		}
 
-		const newItem: Item = cloneDeep(oldItem);
+		const newItem = cloneDeep(items[indexToUpdate].item);
 		newItem[key] = value;
-
-		updateItem(id, newItem);
+		onupdate(newItem);
 	}
 
 	const debouncedUpdates = $derived.by(() => {
@@ -77,41 +76,6 @@
 		return debouncedFunctions;
 	});
 </script>
-
-{#snippet tableinput(item: ItemData, c: keyof Item)}
-	{#if columns[c]?.input}
-		{@render columns[c]!.input(item.item.id, item.item[c], (v) =>
-			debouncedUpdates.get(c)?.(item.item.id, v)
-		)}
-	{:else if typeof item.item[c] === 'string'}
-		<div
-			contenteditable={item.disabled !== true && columns[c]?.disabled !== true}
-			class="my-input string-input"
-			oninput={(e) =>
-				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLDivElement).innerText)}
-		>
-			{item.item[c]}
-		</div>
-	{:else if typeof item.item[c] === 'number'}
-		<input
-			type="number"
-			value={item.item[c]}
-			class={['my-input', 'input input-ghost', 'input-xs md:input-sm lg:input-md']}
-			oninput={(e) =>
-				debouncedUpdates.get(c)!(item.item.id, Number((e.target! as HTMLInputElement).value))}
-			disabled={item.disabled === true || columns[c]?.disabled === true}
-		/>
-	{:else if typeof item.item[c] === 'boolean'}
-		<input
-			type="checkbox"
-			checked={item.item[c]}
-			class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
-			onchange={(e) =>
-				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLInputElement).checked)}
-			disabled={item.disabled === true || columns[c]?.disabled === true}
-		/>
-	{/if}
-{/snippet}
 
 <div class="relative px-2">
 	<div class={['edit-table', 'grid', classes.grid]}>
@@ -160,6 +124,41 @@
 		</button>
 	{/if}
 </div>
+
+{#snippet tableinput(item: ItemData, c: string)}
+	{#if columns[c]?.input}
+		{@render columns[c]!.input(item.item.id, item.item[c], (v) =>
+			debouncedUpdates.get(c)?.(item.item.id, v)
+		)}
+	{:else if typeof item.item[c] === 'string'}
+		<div
+			contenteditable={item.disabled !== true && columns[c]?.disabled !== true}
+			class="my-input string-input"
+			oninput={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLDivElement).innerText)}
+		>
+			{item.item[c]}
+		</div>
+	{:else if typeof item.item[c] === 'number'}
+		<input
+			type="number"
+			value={item.item[c]}
+			class={['my-input', 'input input-ghost', 'input-xs md:input-sm lg:input-md']}
+			oninput={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, Number((e.target! as HTMLInputElement).value))}
+			disabled={item.disabled === true || columns[c]?.disabled === true}
+		/>
+	{:else if typeof item.item[c] === 'boolean'}
+		<input
+			type="checkbox"
+			checked={item.item[c]}
+			class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
+			onchange={(e) =>
+				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLInputElement).checked)}
+			disabled={item.disabled === true || columns[c]?.disabled === true}
+		/>
+	{/if}
+{/snippet}
 
 <style>
 	@reference "../../app.css";
