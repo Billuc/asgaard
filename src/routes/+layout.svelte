@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import { addToast } from '$lib/common/toast.svelte';
+	import { addToast } from '$lib/common/toast-state.svelte';
 	import ToastContainer from '$lib/common/ToastContainer.svelte';
 	import NavBar from '$lib/routes/NavBar.svelte';
 	import '../app.css';

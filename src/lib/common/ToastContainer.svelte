@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { removeToast, toastStore } from './toast.svelte';
+	import { removeToast, toastStore } from './toast-state.svelte';
 	import Toast from './Toast.svelte';
 
 	let messageStore = toastStore;
