@@ -5,7 +5,7 @@
 
 	interface Column {
 		label: string;
-		input?: Snippet<[string, any?, ((value: any) => void)?]>;
+		input?: Snippet<[string, any?, ((value: any) => void)?, boolean?]>;
 		disabled?: boolean;
 	}
 
@@ -77,7 +77,7 @@
 	});
 </script>
 
-<div class="relative px-2">
+<div class="relative">
 	<div class={['edit-table', 'grid', classes.grid]}>
 		<div
 			class={[
@@ -102,7 +102,7 @@
 				animate:flip={{ duration: 300 }}
 			>
 				{#each columnsToShow as c (c)}
-					<div animate:flip={{ duration: 300 }} class="self-center px-2 py-1">
+					<div animate:flip={{ duration: 300 }} class="self-center">
 						{@render tableinput(item, c)}
 					</div>
 				{/each}
@@ -111,27 +111,34 @@
 	</div>
 
 	{#if Object.keys(columns).length > scrollIndex + nbColumns}
-		<button
-			class="btn absolute top-1/2 -right-2 btn-circle font-bold btn-outline btn-sm btn-info"
-			onclick={() => scrollIndex++}
-		>
-			&gt;
-		</button>
+		<div class={['absolute', 'top-1/2 -right-2', '-translate-y-1/2']}>
+			<button
+				class="btn btn-circle font-bold btn-outline btn-xs btn-info md:btn-sm"
+				onclick={() => scrollIndex++}
+			>
+				&gt;
+			</button>
+		</div>
 	{/if}
 	{#if scrollIndex > 0}
-		<button
-			class="btn absolute top-1/2 -left-2 btn-circle font-bold btn-outline btn-sm btn-info"
-			onclick={() => scrollIndex--}
-		>
-			&lt;
-		</button>
+		<div class={['absolute', 'top-1/2 -left-2', '-translate-y-1/2']}>
+			<button
+				class="btn btn-circle font-bold btn-outline btn-xs btn-info md:btn-sm"
+				onclick={() => scrollIndex--}
+			>
+				&lt;
+			</button>
+		</div>
 	{/if}
 </div>
 
 {#snippet tableinput(item: ItemData, c: string)}
 	{#if columns[c]?.input}
-		{@render columns[c]!.input(item.item.id, item.item[c], (v) =>
-			debouncedUpdates.get(c)?.(item.item.id, v)
+		{@render columns[c]!.input(
+			item.item.id,
+			item.item[c],
+			(v) => debouncedUpdates.get(c)?.(item.item.id, v),
+			item.disabled === true || columns[c]?.disabled === true
 		)}
 	{:else if typeof item.item[c] === 'string'}
 		<div
@@ -152,14 +159,16 @@
 			disabled={item.disabled === true || columns[c]?.disabled === true}
 		/>
 	{:else if typeof item.item[c] === 'boolean'}
-		<input
-			type="checkbox"
-			checked={item.item[c]}
-			class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
-			onchange={(e) =>
-				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLInputElement).checked)}
-			disabled={item.disabled === true || columns[c]?.disabled === true}
-		/>
+		<div class="px-2">
+			<input
+				type="checkbox"
+				checked={item.item[c]}
+				class={['checkbox checkbox-primary', 'checkbox-sm md:checkbox-sm lg:checkbox-md']}
+				onchange={(e) =>
+					debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLInputElement).checked)}
+				disabled={item.disabled === true || columns[c]?.disabled === true}
+			/>
+		</div>
 	{/if}
 {/snippet}
 
@@ -167,7 +176,7 @@
 	@reference "../../app.css";
 
 	.edit-table .string-input {
-		@apply w-full rounded-field border-none px-2 py-1;
+		@apply w-full rounded-field border-none px-2 py-2;
 		@apply text-xs md:text-sm lg:text-base;
 	}
 

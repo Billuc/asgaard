@@ -5,9 +5,10 @@
 		borderStyle: BorderStyle;
 		setBorderStyle: (newStyle: BorderStyle) => void;
 		class?: string | string[];
+		disabled?: boolean;
 	}
 
-	let { borderStyle, setBorderStyle, class: additionalClasses = [] }: Props = $props();
+	let { borderStyle, setBorderStyle, class: additionalClasses = [], disabled }: Props = $props();
 	let selected = $state(borderStyle.toString());
 
 	const onSelect = async (ev: Event) => {
@@ -16,7 +17,7 @@
 	};
 </script>
 
-<select bind:value={selected} onchange={onSelect} class={['select', 'select-sm', additionalClasses]}>
+<select bind:value={selected} onchange={onSelect} class={['select', 'select-sm', additionalClasses]} {disabled}>
 	{#each Object.entries(BORDER_STYLES) as style (style[0])}
 		<option value={style[0]} class={style[1].className}>{style[1].label}</option>
 	{/each}

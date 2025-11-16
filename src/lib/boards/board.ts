@@ -9,17 +9,15 @@ export interface Board {
 export enum BoardItemType {
 	LIST = 'list',
 	NOTE = 'note',
-	QUEST = 'quest',
 	IMAGE = 'image',
 	TABLE = 'table'
 }
 
-export const BOARD_ITEM_TYPES: { [key in BoardItemType]: string } = {
-	[BoardItemType.LIST]: 'List',
-	[BoardItemType.NOTE]: 'Note',
-	[BoardItemType.QUEST]: 'Quest',
-	[BoardItemType.IMAGE]: 'Image',
-	[BoardItemType.TABLE]: 'Table'
+export const BOARD_ITEM_TYPES: { [key in BoardItemType]: { icon: string, label: string } } = {
+	[BoardItemType.LIST]: { label: 'List', icon: "icon-[lucide--list-checks]" },
+	[BoardItemType.NOTE]: { label: 'Note', icon: "icon-[lucide--notebook-text]" },
+	[BoardItemType.IMAGE]: { label: 'Image', icon: "icon-[lucide--image]" },
+	[BoardItemType.TABLE]: { label: 'Table', icon: "icon-[lucide--table]" }
 };
 
 export interface BoardItem {
@@ -27,7 +25,7 @@ export interface BoardItem {
 	data: BoardItemData;
 }
 
-export type BoardItemData = ListData | QuestData | NoteData | ImageData | TableData;
+export type BoardItemData = ListData | NoteData | ImageData | TableData;
 
 export interface ListData {
 	type: BoardItemType.LIST;
@@ -40,11 +38,6 @@ export interface ListItem {
 	id: string; // required for animations
 	done: boolean;
 	label: string;
-}
-
-export interface QuestData {
-	type: BoardItemType.QUEST;
-	questId: string;
 }
 
 export interface NoteData {

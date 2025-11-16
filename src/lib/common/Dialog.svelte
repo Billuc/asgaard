@@ -27,10 +27,10 @@
 </script>
 
 <dialog bind:this={dialogElement} class="modal">
-	<div class="modal-box max-w-xl p-2 pt-4">
+	<div class="modal-box max-w-xl p-2 pt-4 max-h-svh overflow-auto">
 		<form method="dialog">
-			<button class="btn absolute top-1 right-1 btn-circle btn-sm" onclick={hideModal}>
-				&times;
+			<button class="btn absolute top-1 right-1 btn-circle btn-sm" onclick={hideModal} aria-label="Close">
+				<span class="icon-[lucide--x]"></span>
 			</button>
 		</form>
 

@@ -8,6 +8,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade, fly } from 'svelte/transition';
 	import BoardTableRow from './BoardTableRow.svelte';
+	import EditTable from '$lib/common/EditTable.svelte';
 
 	interface Props {
 		data: TableData;
@@ -17,8 +18,25 @@
 
 	const { data, updateData = () => {}, showActions = false }: Props = $props();
 	const headers = $derived(data.rows[0]?.cells || []);
+	const headerColumns = $derived(
+		headers.reduce((acc: any, curr, i) => {
+			acc[i.toString()] = { label: curr };
+			return acc;
+		}, {})
+	);
 	const nbColumns = $derived(headers.length);
 	const rows = $derived(data.rows.slice(1));
+	const rowItems = $derived(
+		rows.map((r) => ({
+			item: r.cells.reduce(
+				(acc: any, curr, i) => {
+					acc[i.toString()] = curr;
+					return acc;
+				},
+				{ id: r.id }
+			)
+		}))
+	);
 
 	function updateTitle(newTitle: string) {
 		updateData({ ...data, title: newTitle });
@@ -76,6 +94,8 @@
 		oninput={(t) => debouncedUpdateTitle(t)}
 	/>
 </div>
+
+<EditTable columns={headerColumns} items={rowItems} />
 
 <div class="overflow-x-auto">
 	<table class="table-pin-rows table table-auto table-xs">

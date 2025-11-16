@@ -64,21 +64,30 @@
 
 <EditTable items={styleItems} {columns} {onupdate} />
 
-{#snippet inputBorder(id: string, value?: BorderStyle, update?: (value: BorderStyle) => void)}
+{#snippet inputBorder(
+	id: string,
+	value?: BorderStyle,
+	update?: (value: BorderStyle) => void,
+	disabled?: boolean
+)}
 	<BorderStyleSelect
 		borderStyle={value ?? BorderStyle.None}
 		setBorderStyle={(bs) => update?.(bs)}
+		class="select-ghost px-2 !outline-none"
+		{disabled}
 	/>
 {/snippet}
 
 {#snippet actions(id: string)}
-	<button class="btn btn-xs" onclick={() => preview(id)}>Preview</button>
+	<div class="px-2">
+		<button class="btn btn-xs" onclick={() => preview(id)}>Preview</button>
 
-	{#if id === ''}
-		<button class="btn btn-xs" onclick={() => createStyle(newStyle)}>Create</button>
-	{:else if !ASGAARD_STYLES.find((s) => s.id === id)}
-		<button class="btn btn-sm" onclick={() => deleteStyle(id)}>Delete</button>
-	{/if}
+		{#if id === ''}
+			<button class="btn btn-xs" onclick={() => createStyle(newStyle)}>Create</button>
+		{:else if !ASGAARD_STYLES.find((s) => s.id === id)}
+			<button class="btn btn-sm" onclick={() => deleteStyle(id)}>Delete</button>
+		{/if}
+	</div>
 {/snippet}
 
 <Dialog open={showDialog} onhide={() => (styleToPreview = null)}>

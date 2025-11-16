@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+
 @plugin 'daisyui' {
 	themes:
 		light --default,
@@ -19,6 +20,13 @@
 		winter,
 		dim,
 		sunset;
+}
+
+@plugin "@iconify/tailwind4";
+
+@utility absolute-fab {
+	@apply fab;
+	position: absolute;
 }
 
 html,

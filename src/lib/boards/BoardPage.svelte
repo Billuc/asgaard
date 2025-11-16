@@ -1,20 +1,18 @@
 <script lang="ts">
 	import { cloneDeep, debounce } from 'lodash-es';
 	import type { Board } from './board';
-	import NewBoardItem from './NewBoardItem.svelte';
 	import { BoardStorage } from './storage';
 	import { flip } from 'svelte/animate';
-	import { fly, slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import BoardItem from './items/BoardItem.svelte';
 	import { goto } from '$app/navigation';
 	import { deleteBlock, moveBlockDown, moveBlockUp, newItem, updateItem } from './functions';
-	import ActionsButton from '$lib/common/ActionsButton.svelte';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { asHref, Routes } from '$lib/routes/routes';
 	import BoardBorder from './BoardBorder.svelte';
-	import { DEFAULT_STYLE } from '$lib/styles/style';
+	import { ASGAARD_STYLES, DEFAULT_STYLE, type Style } from '$lib/styles/style';
 	import { StyleStorage } from '$lib/styles/storage';
-	import StyleSelect from '$lib/styles/StyleSelect.svelte';
+	import BoardActions from './BoardActions.svelte';
 
 	interface Props {
 		board: Board;
@@ -32,6 +30,12 @@
 			.then((s) => {
 				if (s) {
 					style = s;
+				} else {
+					const asgaardStyle = ASGAARD_STYLES.find((s) => s.id === board.styleId);
+
+					if (asgaardStyle) {
+						style = asgaardStyle;
+					}
 				}
 			})
 			.catch(() => {});
@@ -62,48 +66,46 @@
 		downloadAnchorNode.click();
 		downloadAnchorNode.remove();
 	}
+
+	function setStyle(newStyle: Style) {
+		updateBoard({ ...board, styleId: newStyle.id }).then(() => {
+			style = newStyle;
+		});
+	}
 </script>
 
-<div class="mb-4 flex flex-row flex-wrap justify-center gap-2">
-	<label class="join">
-		<span class="label join-item border border-base-content/20 px-2 text-sm">Style</span>
-		<StyleSelect {style} setStyle={(s) => (style = s)} class="join-item" />
-	</label>
+<BoardActions
+	{style}
+	onexport={exportBoard}
+	ondelete={deleteBoard}
+	onnewitem={(type) => updateBoard(newItem(board, type))}
+	onchangestyle={setStyle}
+/>
 
-	<ActionsButton bind:show={showActions}>
-		<div
-			class="flex flex-row flex-wrap justify-center gap-2"
-			transition:slide={{ axis: 'x', duration: 250 }}
-		>
-			<button class="btn btn-outline btn-sm btn-info" onclick={exportBoard}>Export board</button>
-			<NewBoardItem createItem={(type) => updateBoard(newItem(board, type))} />
-			<button class="btn btn-outline btn-sm btn-error" onclick={deleteBoard}>Delete board</button>
+<div class="pt-px">
+	<BoardBorder boardStyle={style}>
+		<div class="text-center">
+			<MyInput
+				class="input-xl input-ghost text-center font-bold"
+				value={board.title}
+				oninput={(title) => debouncedUpdateBoard({ ...board, title })}
+			/>
 		</div>
-	</ActionsButton>
+
+		<div>
+			{#each board.items as item (item.id)}
+				<div animate:flip={{ duration: 300 }} transition:fly>
+					<BoardItem
+						data={item.data}
+						{style}
+						moveBlockUp={() => updateBoard(moveBlockUp(board, item.id))}
+						moveBlockDown={() => updateBoard(moveBlockDown(board, item.id))}
+						deleteBlock={() => updateBoard(deleteBlock(board, item.id))}
+						updateData={(d) => updateBoard(updateItem(board, item.id, d))}
+						{showActions}
+					></BoardItem>
+				</div>
+			{/each}
+		</div>
+	</BoardBorder>
 </div>
-
-<BoardBorder boardStyle={style}>
-	<div class="text-center">
-		<MyInput
-			class="input-xl input-ghost text-center font-bold"
-			value={board.title}
-			oninput={(title) => debouncedUpdateBoard({ ...board, title })}
-		/>
-	</div>
-
-	<div>
-		{#each board.items as item (item.id)}
-			<div animate:flip={{ duration: 300 }} transition:fly>
-				<BoardItem
-					data={item.data}
-					{style}
-					moveBlockUp={() => updateBoard(moveBlockUp(board, item.id))}
-					moveBlockDown={() => updateBoard(moveBlockDown(board, item.id))}
-					deleteBlock={() => updateBoard(deleteBlock(board, item.id))}
-					updateData={(d) => updateBoard(updateItem(board, item.id, d))}
-					{showActions}
-				></BoardItem>
-			</div>
-		{/each}
-	</div>
-</BoardBorder>

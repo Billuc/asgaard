@@ -34,3 +34,4 @@
 		<option value={style.id}>{style.name}</option>
 	{/each}
 </select>
+
