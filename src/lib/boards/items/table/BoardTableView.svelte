@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TableData } from '$lib/boards/board';
+	import type { TableColumn, TableData } from '$lib/boards/board';
 	import { debounce } from 'lodash-es';
 	import MyInput from '$lib/common/MyInput.svelte';
 	import { generateId } from '$lib/id_generator';
@@ -9,6 +9,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import BoardTableRow from './BoardTableRow.svelte';
 	import EditTable from '$lib/common/EditTable.svelte';
+	import SettingsButton from '$lib/common/SettingsButton.svelte';
 
 	interface Props {
 		data: TableData;
@@ -17,24 +18,19 @@
 	}
 
 	const { data, updateData = () => {}, showActions = false }: Props = $props();
-	const headers = $derived(data.rows[0]?.cells || []);
 	const headerColumns = $derived(
-		headers.reduce((acc: any, curr, i) => {
-			acc[i.toString()] = { label: curr };
+		data.columns.reduce((acc: any, col) => {
+			acc[col.name] = { label: col.name };
 			return acc;
 		}, {})
 	);
-	const nbColumns = $derived(headers.length);
-	const rows = $derived(data.rows.slice(1));
+	const nbColumns = $derived(data.rows.length);
 	const rowItems = $derived(
-		rows.map((r) => ({
-			item: r.cells.reduce(
-				(acc: any, curr, i) => {
-					acc[i.toString()] = curr;
-					return acc;
-				},
-				{ id: r.id }
-			)
+		data.rows.map((r) => ({
+            item: {
+                id: r.id,
+                ...r.cells
+            }
 		}))
 	);
 
@@ -44,15 +40,32 @@
 	const debouncedUpdateTitle = debounce(updateTitle, 250);
 
 	function newRow() {
-		const newRow = { id: generateId('row'), cells: [] };
+		const newRow = { id: generateId('row'), cells: generateCells() };
 		updateData({ ...data, rows: [...data.rows, newRow] });
 	}
 
+	function generateCells() {
+		return data.columns.reduce((acc: any, col) => {
+			acc[col.id] = generateCellValue(col);
+		}, {});
+	}
+
+	function generateCellValue(col: TableColumn) {
+		switch (col.type) {
+			case "string":
+				return "";
+			case "number":
+				return 0;
+			case "boolean":
+				return false;
+		}
+	}
+
 	function newColumn() {
-		updateData({
-			...data,
-			rows: mapAt(data.rows, 0, (row) => ({ ...row, cells: [...row.cells, ''] }))
-		});
+		// updateData({
+		// 	...data,
+		// 	rows: mapAt(data.rows, 0, (row) => ({ ...row, cells: [...row.cells, ''] }))
+		// });
 	}
 
 	function updateCell(rowIndex: number, colIndex: number, value: string) {
@@ -66,13 +79,13 @@
 	}
 
 	function deleteColumn(colIndex: number) {
-		updateData({
-			...data,
-			rows: data.rows.map((row) => ({
-				...row,
-				cells: removeAt(row.cells, colIndex)
-			}))
-		});
+//		updateData({
+//			...data,
+//			rows: data.rows.map((row) => ({
+//				...row,
+//				cells: removeAt(row.cells, colIndex)
+//			}))
+//		});
 	}
 
 	function onDrop(rowId: string, dropRowId: string) {
@@ -93,10 +106,12 @@
 		value={data.title}
 		oninput={(t) => debouncedUpdateTitle(t)}
 	/>
+	<SettingsButton><div></div></SettingsButton>
 </div>
 
 <EditTable columns={headerColumns} items={rowItems} />
 
+<!--
 <div class="overflow-x-auto">
 	<table class="table-pin-rows table table-auto table-xs">
 		{#if data.rows.length > 0}
@@ -160,3 +175,4 @@
 		</tfoot>
 	</table>
 </div>
+-->

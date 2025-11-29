@@ -59,10 +59,19 @@ export interface Image {
 export interface TableData {
 	type: BoardItemType.TABLE;
 	title: string;
+	columns: TableColumn[];
 	rows: TableRow[];
 }
 
 export interface TableRow {
 	id: string; // required for animations
-	cells: string[];
+	cells: { [k: string]: TableCell };
+}
+
+export type TableCell = string | number | boolean;
+
+export interface TableColumn {
+	id: string;
+	name: string;
+	type: "string" | "number" | "boolean";
 }
