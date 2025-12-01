@@ -1,21 +1,12 @@
 <script lang="ts" generics="Item extends { id: string, [k: string]: any }">
-	import { type Snippet } from 'svelte';
 	import { debounce, cloneDeep } from 'lodash-es';
 	import { flip } from 'svelte/animate';
-
-	interface Column {
-		label: string;
-		input?: Snippet<[string, any?, ((value: any) => void)?, boolean?]>;
-		disabled?: boolean;
-	}
-
-	interface ItemData {
-		item: Item;
-		disabled?: boolean;
-	}
+	import type { Column, ItemData } from './table';
+	import { SvelteMap } from 'svelte/reactivity';
+	import StringInput from './StringInput.svelte';
 
 	interface Props {
-		items: ItemData[];
+		items: ItemData<Item>[];
 		columns: { [k: string]: Column };
 		onupdate?: (value: Item) => void;
 		nbColumns?: 2 | 3 | 4 | 5;
@@ -23,10 +14,12 @@
 
 	const { items, columns, onupdate = () => {}, nbColumns = 3 }: Props = $props();
 	let scrollIndex = $state(0);
-	const columnsToShow = $derived(Object.keys(columns).slice(scrollIndex, scrollIndex + nbColumns));
+	const columnKeys = $derived(Object.keys(columns));
+	const columnCount = $derived(Math.min(columnKeys.length, nbColumns));
+	const columnsToShow = $derived(columnKeys.slice(scrollIndex, scrollIndex + columnCount));
 
 	const classes = $derived.by(() => {
-		switch (columnsToShow.length) {
+		switch (columnCount) {
 			case 2:
 				return {
 					grid: 'grid-cols-2'
@@ -64,17 +57,18 @@
 	}
 
 	const debouncedUpdates = $derived.by(() => {
-		const debouncedFunctions = new Map<keyof Item, (id: string, value: any) => void>();
+		const debouncedFunctions = new SvelteMap<keyof Item, (id: string, value: any) => void>();
 
 		for (const key in columns) {
 			debouncedFunctions.set(
 				key,
-				debounce((id, value) => doUpdate(id, key, value), 300, { maxWait: 2000 })
+				debounce((id, value) => doUpdate(id, key, value), 400, { maxWait: 2000 })
 			);
 		}
 
 		return debouncedFunctions;
 	});
+	let test = $state('test');
 </script>
 
 <div class="relative">
@@ -132,7 +126,7 @@
 	{/if}
 </div>
 
-{#snippet tableinput(item: ItemData, c: string)}
+{#snippet tableinput(item: ItemData<Item>, c: string)}
 	{#if columns[c]?.input}
 		{@render columns[c]!.input(
 			item.item.id,
@@ -140,16 +134,15 @@
 			(v) => debouncedUpdates.get(c)?.(item.item.id, v),
 			item.disabled === true || columns[c]?.disabled === true
 		)}
-	{:else if typeof item.item[c] === 'string'}
-		<div
-			contenteditable={item.disabled !== true && columns[c]?.disabled !== true}
-			class="my-input string-input"
-			oninput={(e) =>
-				debouncedUpdates.get(c)!(item.item.id, (e.target! as HTMLDivElement).innerText)}
-		>
-			{item.item[c]}
-		</div>
-	{:else if typeof item.item[c] === 'number'}
+	{:else if columns[c]?.type !== undefined}
+		{@render defaultInput(columns[c]?.type, item, c)}
+	{:else}
+		{@render defaultInput(typeof item.item[c], item, c)}
+	{/if}
+{/snippet}
+
+{#snippet defaultInput(type: string, item: ItemData<Item>, c: string)}
+	{#if type === 'number'}
 		<input
 			type="number"
 			value={item.item[c]}
@@ -158,7 +151,7 @@
 				debouncedUpdates.get(c)!(item.item.id, Number((e.target! as HTMLInputElement).value))}
 			disabled={item.disabled === true || columns[c]?.disabled === true}
 		/>
-	{:else if typeof item.item[c] === 'boolean'}
+	{:else if type === 'boolean'}
 		<div class="px-2">
 			<input
 				type="checkbox"
@@ -169,20 +162,18 @@
 				disabled={item.disabled === true || columns[c]?.disabled === true}
 			/>
 		</div>
+	{:else}
+		<StringInput
+			disabled={item.disabled === true || columns[c]?.disabled === true}
+			value={item.item[c]}
+			oninput={(v) => debouncedUpdates.get(c)!(item.item.id, v)}
+			immediate
+		/>
 	{/if}
 {/snippet}
 
 <style>
 	@reference "../../app.css";
-
-	.edit-table .string-input {
-		@apply w-full rounded-field border-none px-2 py-2;
-		@apply text-xs md:text-sm lg:text-base;
-	}
-
-	.edit-table .string-input[contenteditable='false'] {
-		@apply opacity-40;
-	}
 
 	.my-input {
 		@apply transition-colors outline-none focus:bg-base-200/50;

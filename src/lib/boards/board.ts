@@ -13,11 +13,11 @@ export enum BoardItemType {
 	TABLE = 'table'
 }
 
-export const BOARD_ITEM_TYPES: { [key in BoardItemType]: { icon: string, label: string } } = {
-	[BoardItemType.LIST]: { label: 'List', icon: "icon-[lucide--list-checks]" },
-	[BoardItemType.NOTE]: { label: 'Note', icon: "icon-[lucide--notebook-text]" },
-	[BoardItemType.IMAGE]: { label: 'Image', icon: "icon-[lucide--image]" },
-	[BoardItemType.TABLE]: { label: 'Table', icon: "icon-[lucide--table]" }
+export const BOARD_ITEM_TYPES: { [key in BoardItemType]: { icon: string; label: string } } = {
+	[BoardItemType.LIST]: { label: 'List', icon: 'icon-[lucide--list-checks]' },
+	[BoardItemType.NOTE]: { label: 'Note', icon: 'icon-[lucide--notebook-text]' },
+	[BoardItemType.IMAGE]: { label: 'Image', icon: 'icon-[lucide--image]' },
+	[BoardItemType.TABLE]: { label: 'Table', icon: 'icon-[lucide--table]' }
 };
 
 export interface BoardItem {
@@ -61,6 +61,7 @@ export interface TableData {
 	title: string;
 	columns: TableColumn[];
 	rows: TableRow[];
+	nbColumns: 2 | 3 | 4 | 5;
 }
 
 export interface TableRow {
@@ -73,5 +74,5 @@ export type TableCell = string | number | boolean;
 export interface TableColumn {
 	id: string;
 	name: string;
-	type: "string" | "number" | "boolean";
+	type: 'string' | 'number' | 'boolean';
 }

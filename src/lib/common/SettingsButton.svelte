@@ -10,7 +10,7 @@
 	let dialogOpen = $state(false);
 </script>
 
-<button class="btn" aria-label="Settings" onclick={() => (dialogOpen = true)}>
+<button class="btn btn-circle btn-sm" aria-label="Settings" onclick={() => (dialogOpen = true)}>
 	<span class="icon-[lucide--settings]"></span>
 </button>
 
