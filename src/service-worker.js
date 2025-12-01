@@ -3,7 +3,6 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
-import { doMigrations } from "$lib/migrations";
 
 // Inspired by
 // https://svelte.dev/docs/kit/service-workers
@@ -40,7 +39,6 @@ self.addEventListener('activate', (event) => {
   console.log('Activating service worker for version ', version);
 
   event.waitUntil(cleanupOldCaches());
-  event.waitUntil(doMigrations());
 });
 
 // Fetch event: serve cached assets or fetch from network
