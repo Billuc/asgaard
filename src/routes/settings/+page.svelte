@@ -4,6 +4,7 @@
 	import StyleTable from '$lib/styles/StyleTable.svelte';
 	import { cloneDeep } from 'lodash-es';
 	import { generateId } from '$lib/id_generator';
+	import ThemeCardSelect from '$lib/theme/ThemeCardSelect.svelte';
 
 	let styles = $state<Style[]>([]);
 	const storage = StyleStorage.getInstance();
@@ -35,6 +36,11 @@
 <h1 class="my-4 text-center text-3xl font-bold">Settings</h1>
 
 <div class="px-2 md:px-4 lg:px-8">
-	<h2 class="mb-2 ml-2 text-xl font-semibold">Styles</h2>
+	<h2 class="mb-2 ml-2 text-xl font-bold">Theme</h2>
+	<div class="mt-2 mb-4">
+		<ThemeCardSelect />
+	</div>
+
+	<h2 class="my-2 ml-2 text-xl font-bold">Board Styles</h2>
 	<StyleTable {styles} createStyle={oncreate} updateStyle={onupdate} deleteStyle={ondelete} />
 </div>

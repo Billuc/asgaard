@@ -1,37 +1,23 @@
 <script lang="ts">
-	import { asHref, NAV_LINKS, NavLink, Routes, ROUTES } from './routes';
-	import { page } from '$app/state';
-	import ThemeController from '$lib/theme/ThemeController.svelte';
-	import { base } from '$app/paths';
-
-	function isActive(link: NavLink) {
-		const linkForRoute = Object.entries(ROUTES).find(
-			(route) => asHref(route[0] as unknown as Routes) === page.url.pathname
-		)?.[1].link;
-		return linkForRoute === link;
-	}
+	import { NAV_LINKS, NavLink } from './routes';
+	import { asset } from '$app/paths';
+	import NavLinkEl from './NavLink.svelte';
 </script>
 
 <div class="dock z-50 flex bg-base-200 md:hidden">
 	<div class="max-w-fit px-2">
-		<img src={base + '/favicon.svg'} width="32" height="32" alt="Asgaard logo" />
+		<img src={asset('/favicon.svg')} width="32" height="32" alt="Asgaard logo" />
 	</div>
 
-	{#each Object.entries(NAV_LINKS) as [link, data] (link)}
-		<a href={asHref(data.route)} class={{ 'dock-active': isActive(link as NavLink) }}>
-			<span class="dock-label">{data.name}</span>
-		</a>
+	{#each Object.keys(NAV_LINKS) as link (link)}
+		<NavLinkEl navLink={link as NavLink} isDock />
 	{/each}
-
-	<div class="max-w-fit px-2">
-		<ThemeController />
-	</div>
 </div>
 
 <div class="navbar hidden bg-base-200 shadow-sm md:flex">
 	<div class="flex-1">
 		<img
-			src={base + '/favicon.svg'}
+			src={asset('/favicon.svg')}
 			width="32"
 			height="32"
 			alt="Asgaard logo"
@@ -41,17 +27,11 @@
 	</div>
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
-			{#each Object.entries(NAV_LINKS) as [link, data] (link)}
+			{#each Object.keys(NAV_LINKS) as link (link)}
 				<li>
-					<a href={asHref(data.route)} class={{ 'menu-active': isActive(link as NavLink) }}>
-						<span>{data.name}</span>
-					</a>
+					<NavLinkEl navLink={link as NavLink} isMenu />
 				</li>
 			{/each}
-
-			<li>
-				<ThemeController />
-			</li>
 		</ul>
 	</div>
 </div>

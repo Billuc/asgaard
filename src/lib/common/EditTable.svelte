@@ -68,7 +68,6 @@
 
 		return debouncedFunctions;
 	});
-	let test = $state('test');
 </script>
 
 <div class="relative">

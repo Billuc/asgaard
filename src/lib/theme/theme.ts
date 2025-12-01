@@ -1,5 +1,3 @@
-/*! 🌼 daisyUI 5.0.46 */
-
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
@@ -49,7 +47,9 @@ class ThemeStore {
 	private static _instance: ThemeStore | null = null;
 	private readonly THEME_KEY = 'asgaard-theme';
 
-	private constructor() { }
+	private constructor() {
+		document.body.setAttribute('data-theme', this.getTheme());
+	}
 
 	getTheme(): Theme {
 		const themeStr = localStorage.getItem(this.THEME_KEY);
@@ -69,6 +69,7 @@ class ThemeStore {
 
 	setTheme(newTheme: Theme) {
 		localStorage.setItem(this.THEME_KEY, newTheme);
+		document.body.setAttribute('data-theme', this.getTheme());
 	}
 
 	static getInstance(): ThemeStore {
