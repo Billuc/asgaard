@@ -17,7 +17,7 @@
 	let { openContent, closeContent, actions }: Props = $props();
 </script>
 
-<div class="absolute-fab">
+<div class="fab my-fab">
 	<!-- a focusable div with tabindex is necessary to work on all browsers. role="button" is necessary for accessibility -->
 	<div tabindex="0" role="button" class="btn btn-circle btn-info md:btn-lg">
 		{@render openContent()}
@@ -44,7 +44,15 @@
 <style>
 	@reference "../../app.css";
 
-	.absolute-fab > div:not(div[role="button"]) {
-		@apply bg-base-100/80 pl-2;
-	}
+    .my-fab {
+        @apply bottom-20 md:bottom-4;
+        @apply rounded-lg;
+        @apply transition-all duration-300;
+    }
+
+    .my-fab:focus-within {
+        @apply bg-base-100/80 shadow-base-100/80;
+        box-shadow: 0 0 25px 25px var(--tw-shadow-color);
+    }
+
 </style>

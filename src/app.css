@@ -24,11 +24,6 @@
 
 @plugin "@iconify/tailwind4";
 
-@utility absolute-fab {
-	@apply fab;
-	position: absolute;
-}
-
 html,
 body {
 	min-height: 100vh;
