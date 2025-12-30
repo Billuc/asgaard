@@ -22,9 +22,17 @@ export const BORDER_STYLES: { [k in BorderStyle]: { label: string; className: st
 export const DEFAULT_STYLE: Style = {
   id: 'style-asgaard-default',
   name: '[Asgaard] Default',
+  flatItems: true,
+  borderStyle: BorderStyle.None
+};
+
+export const CARD_STYLE: Style = {
+  id: 'style-asgaard-card',
+  name: '[Asgaard] Card',
   flatItems: false,
   borderStyle: BorderStyle.None
 };
+
 
 export const QUEST_STYLE: Style = {
   id: 'style-asgaard-quest',
@@ -33,4 +41,4 @@ export const QUEST_STYLE: Style = {
   borderStyle: BorderStyle.Quest
 };
 
-export const ASGAARD_STYLES: Style[] = [DEFAULT_STYLE, QUEST_STYLE];
+export const ASGAARD_STYLES: Style[] = [DEFAULT_STYLE, CARD_STYLE, QUEST_STYLE];
