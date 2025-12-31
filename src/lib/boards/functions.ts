@@ -17,9 +17,6 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
     case BoardItemType.NOTE:
       itemData = { type: BoardItemType.NOTE, note: 'New note' };
       break;
-    case BoardItemType.QUEST:
-      itemData = { type: BoardItemType.QUEST, questId: '' };
-      break;
     case BoardItemType.IMAGE:
       itemData = { type: BoardItemType.IMAGE, imageIds: [], title: 'New image' };
       break;
@@ -27,7 +24,9 @@ export function newItem(board: Board, itemType: BoardItemType): Board {
       itemData = {
         type: BoardItemType.TABLE,
         title: 'New table',
-        rows: []
+        rows: [],
+        columns: [],
+        nbColumns: 3,
       };
       break;
     default:
