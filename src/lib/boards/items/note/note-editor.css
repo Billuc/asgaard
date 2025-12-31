@@ -143,11 +143,11 @@
 }
 
 .TMCommandBar {
-	@apply flex;
+	@apply flex flex-wrap;
 	@apply bg-primary;
 	@apply rounded-lg border-0 border-primary group-focus-within:border-4;
-	@apply h-0 w-fit group-focus-within:h-6;
-	@apply transition-all duration-200 ease-in-out;
+	@apply max-h-0 w-fit group-focus-within:max-h-32;
+	@apply transition-all duration-500 ease-linear;
 	box-sizing: content-box;
 	-webkit-user-select: none;
 	user-select: none;
