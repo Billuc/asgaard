@@ -19,12 +19,6 @@ const config = {
 			register: !process.argv.includes('dev')
 		}
 	},
-
-    compilerOptions: {
-        experimental: {
-            async: true
-        }
-    }
 };
 
 export default config;
