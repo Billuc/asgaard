@@ -18,7 +18,8 @@
 			return;
 		}
 
-		await BoardStorage.getInstance().upsert(boardData);
+        const boardStorage = await BoardStorage.getInstance();
+		await boardStorage.upsert(boardData);
 
 		await goto(asHref(Routes.Board, { id: boardData.id }), {
 			state: { message: 'Board imported successfully' }

@@ -13,7 +13,9 @@
 			favorite: false,
 			styleId: ''
 		};
-		await BoardStorage.getInstance().upsert(newBoard);
+        
+        const boardStorage = await BoardStorage.getInstance();
+		await boardStorage.upsert(newBoard);
 		goto(asHref(Routes.Board, { id: newBoard.id }), { state: { message: 'New board created!' } });
 	}
 </script>

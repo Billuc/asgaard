@@ -12,8 +12,8 @@
 	let allStyles = $state<Style[]>(ASGAARD_STYLES);
 
 	$effect(() => {
-		StyleStorage.getInstance()
-			.getAll()
+        StyleStorage.getInstance()
+            .then(styleStorage => styleStorage.getAll())
 			.then((styles) => (allStyles = [...ASGAARD_STYLES, ...styles]));
 	});
 

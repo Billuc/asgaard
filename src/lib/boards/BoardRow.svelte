@@ -15,7 +15,8 @@
 		let updatedBoard = cloneDeep(board);
 		updatedBoard.favorite = !updatedBoard.favorite;
 
-		await BoardStorage.getInstance().upsert(updatedBoard);
+        const boardStorage = await BoardStorage.getInstance(); // Should be a sync op
+		await boardStorage.upsert(updatedBoard);
 		board = updatedBoard;
 	}
 </script>

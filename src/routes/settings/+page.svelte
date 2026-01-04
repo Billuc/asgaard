@@ -7,28 +7,33 @@
 	import ThemeCardSelect from '$lib/theme/ThemeCardSelect.svelte';
 
 	let styles = $state<Style[]>([]);
-	const storage = StyleStorage.getInstance();
 
 	$effect(() => {
-		storage.getAll().then((s) => (styles = s));
+        StyleStorage.getInstance()
+            .then(storage => storage.getAll())
+		    .then((s) => (styles = s));
 	});
 
 	async function oncreate(style: Style) {
 		const toCreate: Style = cloneDeep(style);
 		toCreate.id = generateId('style');
+
+        const storage = await StyleStorage.getInstance(); // Should be a sync op
 		await storage.upsert(toCreate);
 		styles.push(toCreate);
 	}
 
 	async function onupdate(style: Style) {
+        const storage = await StyleStorage.getInstance(); // Should be a sync op
 		await storage.upsert(style);
 		const index = styles.findIndex((s) => s.id === style.id);
 		if (index === -1) return;
 		styles.splice(index, 1, style);
 	}
 
-	function ondelete(id: string) {
-		storage.delete(id);
+	async function ondelete(id: string) {
+        const storage = await StyleStorage.getInstance(); // Should be a sync op
+		await storage.delete(id);
 		styles = styles.filter((s) => s.id !== id);
 	}
 </script>

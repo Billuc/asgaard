@@ -18,7 +18,7 @@ const config = {
 		serviceWorker: {
 			register: !process.argv.includes('dev')
 		}
-	}
+	},
 };
 
 export default config;

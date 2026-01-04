@@ -22,11 +22,9 @@
 	let style = $state(DEFAULT_STYLE);
 	let showActions = $state(false);
 	let board = $state(initialBoard);
-	const boardStorage = BoardStorage.getInstance();
 
 	$effect(() => {
-		StyleStorage.getInstance()
-			.get(board.styleId)
+        StyleStorage.getInstance().then(storage => storage.get(board.styleId))
 			.then((s) => {
 				if (s) {
 					style = s;
@@ -42,6 +40,7 @@
 	});
 
 	const updateBoard = async (newBoard: Board) => {
+	    const boardStorage = await BoardStorage.getInstance(); // Should be a sync op
 		await boardStorage.upsert(cloneDeep(newBoard));
 		let updatedBoard = await boardStorage.get(newBoard.id);
 		if (updatedBoard) board = updatedBoard;
@@ -53,6 +52,7 @@
 	async function deleteBoard() {
 		if (!confirm(`Here be dragons ! This board will be deleted permanently !`)) return;
 
+	    const boardStorage = await BoardStorage.getInstance(); // Should be a sync op
 		await boardStorage.delete(board.id);
 		goto(asHref(Routes.Boards), { state: { message: 'Board deleted successfully' } });
 	}
