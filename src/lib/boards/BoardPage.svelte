@@ -22,10 +22,11 @@
 	let style = $state(DEFAULT_STYLE);
 	let showActions = $state(false);
 	let board = $state(initialBoard);
-	const boardStorage = BoardStorage.getInstance();
+	const boardStorage = await BoardStorage.getInstance();
+    const styleStorage = await StyleStorage.getInstance();
 
 	$effect(() => {
-		StyleStorage.getInstance()
+		styleStorage
 			.get(board.styleId)
 			.then((s) => {
 				if (s) {

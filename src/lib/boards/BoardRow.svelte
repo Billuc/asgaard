@@ -10,12 +10,13 @@
 
 	let { board: initialBoard }: Props = $props();
 	let board = $state(initialBoard);
+    const storage = await BoardStorage.getInstance();
 
 	async function toggleFavorite() {
 		let updatedBoard = cloneDeep(board);
 		updatedBoard.favorite = !updatedBoard.favorite;
 
-		await BoardStorage.getInstance().upsert(updatedBoard);
+		await storage.upsert(updatedBoard);
 		board = updatedBoard;
 	}
 </script>

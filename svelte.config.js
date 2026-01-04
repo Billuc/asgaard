@@ -18,7 +18,13 @@ const config = {
 		serviceWorker: {
 			register: !process.argv.includes('dev')
 		}
-	}
+	},
+
+    compilerOptions: {
+        experimental: {
+            async: true
+        }
+    }
 };
 
 export default config;

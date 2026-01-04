@@ -9,12 +9,12 @@ export class BoardStorage extends Storage<Board> {
   private constructor() {
     const boardStore = createStore('board-db', 'board-store');
     super(boardStore, boardMigrations);
-    this.migrate();
   }
 
-  static getInstance(): BoardStorage {
+  static async getInstance(): Promise<BoardStorage> {
     if (!BoardStorage._instance) {
       BoardStorage._instance = new BoardStorage();
+      await BoardStorage._instance.migrate();
     }
     return BoardStorage._instance;
   }

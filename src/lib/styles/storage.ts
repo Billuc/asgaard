@@ -11,9 +11,10 @@ export class StyleStorage extends Storage<Style> {
     super(styleStore, styleMigrations);
   }
 
-  static getInstance(): StyleStorage {
+  static async getInstance(): Promise<StyleStorage> {
     if (!StyleStorage._instance) {
       StyleStorage._instance = new StyleStorage();
+      await StyleStorage._instance.migrate();
     }
     return StyleStorage._instance;
   }

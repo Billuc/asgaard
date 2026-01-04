@@ -4,6 +4,7 @@
 	import { BoardStorage } from './storage';
 
 	let fileInput: HTMLInputElement;
+    const boardStorage = await BoardStorage.getInstance();
 
 	async function importBoard(event: Event) {
 		if (!(event.target instanceof HTMLInputElement)) return;
@@ -18,7 +19,7 @@
 			return;
 		}
 
-		await BoardStorage.getInstance().upsert(boardData);
+		await boardStorage.upsert(boardData);
 
 		await goto(asHref(Routes.Board, { id: boardData.id }), {
 			state: { message: 'Board imported successfully' }

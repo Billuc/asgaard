@@ -10,9 +10,10 @@
 
 	let { style, setStyle, class: additionalClasses = [] }: Props = $props();
 	let allStyles = $state<Style[]>(ASGAARD_STYLES);
+    const styleStorage = await StyleStorage.getInstance();
 
 	$effect(() => {
-		StyleStorage.getInstance()
+		styleStorage
 			.getAll()
 			.then((styles) => (allStyles = [...ASGAARD_STYLES, ...styles]));
 	});
