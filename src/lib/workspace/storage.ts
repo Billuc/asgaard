@@ -9,18 +9,18 @@ export class WorkspaceStorage {
   }
 
   get(): Workspace | undefined {
-    const workspaceData = sessionStorage.getItem(WorkspaceStorage.STORAGE_KEY);
+    const workspaceData = localStorage.getItem(WorkspaceStorage.STORAGE_KEY);
     if (workspaceData) {
       return JSON.parse(workspaceData) as Workspace;
     }
   }
 
   upsert(workspace: Workspace): void {
-    sessionStorage.setItem(WorkspaceStorage.STORAGE_KEY, JSON.stringify(workspace));
+    localStorage.setItem(WorkspaceStorage.STORAGE_KEY, JSON.stringify(workspace));
   }
 
   delete(): void {
-    sessionStorage.removeItem(WorkspaceStorage.STORAGE_KEY);
+    localStorage.removeItem(WorkspaceStorage.STORAGE_KEY);
   }
 
   static getInstance(): WorkspaceStorage {
@@ -29,4 +29,10 @@ export class WorkspaceStorage {
     }
     return WorkspaceStorage._instance;
   }
+
+	async migrate(): Promise<void> {
+		const valuesWithVersions = (await this.getAllWithVersions()) as StorageValue<any>[];
+		const newValues = valuesWithVersions.map((v) => this.migrations.run(v));
+		await this.setValues(newValues);
+	}
 }
