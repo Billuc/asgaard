@@ -69,7 +69,7 @@ export class MigrationPipeline<T> {
 
 	next<U>(nextMigrationFn: (data: StorageValue<T>) => U): MigrationPipeline<U> {
 		return new MigrationPipeline((data: StorageValue<T>) => {
-            if (data.version && data.version > this._version) return data.data as U;
+            if (data.version && data.version > this._version) return data.data as unknown as U;
 
 			const t = this.migrationFn(data);
 			return nextMigrationFn({ version: data.version, data: t });

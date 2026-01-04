@@ -1,29 +1,14 @@
-import { createStore, get, set, del, values } from 'idb-keyval';
+import { createStore } from 'idb-keyval';
 import type { Style } from './style';
+import { Storage } from '$lib/storage';
+import { styleMigrations } from './migrations';
 
-export class StyleStorage {
+export class StyleStorage extends Storage<Style> {
   private static _instance: StyleStorage | null = null;
-  private styleStore = createStore('style-db', 'style-store');
 
   private constructor() {
-    // Private constructor to enforce singleton pattern
-  }
-
-  getAll(): Promise<Style[]> {
-    const styles = values<Style>(this.styleStore);
-    return styles;
-  }
-
-  get(id: string): Promise<Style | undefined> {
-    return get<Style>(id, this.styleStore);
-  }
-
-  upsert(style: Style): Promise<void> {
-    return set(style.id, style, this.styleStore);
-  }
-
-  delete(id: string): Promise<void> {
-    return del(id, this.styleStore);
+    const styleStore = createStore('style-db', 'style-store');
+    super(styleStore, styleMigrations);
   }
 
   static getInstance(): StyleStorage {
