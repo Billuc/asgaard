@@ -4,7 +4,6 @@
 	import { BoardItemType } from '../board';
 	import BoardListView from './list/BoardListView.svelte';
 	import BoardNoteView from './note/BoardNoteView.svelte';
-	import BoardQuestView from './quest/BoardQuestView.svelte';
 	import BoardImageView from './image/BoardImageView.svelte';
 	import BoardTableView from './table/BoardTableView.svelte';
 	import type { Style } from '$lib/styles/style';
@@ -44,8 +43,6 @@
 			<BoardListView {data} {updateData} {showActions}></BoardListView>
 		{:else if data.type === BoardItemType.NOTE}
 			<BoardNoteView {data} {updateData}></BoardNoteView>
-		{:else if data.type === BoardItemType.QUEST}
-			<BoardQuestView {data} {updateData} manageMode={showActions}></BoardQuestView>
 		{:else if data.type === BoardItemType.IMAGE}
 			<BoardImageView {data} {updateData}></BoardImageView>
 		{:else if data.type === BoardItemType.TABLE}
