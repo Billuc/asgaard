@@ -5,8 +5,6 @@
 	import type { Board } from './board';
 	import { BoardStorage } from './storage';
 
-    const boardStorage = await BoardStorage.getInstance();
-
 	async function createBoard() {
 		const newBoard: Board = {
 			id: generateId('board'),
@@ -15,6 +13,8 @@
 			favorite: false,
 			styleId: ''
 		};
+        
+        const boardStorage = await BoardStorage.getInstance();
 		await boardStorage.upsert(newBoard);
 		goto(asHref(Routes.Board, { id: newBoard.id }), { state: { message: 'New board created!' } });
 	}

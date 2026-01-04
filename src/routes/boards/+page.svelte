@@ -6,7 +6,8 @@
 	import { BoardStorage } from '$lib/boards/storage';
 
 	async function getBoards(): Promise<Board[]> {
-		return await BoardStorage.getInstance().getAll();
+        const boardStorage = await BoardStorage.getInstance();
+		return await boardStorage.getAll();
 	}
 </script>
 

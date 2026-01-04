@@ -10,7 +10,8 @@
 
 		if (!id) throw new Error('An ID is required !');
 
-		const board = await BoardStorage.getInstance().get(id);
+        const boardStorage = await BoardStorage.getInstance();
+		const board = await boardStorage.get(id);
 		console.log('Board with ID ', id, board);
 
 		if (!board) throw new Error('Could not find a board with this ID !');

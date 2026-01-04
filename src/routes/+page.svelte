@@ -4,7 +4,8 @@
 	import { BoardStorage } from '$lib/boards/storage';
 
 	async function getFavoriteBoards(): Promise<Board[]> {
-		const boards = await BoardStorage.getInstance().getAll();
+        const boardStorage = await BoardStorage.getInstance();
+		const boards = await boardStorage.getAll();
 		return boards.filter((board) => board.favorite);
 	}
 </script>
