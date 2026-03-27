@@ -41,9 +41,11 @@
 	},
 	"dependencies": {
 		"@dragdroptouch/drag-drop-touch": "^2.0.3",
+		"idb": "^8.0.3",
 		"idb-keyval": "^6.2.2",
 		"lodash-es": "^4.17.21",
 		"nanoid": "^5.1.5",
+		"svelte-mdeditor": "^0.1.0",
 		"tiny-markdown-editor": "^0.2.2"
 	}
 }
