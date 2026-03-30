@@ -2,6 +2,7 @@
 	import type { Board } from '$lib/boards/board';
 	import BoardRow from '$lib/boards/BoardRow.svelte';
 	import { BoardStorage } from '$lib/boards/storage';
+	import { asHref, Routes } from '$lib/routes/routes';
 
 	async function getFavoriteBoards(): Promise<Board[]> {
         const boardStorage = await BoardStorage.getInstance();
@@ -30,4 +31,7 @@
 			{/each}
 		{/await}
 	</div>
+
+	<div class="my-4 text-lg">Notes</div>
+	<a href={asHref(Routes.Notes)} class="btn btn-outline">Go to Notes</a>
 </div>

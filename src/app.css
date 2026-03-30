@@ -23,6 +23,8 @@
 }
 
 @plugin "@iconify/tailwind4";
+@plugin "@tailwindcss/typography";
+@import 'tiny-markdown-editor/dist/tiny-mde.css';
 
 html,
 body {
